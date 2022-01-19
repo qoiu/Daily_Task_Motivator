@@ -1,0 +1,40 @@
+package com.qoiu.dailytaskmotivator.domain
+
+import com.qoiu.dailytaskmotivator.data.TaskDb
+import com.qoiu.dailytaskmotivator.data.TaskRepository
+
+interface TaskInteractor {
+    suspend fun loadTask(): List<TaskDb>
+    suspend fun removeTask(task: TaskDb)
+    suspend fun update(task: TaskDb)
+
+    class Base(private val repository: TaskRepository) : TaskInteractor {
+        override suspend fun loadTask(): List<TaskDb> {
+            val tasks = repository.fetchData()
+            val list = mutableListOf<TaskDb>()
+            tasks.forEach {
+                if (it.deadline > 0)
+                    TaskGoldCoficient.Base(it).modify()
+                if (it.title == "" || it.reward == 0) {
+                    removeTask(it)
+                } else if (!(it.dailyTask && it.expiredAt <= TaskCalendar().today().time)) {
+                    list.add(it)
+                }
+            }
+            return list
+        }
+
+        override suspend fun removeTask(task: TaskDb) {
+            if (!task.dailyTask) {
+                repository.remove(task)
+            } else {
+                task.expiredAt = TaskCalendar().today().time
+                update(task)
+            }
+        }
+
+        override suspend fun update(task: TaskDb) {
+            repository.update(task)
+        }
+    }
+}

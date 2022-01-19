@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:elevation="10dp"
+    app:cardCornerRadius="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/task_title"
+            style="@style/Header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/task_body"
+            style="@style/CenteredView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/task_deadline_row"
+            style="@style/RowStyle">
+
+            <TextView
+                style="@style/RowLeft"
+                android:text="Deadline:" />
+
+            <TextView
+                android:id="@+id/task_deadline"
+                style="@style/RowRight" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/task_expired_row"
+            style="@style/RowStyle">
+
+            <TextView
+                style="@style/RowLeft"
+                android:text="Expired:" />
+
+            <TextView
+                android:id="@+id/task_expired"
+                style="@style/RowRight" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/task_reward_row"
+            style="@style/RowStyle">
+
+            <TextView
+                style="@style/RowRight"
+                android:text="Reward: "
+                android:textSize="@dimen/reward_size" />
+
+            <TextView
+                android:id="@+id/task_reward"
+                style="@style/RowRight"
+                android:textSize="@dimen/reward_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/task_progress_row"
+            style="@style/RowStyle"
+            android:layout_width="match_parent">
+
+            <TextView
+                android:id="@+id/task_progress"
+                style="@style/RowLeft"
+                android:text="Reward: "
+                android:textSize="@dimen/reward_size" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/task_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Done" />
+
+        <ProgressBar
+            android:id="@+id/task_progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="25"
+            android:progress="15" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
