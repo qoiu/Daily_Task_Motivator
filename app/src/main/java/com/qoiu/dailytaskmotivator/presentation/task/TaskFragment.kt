@@ -2,7 +2,9 @@ package com.qoiu.dailytaskmotivator.presentation.task
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.Save
 import com.qoiu.dailytaskmotivator.Update
@@ -21,6 +23,8 @@ class TaskFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerView = view.findViewById<RecyclerView>(R.id.task_recycler)
+        val fab = view.findViewById<FloatingActionButton>(R.id.add_fab)
+        fab.setOnClickListener {fabAction()}
         val adapter = TaskAdapter(emptyList(), show, this) {
             saveGold.save(it.reward)
             viewModel.deleteTask(it)
@@ -42,5 +46,17 @@ class TaskFragment(
 
     override fun update() {
         viewModel.updateData()
+    }
+
+    private fun fabAction() {
+        val dialog = NewTaskDialog({
+            viewModel.addTask(it)
+            viewModel.updateData()
+        },
+            {
+                Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show()
+            })
+        dialog.isCancelable = false
+        show.show(dialog)
     }
 }

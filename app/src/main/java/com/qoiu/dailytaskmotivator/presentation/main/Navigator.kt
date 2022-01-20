@@ -26,8 +26,6 @@ interface Navigator {
             return fragment
         }
 
-        override fun updateFragment() {
-            fragment.update()
-        }
+        override fun updateFragment() = fragment.update()
     }
 }

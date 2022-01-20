@@ -10,6 +10,13 @@ import kotlinx.coroutines.launch
 class TaskModel(private val interactor: TaskInteractor) :
     BaseViewModel<List<TaskDb>>(TaskCommunication()) {
 
+    fun addTask(taskDb: TaskDb){
+        viewModelScope.launch(Dispatchers.IO) {
+            interactor.save(taskDb)
+        }.invokeOnCompletion {
+            updateData()
+        }
+    }
 
     fun updateData() {
         viewModelScope.launch(Dispatchers.IO) {

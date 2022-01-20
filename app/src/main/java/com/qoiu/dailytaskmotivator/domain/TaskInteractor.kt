@@ -7,6 +7,7 @@ interface TaskInteractor {
     suspend fun loadTask(): List<TaskDb>
     suspend fun removeTask(task: TaskDb)
     suspend fun update(task: TaskDb)
+    suspend fun save(data: TaskDb)
 
     class Base(private val repository: TaskRepository) : TaskInteractor {
         override suspend fun loadTask(): List<TaskDb> {
@@ -22,6 +23,11 @@ interface TaskInteractor {
                 }
             }
             return list
+        }
+
+        override suspend fun save(data: TaskDb) {
+            repository.save(data)
+            loadTask()
         }
 
         override suspend fun removeTask(task: TaskDb) {
