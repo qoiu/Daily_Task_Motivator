@@ -43,15 +43,19 @@ class TaskAdapter(
     ) : RecyclerView.ViewHolder(view) {
         fun bind(task: TaskDb) {
             itemView.findViewById<TextView>(R.id.task_title).text = task.title
-            if (task.body != "") {
-                itemView.findViewById<TextView>(R.id.task_body).text = task.body
-            } else {
-                itemView.findViewById<TextView>(R.id.task_body).visibility = View.GONE
+            itemView.findViewById<TextView>(R.id.task_body).apply {
+                if (task.body != "") {
+                    text = task.body
+                    visibility = View.VISIBLE
+                } else {
+                    visibility = View.GONE
+                }
             }
             itemView.findViewById<TextView>(R.id.task_reward).apply {
                 if (task.reward == 0) {
                     visibility = View.GONE
                 } else {
+                    visibility = View.VISIBLE
                     val str = "${stringProvider.string(R.string.reward)}: ${task.reward}"
                     text = str
                 }
@@ -60,6 +64,7 @@ class TaskAdapter(
                 if (task.expiredAt == 0L || task.dailyTask) {
                     visibility = View.GONE
                 } else {
+                    visibility = View.VISIBLE
                     val str = "${stringProvider.string(R.string.expired)}: "+
                             TaskCalendar().formatDate(task.expiredAt)
                     text = str
@@ -69,6 +74,7 @@ class TaskAdapter(
                 if (task.deadline == 0L || task.dailyTask) {
                     visibility = View.GONE
                 } else {
+                    visibility = View.VISIBLE
                     val str = "${stringProvider.string(R.string.deadline)}: "+
                             TaskCalendar().formatDate(task.deadline)
                     text = str
@@ -92,6 +98,8 @@ class TaskAdapter(
             }
             if (task.progressMax > 0) {
                 val progressText = "${stringProvider.string(R.string.progress)}: ${task.currentProgress}/${task.progressMax}"
+                itemView.findViewById<TextView>(R.id.task_progress).visibility = View.VISIBLE
+                itemView.findViewById<ProgressBar>(R.id.task_progress_bar).visibility = View.VISIBLE
                 itemView.findViewById<TextView>(R.id.task_progress).text =
                     progressText
                 itemView.findViewById<ProgressBar>(R.id.task_progress_bar).apply {
