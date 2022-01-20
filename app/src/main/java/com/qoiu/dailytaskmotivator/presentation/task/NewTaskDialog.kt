@@ -71,7 +71,7 @@ class NewTaskDialog(
                 action(task)
                 this.dismiss()
             } catch (e: Exception) {
-                toast(e.localizedMessage ?: "strange error")
+                toast(e.localizedMessage ?: stringProvider.string(R.string.error_strange))
             }
         }
         view.findViewById<Button>(R.id.edit_cancel).setOnClickListener {

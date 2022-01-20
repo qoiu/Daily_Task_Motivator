@@ -17,4 +17,5 @@
     <string name="error_progress">Incorrect progress value</string>
     <string name="error_expired">Incorrect expired date</string>
     <string name="error_deadline">Incorrect deadline date</string>
+    <string name="error_strange">strange error</string>
 </resources>

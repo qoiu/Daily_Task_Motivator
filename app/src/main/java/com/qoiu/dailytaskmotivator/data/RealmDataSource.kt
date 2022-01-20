@@ -36,7 +36,7 @@ interface RealmDataSource : Read<List<TaskDb>>, Save<TaskDb>, Remove<TaskDb>, Up
                 realm.executeTransaction {
                     val task = realm.where(TaskDb::class.java).equalTo("title", data.title)
                         .findFirst()
-                    task?.update(data)
+                    task?.update(data)?:it.insert(data)
                 }
             }
         }

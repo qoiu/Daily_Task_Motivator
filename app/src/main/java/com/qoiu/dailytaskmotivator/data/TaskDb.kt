@@ -16,7 +16,12 @@ open class TaskDb (
 ) : RealmObject(){
 
     fun update(new: TaskDb){
-        currentProgress = new.currentProgress
+        body = new.body
+        reward = new.reward
         expiredAt = new.expiredAt
+        deadline = new.deadline
+        progressMax = new.progressMax
+        currentProgress = new.currentProgress
+        dailyTask = new.dailyTask
     }
 }

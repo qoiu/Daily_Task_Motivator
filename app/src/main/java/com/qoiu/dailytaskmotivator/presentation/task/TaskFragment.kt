@@ -39,7 +39,7 @@ class TaskFragment(
         fab.setOnClickListener { fabAction() }
         val adapter =
             TaskAdapter(emptyList(), show, this, ResourceProvider.String(requireContext()),
-                { fabAction(it) }) {
+                { editTask(it) }) {
                 saveGold.save(it.reward)
                 viewModel.deleteTask(it)
             }
@@ -53,9 +53,9 @@ class TaskFragment(
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun setUpdateListener(recyclerView: RecyclerView) {
-        recyclerView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+        recyclerView.setOnScrollChangeListener { _, _, _, _, _ ->
             val view: View = recyclerView.getChildAt(0)
-            val diff: Int = view.top - (recyclerView.getScrollY())
+            val diff: Int = view.top - (recyclerView.scrollY)
             if (diff > 0) {
                 update()
             }
@@ -79,15 +79,22 @@ class TaskFragment(
         }
     }
 
-    private fun fabAction(taskDb: TaskDb = TaskDb()) {
+    private fun fabAction() {
         val dialog = NewTaskDialog(
-            {
-                viewModel.addTask(it)
-                viewModel.updateData()
-            },
-            {
-                Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show()
-            },ResourceProvider.String(this.requireContext()), taskDb
+            { viewModel.addTask(it) },
+            { Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show() },
+            ResourceProvider.String(this.requireContext())
+        )
+        dialog.isCancelable = false
+        show.show(dialog)
+    }
+
+    private fun editTask(taskDb: TaskDb) {
+        val dialog = NewTaskDialog(
+            { update(it) },
+            { Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show() },
+            ResourceProvider.String(this.requireContext()),
+            taskDb
         )
         dialog.isCancelable = false
         show.show(dialog)
