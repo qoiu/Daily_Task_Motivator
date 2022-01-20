@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.qoiu.dailytaskmotivator.R
+import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.data.TaskDb
 import com.qoiu.dailytaskmotivator.domain.TaskCalendar
 import java.lang.Exception
@@ -15,6 +16,7 @@ import java.lang.IllegalStateException
 class NewTaskDialog(
     private val action: (task: TaskDb) -> Unit,
     private val toast: (error: String) -> Unit,
+    private val stringProvider: ResourceProvider.StringProvider,
     private val task: TaskDb = TaskDb()
 ) : DialogFragment() {
     override fun onCreateView(
@@ -109,11 +111,11 @@ class NewTaskDialog(
         val reward: Int
         var expired: Long
         if (rewardView.text.toString() == "")
-            throw IllegalStateException("Reward can't be 0")
+            throw IllegalStateException(stringProvider.string(R.string.error_reward))
         try {
             reward = rewardView.text.toString().toInt()
         } catch (e: Exception) {
-            throw IllegalStateException("Incorrect reward")
+            throw IllegalStateException(stringProvider.string(R.string.error_reward_incorrect))
         }
         val progress = if (progressView.text.toString() == "") {
             0
@@ -121,7 +123,7 @@ class NewTaskDialog(
             try {
                 progressView.text.toString().toInt()
             } catch (e: Exception) {
-                throw IllegalStateException("Incorrect progress value")
+                throw IllegalStateException(stringProvider.string(R.string.error_progress))
             }
         }
         expired = if (expireView.text.toString() == "") {
@@ -130,7 +132,7 @@ class NewTaskDialog(
             try {
                 TaskCalendar().formatFromString(expireView.text.toString())
             } catch (e: Exception) {
-                throw IllegalStateException("Incorrect expired date")
+                throw IllegalStateException(stringProvider.string(R.string.error_expired))
             }
         }
         val deadline = if (deadlineView.text.toString() == "") {
@@ -139,7 +141,7 @@ class NewTaskDialog(
             try {
                 TaskCalendar().formatFromString(deadlineView.text.toString())
             } catch (e: Exception) {
-                throw IllegalStateException("Incorrect deadline date")
+                throw IllegalStateException(stringProvider.string(R.string.error_deadline))
             }
         }
         if (dailyTaskView.isChecked) expired = TaskCalendar().tillTomorrow()?.time ?: 0

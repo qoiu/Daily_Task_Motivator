@@ -12,4 +12,9 @@
     <string name="reward">Reward</string>
     <string name="progress">Progress</string>
     <string name="done">Done</string>
+    <string name="error_reward">Reward can\'t be 0</string>
+    <string name="error_reward_incorrect">Incorrect reward</string>
+    <string name="error_progress">Incorrect progress value</string>
+    <string name="error_expired">Incorrect expired date</string>
+    <string name="error_deadline">Incorrect deadline date</string>
 </resources>
