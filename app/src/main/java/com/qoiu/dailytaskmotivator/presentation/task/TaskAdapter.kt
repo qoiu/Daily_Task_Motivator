@@ -1,4 +1,4 @@
-package com.qoiu.dailytaskmotivator.presentation
+package com.qoiu.dailytaskmotivator.presentation.task
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +12,8 @@ import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.Update
 import com.qoiu.dailytaskmotivator.data.TaskDb
 import com.qoiu.dailytaskmotivator.domain.TaskCalendar
+import com.qoiu.dailytaskmotivator.presentation.DialogShow
+import com.qoiu.dailytaskmotivator.presentation.ProgressModifierDialog
 
 class TaskAdapter(
     private var list: List<TaskDb>,
@@ -77,8 +79,9 @@ class TaskAdapter(
                 }
             }
             if (task.progressMax > 0) {
+                val progressText = "Progress: ${task.currentProgress}/${task.progressMax}"
                 itemView.findViewById<TextView>(R.id.task_progress).text =
-                    "Progress: ${task.currentProgress}/${task.progressMax}"
+                    progressText
                 itemView.findViewById<ProgressBar>(R.id.task_progress_bar).apply {
                     max = task.progressMax
                     progress = task.currentProgress

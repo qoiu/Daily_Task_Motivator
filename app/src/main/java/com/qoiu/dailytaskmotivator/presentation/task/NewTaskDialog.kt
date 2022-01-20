@@ -1,4 +1,4 @@
-package com.qoiu.dailytaskmotivator.presentation
+package com.qoiu.dailytaskmotivator.presentation.task
 
 import android.os.Bundle
 import android.view.LayoutInflater

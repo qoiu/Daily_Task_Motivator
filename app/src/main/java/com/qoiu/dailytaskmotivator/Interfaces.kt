@@ -38,7 +38,7 @@ interface ViewModelRequest {
 
 interface Communication<T> : Provide<T>, Observe<T> {
 
-    abstract class Base<T : Any> : Communication<T> {
+    open class Base<T : Any> : Communication<T> {
         private val liveData = MutableLiveData<T>()
         override fun provide(data: T) {
             liveData.postValue(data)

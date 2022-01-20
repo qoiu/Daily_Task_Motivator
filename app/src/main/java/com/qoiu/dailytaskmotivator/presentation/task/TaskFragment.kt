@@ -1,4 +1,4 @@
-package com.qoiu.dailytaskmotivator.presentation
+package com.qoiu.dailytaskmotivator.presentation.task
 
 import android.os.Bundle
 import android.view.View
@@ -8,6 +8,8 @@ import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.Save
 import com.qoiu.dailytaskmotivator.Update
 import com.qoiu.dailytaskmotivator.data.TaskDb
+import com.qoiu.dailytaskmotivator.presentation.BaseFragment
+import com.qoiu.dailytaskmotivator.presentation.DialogShow
 
 class TaskFragment(
     private val communication: Communication<List<TaskDb>>,

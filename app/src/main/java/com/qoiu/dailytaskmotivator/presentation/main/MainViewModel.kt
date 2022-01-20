@@ -1,4 +1,4 @@
-package com.qoiu.dailytaskmotivator.presentation
+package com.qoiu.dailytaskmotivator.presentation.main
 
 import androidx.lifecycle.viewModelScope
 import com.qoiu.dailytaskmotivator.Communication
@@ -6,6 +6,7 @@ import com.qoiu.dailytaskmotivator.Read
 import com.qoiu.dailytaskmotivator.Save
 import com.qoiu.dailytaskmotivator.data.TaskDb
 import com.qoiu.dailytaskmotivator.domain.MainInteractor
+import com.qoiu.dailytaskmotivator.presentation.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -33,6 +34,4 @@ class MainViewModel(private val interactor: MainInteractor, communication: Commu
     }
 
     override fun read(): Int = interactor.read()
-
-
 }
