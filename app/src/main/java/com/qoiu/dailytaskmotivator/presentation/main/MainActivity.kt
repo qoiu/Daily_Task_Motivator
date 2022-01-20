@@ -5,20 +5,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.qoiu.dailytaskmotivator.*
+import com.qoiu.dailytaskmotivator.databinding.ActivityMainBinding
 import com.qoiu.dailytaskmotivator.presentation.BaseFragment
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
 
 class MainActivity : AppCompatActivity(), ViewModelRequest, Save.Gold, DialogShow {
     private lateinit var viewModel: MainViewModel
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         viewModel = getViewModel(MainViewModel::class.java, this)
         val navigator = Navigator.Base(this, this)
-        val bottomNav = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
+        val bottomNav = binding.mainBottomNav
         bottomNav.setOnItemSelectedListener {
             setFragment(navigator.navigate(it.itemId))
             return@setOnItemSelectedListener true
@@ -30,7 +32,7 @@ class MainActivity : AppCompatActivity(), ViewModelRequest, Save.Gold, DialogSho
         updateGold()
     }
 
-    private fun setFragment(fragment: BaseFragment<*>) {
+    private fun setFragment(fragment: BaseFragment<*,*>) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, fragment)
             .commit()

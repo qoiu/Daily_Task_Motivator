@@ -3,24 +3,30 @@ package com.qoiu.dailytaskmotivator.presentation.task
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Save
 import com.qoiu.dailytaskmotivator.Update
 import com.qoiu.dailytaskmotivator.data.TaskDb
+import com.qoiu.dailytaskmotivator.databinding.FragmentTaskBinding
 import com.qoiu.dailytaskmotivator.presentation.BaseFragment
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
 
 class TaskFragment(
     private val saveGold: Save.Gold,
     private val show: DialogShow
-) : BaseFragment<TaskModel>(), Update<TaskDb> {
+) : BaseFragment<TaskModel,FragmentTaskBinding>(), Update<TaskDb> {
+
+    override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
+        binding = FragmentTaskBinding.inflate(inflater,container,false)
+    }
 
     override fun layoutResId(): Int = R.layout.fragment_task
     override fun viewModelClass(): Class<TaskModel> = TaskModel::class.java
@@ -29,10 +35,10 @@ class TaskFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        progressBar = view.findViewById(R.id.task_progressBar)
+        progressBar = binding.taskProgressBar
         progressBar.visibility = View.GONE
-        val recyclerView = view.findViewById<RecyclerView>(R.id.task_recycler)
-        val fab = view.findViewById<FloatingActionButton>(R.id.add_fab)
+        val recyclerView = binding.taskRecycler
+        val fab = binding.addFab
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             setUpdateListener(recyclerView)
         }

@@ -3,14 +3,12 @@ package com.qoiu.dailytaskmotivator.presentation.task
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Update
 import com.qoiu.dailytaskmotivator.data.TaskDb
+import com.qoiu.dailytaskmotivator.databinding.TaskItemBinding
 import com.qoiu.dailytaskmotivator.domain.TaskCalendar
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
 import com.qoiu.dailytaskmotivator.presentation.ProgressModifierDialog
@@ -31,7 +29,8 @@ class TaskAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false),
+            TaskItemBinding.inflate(
+            LayoutInflater.from(parent.context),parent,false),
             stringProvider,
             dialog
         )
@@ -43,16 +42,17 @@ class TaskAdapter(
     override fun getItemCount(): Int = list.size
 
     inner class ViewHolder(
-        view: View,
+        private val view: TaskItemBinding,
         private val stringProvider: ResourceProvider.StringProvider,
         private val dialog: (TaskDb) -> Unit
-    ) : RecyclerView.ViewHolder(view) {
+    ) : RecyclerView.ViewHolder(view.root) {
+
         fun bind(task: TaskDb) {
             itemView.setOnClickListener {
                 dialog(task)
             }
-            itemView.findViewById<TextView>(R.id.task_title).text = task.title
-            itemView.findViewById<TextView>(R.id.task_body).apply {
+            view.taskTitle.text = task.title
+            view.taskBody.apply {
                 if (task.body != "") {
                     text = task.body
                     visibility = View.VISIBLE
@@ -60,7 +60,7 @@ class TaskAdapter(
                     visibility = View.GONE
                 }
             }
-            itemView.findViewById<TextView>(R.id.task_reward).apply {
+            view.taskReward.apply {
                 if (task.reward == 0) {
                     visibility = View.GONE
                 } else {
@@ -69,7 +69,7 @@ class TaskAdapter(
                     text = str
                 }
             }
-            itemView.findViewById<TextView>(R.id.task_expired).apply {
+            view.taskExpired.apply {
                 if (task.expiredAt == 0L || task.dailyTask || task.reusable) {
                     visibility = View.GONE
                 } else {
@@ -79,7 +79,7 @@ class TaskAdapter(
                     text = str
                 }
             }
-            itemView.findViewById<TextView>(R.id.task_deadline).apply {
+            view.taskDeadline.apply {
                 if (task.deadline == 0L || task.dailyTask || task.reusable) {
                     visibility = View.GONE
                 } else {
@@ -89,7 +89,7 @@ class TaskAdapter(
                     text = str
                 }
             }
-            itemView.findViewById<Button>(R.id.task_done).setOnClickListener {
+            view.taskDone.setOnClickListener {
                 if (task.progressMax == 0) {
                     doneAction(task)
                 } else {
@@ -105,7 +105,7 @@ class TaskAdapter(
                     })
                 }
             }
-            itemView.findViewById<ProgressBar>(R.id.task_progress_bar).apply {
+            view.taskProgressBar.apply {
                 if (task.progressMax > 0) {
                     max = task.progressMax
                     progress = task.currentProgress
@@ -114,7 +114,7 @@ class TaskAdapter(
                     visibility = View.GONE
                 }
             }
-            itemView.findViewById<TextView>(R.id.task_progress).apply {
+            view.taskProgress.apply {
                 if (task.progressMax > 0) {
                     val progressText =
                         "${stringProvider.string(R.string.progress)}: ${task.currentProgress}/${task.progressMax}"

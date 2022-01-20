@@ -13,7 +13,7 @@ interface TaskInteractor {
     class Base(private val repository: TaskRepository, private val stringProvider: ResourceProvider.StringProvider) : TaskInteractor {
         override suspend fun loadTask(): List<TaskDb> {
             val tasks = repository.fetchData()
-            if(tasks.size==0)return DefaultTasks(stringProvider).getDefault()
+            if(tasks.isEmpty())return DefaultTasks(stringProvider).getDefault()
             val list = mutableListOf<TaskDb>()
             tasks.forEach {
                 if (it.deadline > 0)
@@ -36,10 +36,13 @@ interface TaskInteractor {
             if (!task.dailyTask && !task.reusable) {
                 repository.remove(task)
             } else {
-                task.expiredAt = TaskCalendar().today().time
-                update(task)
+                if(!task.reusable) {
+                    task.expiredAt = TaskCalendar().today().time
+                    update(task)
+                }
             }
         }
+
 
         override suspend fun update(task: TaskDb) {
             repository.update(task)

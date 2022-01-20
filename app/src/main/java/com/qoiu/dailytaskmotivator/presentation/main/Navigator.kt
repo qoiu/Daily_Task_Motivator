@@ -8,7 +8,7 @@ import com.qoiu.dailytaskmotivator.presentation.shop.ShopFragment
 import com.qoiu.dailytaskmotivator.presentation.task.TaskFragment
 
 interface Navigator {
-    fun navigate(id: Int): BaseFragment<*>
+    fun navigate(id: Int): BaseFragment<*,*>
     fun updateFragment()
 
     class Base(
@@ -16,8 +16,8 @@ interface Navigator {
         private val dialogShow: DialogShow
     ): Navigator {
 
-        private lateinit var fragment: BaseFragment<*>
-        override fun navigate(id: Int): BaseFragment<*> {
+        private lateinit var fragment: BaseFragment<*,*>
+        override fun navigate(id: Int): BaseFragment<*,*> {
             fragment = when (id) {
                 R.id.nav_tasks -> TaskFragment(saveGold, dialogShow)
                 R.id.nav_shop -> ShopFragment()
