@@ -1,5 +1,6 @@
 package com.qoiu.dailytaskmotivator.presentation.task
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,7 +66,14 @@ class TaskAdapter(
                     visibility = View.GONE
                 } else {
                     visibility = View.VISIBLE
-                    val str = "${stringProvider.string(R.string.reward)}: ${task.reward}"
+                    val str = if(task.reward<0) {
+                        setTextColor(Color.RED)
+                        "${stringProvider.string(R.string.reward)}: ${task.reward*-1}"
+                    }
+                    else{
+                        setTextColor(Color.GREEN)
+                        "${stringProvider.string(R.string.cost)}: ${task.reward}"
+                    }
                     text = str
                 }
             }

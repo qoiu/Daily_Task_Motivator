@@ -10,6 +10,7 @@
     <string name="deadline">Deadline</string>
     <string name="expired">Expired</string>
     <string name="reward">Reward</string>
+    <string name="cost">Reward</string>
     <string name="progress">Progress</string>
     <string name="done">Done</string>
     <string name="error_reward">Reward can\'t be 0</string>
