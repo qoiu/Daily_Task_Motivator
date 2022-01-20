@@ -93,18 +93,18 @@ class NewTaskDialog(
         fillView()
     }
 
-    private fun fillView(){
+    private fun fillView() {
         titleView.setText(task.title)
         descriptionView.setText(task.body)
-        if(task.reward>0)
-        rewardView.setText(task.reward.toString())
-        if(task.progressMax>0)
-        progressView.setText(task.progressMax.toString())
+        if (task.reward > 0)
+            rewardView.setText(task.reward.toString())
+        if (task.progressMax > 0)
+            progressView.setText(task.progressMax.toString())
         dailyTaskView.isChecked = task.dailyTask
-        if(task.deadline>0)
-        deadlineView.setText(TaskCalendar().formatDate(task.deadline))
-        if(task.expiredAt>0)
-        expireView.setText(TaskCalendar().formatDate(task.expiredAt))
+        if (task.deadline > 0)
+            deadlineView.setText(TaskCalendar().formatDate(task.deadline))
+        if (task.expiredAt > 0)
+            expireView.setText(TaskCalendar().formatDate(task.expiredAt))
     }
 
     private fun getTask(): TaskDb {

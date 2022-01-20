@@ -87,7 +87,7 @@ class TaskFragment(
             },
             {
                 Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show()
-            }, taskDb
+            },ResourceProvider.String(this.requireContext()), taskDb
         )
         dialog.isCancelable = false
         show.show(dialog)
