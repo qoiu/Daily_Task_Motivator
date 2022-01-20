@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Daily Task Motivator</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_task">Tasks</string>
     <string name="title_shop">Shop</string>
     <string name="tasks">Tasks</string>
     <string name="shop">Shop</string>
     <string name="add">add</string>
+    <string name="new_task_title">Create new task</string>
 </resources>

@@ -14,11 +14,12 @@ class CoreModule {
 
     fun init(context: Context) {
         val resourceProvider = ResourceProvider.Shared(context)
+        val stringProvider = ResourceProvider.String(context)
         val realmProvider = RealmProvider.Base(context)
         val realmSource = RealmDataSource.Base(realmProvider)
         val sharedData = SharedData.Gold(resourceProvider.provideSharedPreference())
         val repository = TaskRepository(realmSource, sharedData)
         mainInteractor = MainInteractor.Base(repository)
-        taskInteractor = TaskInteractor.Base(repository)
+        taskInteractor = TaskInteractor.Base(repository,stringProvider)
     }
 }

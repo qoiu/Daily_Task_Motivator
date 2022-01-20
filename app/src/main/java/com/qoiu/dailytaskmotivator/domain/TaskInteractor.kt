@@ -1,5 +1,6 @@
 package com.qoiu.dailytaskmotivator.domain
 
+import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.data.TaskDb
 import com.qoiu.dailytaskmotivator.data.TaskRepository
 
@@ -9,9 +10,10 @@ interface TaskInteractor {
     suspend fun update(task: TaskDb)
     suspend fun save(data: TaskDb)
 
-    class Base(private val repository: TaskRepository) : TaskInteractor {
+    class Base(private val repository: TaskRepository, private val stringProvider: ResourceProvider.StringProvider) : TaskInteractor {
         override suspend fun loadTask(): List<TaskDb> {
             val tasks = repository.fetchData()
+            if(tasks.size==0)return DefaultTasks(stringProvider).getDefault()
             val list = mutableListOf<TaskDb>()
             tasks.forEach {
                 if (it.deadline > 0)
