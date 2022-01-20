@@ -36,7 +36,6 @@ class TaskAdapter(
 
     override fun getItemCount(): Int = list.size
 
-
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(task: TaskDb) {
             itemView.findViewById<TextView>(R.id.task_title).text = task.title
@@ -50,17 +49,22 @@ class TaskAdapter(
             } else {
                 itemView.findViewById<TextView>(R.id.task_reward).text = task.reward.toString()
             }
-            if (task.expiredAt > 0) {
-                itemView.findViewById<TextView>(R.id.task_expired).text =
-                    TaskCalendar().formatDate(task.expiredAt)
-            } else {
-                itemView.findViewById<LinearLayout>(R.id.task_expired_row).visibility = View.GONE
-            }
-            if (task.deadline > 0) {
-                itemView.findViewById<TextView>(R.id.task_deadline).text =
-                    TaskCalendar().formatDate(task.deadline)
-            } else {
+            if(task.dailyTask){
                 itemView.findViewById<LinearLayout>(R.id.task_deadline_row).visibility = View.GONE
+                itemView.findViewById<LinearLayout>(R.id.task_expired_row).visibility = View.GONE
+            }else{
+                if (task.expiredAt > 0) {
+                    itemView.findViewById<TextView>(R.id.task_expired).text =
+                        TaskCalendar().formatDate(task.expiredAt)
+                } else {
+                    itemView.findViewById<LinearLayout>(R.id.task_expired_row).visibility = View.GONE
+                }
+                if (task.deadline > 0) {
+                    itemView.findViewById<TextView>(R.id.task_deadline).text =
+                        TaskCalendar().formatDate(task.deadline)
+                } else {
+                    itemView.findViewById<LinearLayout>(R.id.task_deadline_row).visibility = View.GONE
+                }
             }
             itemView.findViewById<Button>(R.id.task_done).setOnClickListener {
                 if (task.progressMax == 0) {
