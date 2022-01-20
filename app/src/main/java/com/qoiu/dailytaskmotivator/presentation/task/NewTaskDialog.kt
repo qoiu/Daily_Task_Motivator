@@ -31,6 +31,7 @@ class NewTaskDialog(
     private lateinit var calendarView: CalendarView
     private lateinit var datesView: LinearLayout
     private lateinit var dailyTaskView: CheckBox
+    private lateinit var reusableTaskView: CheckBox
     private lateinit var titleView: EditText
     private lateinit var descriptionView: EditText
     private lateinit var rewardView: EditText
@@ -88,6 +89,7 @@ class NewTaskDialog(
         deadlineView = view.findViewById(R.id.edit_deadline)
         expireView = view.findViewById(R.id.edit_expire)
         dailyTaskView = view.findViewById(R.id.edit_daily)
+        reusableTaskView = view.findViewById(R.id.edit_reusable)
         calendarView = view.findViewById(R.id.calendarView)
         setActions(view)
         fillView()
@@ -101,6 +103,7 @@ class NewTaskDialog(
         if (task.progressMax > 0)
             progressView.setText(task.progressMax.toString())
         dailyTaskView.isChecked = task.dailyTask
+        reusableTaskView.isChecked = task.reusable
         if (task.deadline > 0)
             deadlineView.setText(TaskCalendar().formatDate(task.deadline))
         if (task.expiredAt > 0)
@@ -154,7 +157,8 @@ class NewTaskDialog(
             deadline,
             progress,
             0,
-            dailyTaskView.isChecked
+            dailyTaskView.isChecked,
+            reusableTaskView.isChecked
         )
     }
 

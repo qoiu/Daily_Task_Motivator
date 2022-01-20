@@ -33,7 +33,7 @@ interface TaskInteractor {
         }
 
         override suspend fun removeTask(task: TaskDb) {
-            if (!task.dailyTask) {
+            if (!task.dailyTask && !task.reusable) {
                 repository.remove(task)
             } else {
                 task.expiredAt = TaskCalendar().today().time

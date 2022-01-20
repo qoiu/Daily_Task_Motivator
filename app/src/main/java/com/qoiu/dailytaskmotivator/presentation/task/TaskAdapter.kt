@@ -70,7 +70,7 @@ class TaskAdapter(
                 }
             }
             itemView.findViewById<TextView>(R.id.task_expired).apply {
-                if (task.expiredAt == 0L || task.dailyTask) {
+                if (task.expiredAt == 0L || task.dailyTask || task.reusable) {
                     visibility = View.GONE
                 } else {
                     visibility = View.VISIBLE
@@ -80,7 +80,7 @@ class TaskAdapter(
                 }
             }
             itemView.findViewById<TextView>(R.id.task_deadline).apply {
-                if (task.deadline == 0L || task.dailyTask) {
+                if (task.deadline == 0L || task.dailyTask || task.reusable) {
                     visibility = View.GONE
                 } else {
                     visibility = View.VISIBLE
