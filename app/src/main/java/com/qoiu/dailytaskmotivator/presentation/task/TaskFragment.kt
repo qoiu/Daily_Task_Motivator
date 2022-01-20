@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.qoiu.dailytaskmotivator.R
+import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Save
 import com.qoiu.dailytaskmotivator.Update
 import com.qoiu.dailytaskmotivator.data.TaskDb
@@ -25,7 +26,7 @@ class TaskFragment(
         val recyclerView = view.findViewById<RecyclerView>(R.id.task_recycler)
         val fab = view.findViewById<FloatingActionButton>(R.id.add_fab)
         fab.setOnClickListener {fabAction()}
-        val adapter = TaskAdapter(emptyList(), show, this) {
+        val adapter = TaskAdapter(emptyList(), show, this,ResourceProvider.String(requireContext())) {
             saveGold.save(it.reward)
             viewModel.deleteTask(it)
         }

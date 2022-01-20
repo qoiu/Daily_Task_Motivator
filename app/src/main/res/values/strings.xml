@@ -7,4 +7,9 @@
     <string name="shop">Shop</string>
     <string name="add">add</string>
     <string name="new_task_title">Create new task</string>
+    <string name="deadline">Deadline</string>
+    <string name="expired">Expired</string>
+    <string name="reward">Reward</string>
+    <string name="progress">Progress</string>
+    <string name="done">Done</string>
 </resources>

@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.qoiu.dailytaskmotivator.R
+import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Update
 import com.qoiu.dailytaskmotivator.data.TaskDb
 import com.qoiu.dailytaskmotivator.domain.TaskCalendar
@@ -19,6 +19,7 @@ class TaskAdapter(
     private var list: List<TaskDb>,
     private val show: DialogShow,
     private val update: Update<TaskDb>,
+    private val stringProvider: ResourceProvider.StringProvider,
     private val doneAction: (TaskDb) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
 
@@ -28,7 +29,7 @@ class TaskAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false))
+        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false),stringProvider)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(list[position])
@@ -36,7 +37,10 @@ class TaskAdapter(
 
     override fun getItemCount(): Int = list.size
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(
+        view: View,
+        private val stringProvider: ResourceProvider.StringProvider
+    ) : RecyclerView.ViewHolder(view) {
         fun bind(task: TaskDb) {
             itemView.findViewById<TextView>(R.id.task_title).text = task.title
             if (task.body != "") {
@@ -44,26 +48,30 @@ class TaskAdapter(
             } else {
                 itemView.findViewById<TextView>(R.id.task_body).visibility = View.GONE
             }
-            if (task.reward == 0) {
-                itemView.findViewById<LinearLayout>(R.id.task_reward_row).visibility = View.GONE
-            } else {
-                itemView.findViewById<TextView>(R.id.task_reward).text = task.reward.toString()
-            }
-            if(task.dailyTask){
-                itemView.findViewById<LinearLayout>(R.id.task_deadline_row).visibility = View.GONE
-                itemView.findViewById<LinearLayout>(R.id.task_expired_row).visibility = View.GONE
-            }else{
-                if (task.expiredAt > 0) {
-                    itemView.findViewById<TextView>(R.id.task_expired).text =
-                        TaskCalendar().formatDate(task.expiredAt)
+            itemView.findViewById<TextView>(R.id.task_reward).apply {
+                if (task.reward == 0) {
+                    visibility = View.GONE
                 } else {
-                    itemView.findViewById<LinearLayout>(R.id.task_expired_row).visibility = View.GONE
+                    val str = "${stringProvider.string(R.string.reward)}: ${task.reward}"
+                    text = str
                 }
-                if (task.deadline > 0) {
-                    itemView.findViewById<TextView>(R.id.task_deadline).text =
-                        TaskCalendar().formatDate(task.deadline)
+            }
+            itemView.findViewById<TextView>(R.id.task_expired).apply {
+                if (task.expiredAt == 0L || task.dailyTask) {
+                    visibility = View.GONE
                 } else {
-                    itemView.findViewById<LinearLayout>(R.id.task_deadline_row).visibility = View.GONE
+                    val str = "${stringProvider.string(R.string.expired)}: "+
+                            TaskCalendar().formatDate(task.expiredAt)
+                    text = str
+                }
+            }
+            itemView.findViewById<TextView>(R.id.task_deadline).apply {
+                if (task.deadline == 0L || task.dailyTask) {
+                    visibility = View.GONE
+                } else {
+                    val str = "${stringProvider.string(R.string.deadline)}: "+
+                            TaskCalendar().formatDate(task.deadline)
+                    text = str
                 }
             }
             itemView.findViewById<Button>(R.id.task_done).setOnClickListener {
