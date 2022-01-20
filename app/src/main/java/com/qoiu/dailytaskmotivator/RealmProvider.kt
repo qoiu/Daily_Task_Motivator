@@ -26,7 +26,7 @@ interface RealmProvider {
         override fun provide(): Realm = Realm.getInstance(getConfig(name))
 
         private companion object {
-            const val SCHEMA_VERSION = 1L
+            const val SCHEMA_VERSION = 2L
         }
     }
 
