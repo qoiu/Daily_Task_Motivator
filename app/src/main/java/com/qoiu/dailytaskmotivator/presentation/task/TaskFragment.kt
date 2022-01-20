@@ -3,7 +3,6 @@ package com.qoiu.dailytaskmotivator.presentation.task
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.qoiu.dailytaskmotivator.Communication
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.Save
 import com.qoiu.dailytaskmotivator.Update
@@ -12,7 +11,6 @@ import com.qoiu.dailytaskmotivator.presentation.BaseFragment
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
 
 class TaskFragment(
-    private val communication: Communication<List<TaskDb>>,
     private val saveGold: Save.Gold,
     private val show: DialogShow
 ) : BaseFragment<TaskModel>(), Update<TaskDb> {
@@ -31,7 +29,6 @@ class TaskFragment(
         viewModel.observe(this, {
             adapter.update(it)
         })
-        communication.observe(this, { adapter.update(it) })
     }
 
     override fun onResume() {

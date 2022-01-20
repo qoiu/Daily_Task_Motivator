@@ -9,39 +9,25 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.qoiu.dailytaskmotivator.*
-import com.qoiu.dailytaskmotivator.data.TaskDb
 import com.qoiu.dailytaskmotivator.presentation.BaseFragment
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
-import com.qoiu.dailytaskmotivator.presentation.shop.ShopFragment
 import com.qoiu.dailytaskmotivator.presentation.task.NewTaskDialog
-import com.qoiu.dailytaskmotivator.presentation.task.TaskFragment
 
 class MainActivity : AppCompatActivity(), ViewModelRequest, Save.Gold, DialogShow {
     private lateinit var viewModel: MainViewModel
-    private lateinit var communication: Communication.Base<List<TaskDb>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = getViewModel(MainViewModel::class.java, this)
-        communication = object : Communication.Base<List<TaskDb>>() {}
+        val navigator = Navigator.Base(this, this)
         val bottomNav = findViewById<BottomNavigationView>(R.id.main_bottom_nav)
+        val fab = findViewById<FloatingActionButton>(R.id.add_fab)
         bottomNav.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.nav_tasks -> {
-                    val fragment = TaskFragment(communication, this, this)
-                    setFragment(fragment)
-                    true
-                }
-                R.id.nav_shop -> {
-                    val fragment = ShopFragment()
-                    setFragment(fragment)
-                    true
-                }
-                else -> false
-            }
+            setFragment(navigator.navigate(it.itemId))
+            return@setOnItemSelectedListener true
         }
-        findViewById<FloatingActionButton>(R.id.add_fab).setOnClickListener {
+        fab.setOnClickListener {
             val dialog = NewTaskDialog({
                 viewModel.addTask(it)
                 viewModel.getData()
@@ -53,9 +39,7 @@ class MainActivity : AppCompatActivity(), ViewModelRequest, Save.Gold, DialogSho
             show(dialog)
         }
         viewModel.observe(this, {
-            Toast.makeText(this, "update", Toast.LENGTH_SHORT).show()
-//            fragment.update()
-            communication.provide(it)
+            navigator.updateFragment()
         })
         updateGold()
     }
