@@ -33,16 +33,20 @@ class TaskFragment(
         progressBar.visibility = View.GONE
         val recyclerView = view.findViewById<RecyclerView>(R.id.task_recycler)
         val fab = view.findViewById<FloatingActionButton>(R.id.add_fab)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { setUpdateListener(recyclerView) }
-        fab.setOnClickListener {fabAction()}
-        val adapter = TaskAdapter(emptyList(), show, this,ResourceProvider.String(requireContext())) {
-            saveGold.save(it.reward)
-            viewModel.deleteTask(it)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            setUpdateListener(recyclerView)
         }
+        fab.setOnClickListener { fabAction() }
+        val adapter =
+            TaskAdapter(emptyList(), show, this, ResourceProvider.String(requireContext()),
+                { fabAction(it) }) {
+                saveGold.save(it.reward)
+                viewModel.deleteTask(it)
+            }
         recyclerView.adapter = adapter
         viewModel.observe(this, {
             progressBar.visibility = View.GONE
-            Log.w("Task","Updated")
+            Log.w("Task", "Updated")
             adapter.update(it)
         })
     }
@@ -68,21 +72,23 @@ class TaskFragment(
     }
 
     override fun update() {
-        if(progressBar.visibility == View.GONE){
+        if (progressBar.visibility == View.GONE) {
             progressBar.visibility = View.VISIBLE
-            Log.w("Task","Update")
+            Log.w("Task", "Update")
             viewModel.updateData()
         }
     }
 
-    private fun fabAction() {
-        val dialog = NewTaskDialog({
-            viewModel.addTask(it)
-            viewModel.updateData()
-        },
+    private fun fabAction(taskDb: TaskDb = TaskDb()) {
+        val dialog = NewTaskDialog(
+            {
+                viewModel.addTask(it)
+                viewModel.updateData()
+            },
             {
                 Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show()
-            })
+            }, taskDb
+        )
         dialog.isCancelable = false
         show.show(dialog)
     }

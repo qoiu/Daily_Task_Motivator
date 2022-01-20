@@ -20,6 +20,7 @@ class TaskAdapter(
     private val show: DialogShow,
     private val update: Update<TaskDb>,
     private val stringProvider: ResourceProvider.StringProvider,
+    private val dialog: (TaskDb) -> Unit,
     private val doneAction: (TaskDb) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
 
@@ -29,7 +30,11 @@ class TaskAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false),stringProvider)
+        ViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.task_item, parent, false),
+            stringProvider,
+            dialog
+        )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(list[position])
@@ -39,9 +44,13 @@ class TaskAdapter(
 
     inner class ViewHolder(
         view: View,
-        private val stringProvider: ResourceProvider.StringProvider
+        private val stringProvider: ResourceProvider.StringProvider,
+        private val dialog: (TaskDb) -> Unit
     ) : RecyclerView.ViewHolder(view) {
         fun bind(task: TaskDb) {
+            itemView.setOnClickListener {
+                dialog(task)
+            }
             itemView.findViewById<TextView>(R.id.task_title).text = task.title
             itemView.findViewById<TextView>(R.id.task_body).apply {
                 if (task.body != "") {
@@ -65,7 +74,7 @@ class TaskAdapter(
                     visibility = View.GONE
                 } else {
                     visibility = View.VISIBLE
-                    val str = "${stringProvider.string(R.string.expired)}: "+
+                    val str = "${stringProvider.string(R.string.expired)}: " +
                             TaskCalendar().formatDate(task.expiredAt)
                     text = str
                 }
@@ -75,7 +84,7 @@ class TaskAdapter(
                     visibility = View.GONE
                 } else {
                     visibility = View.VISIBLE
-                    val str = "${stringProvider.string(R.string.deadline)}: "+
+                    val str = "${stringProvider.string(R.string.deadline)}: " +
                             TaskCalendar().formatDate(task.deadline)
                     text = str
                 }
@@ -96,19 +105,24 @@ class TaskAdapter(
                     })
                 }
             }
-            if (task.progressMax > 0) {
-                val progressText = "${stringProvider.string(R.string.progress)}: ${task.currentProgress}/${task.progressMax}"
-                itemView.findViewById<TextView>(R.id.task_progress).visibility = View.VISIBLE
-                itemView.findViewById<ProgressBar>(R.id.task_progress_bar).visibility = View.VISIBLE
-                itemView.findViewById<TextView>(R.id.task_progress).text =
-                    progressText
-                itemView.findViewById<ProgressBar>(R.id.task_progress_bar).apply {
+            itemView.findViewById<ProgressBar>(R.id.task_progress_bar).apply {
+                if (task.progressMax > 0) {
                     max = task.progressMax
                     progress = task.currentProgress
+                    visibility = View.VISIBLE
+                } else {
+                    visibility = View.GONE
                 }
-            } else {
-                itemView.findViewById<TextView>(R.id.task_progress).visibility = View.GONE
-                itemView.findViewById<ProgressBar>(R.id.task_progress_bar).visibility = View.GONE
+            }
+            itemView.findViewById<TextView>(R.id.task_progress).apply {
+                if (task.progressMax > 0) {
+                    val progressText =
+                        "${stringProvider.string(R.string.progress)}: ${task.currentProgress}/${task.progressMax}"
+                    visibility = View.VISIBLE
+                    text = progressText
+                } else {
+                    visibility = View.GONE
+                }
             }
         }
     }

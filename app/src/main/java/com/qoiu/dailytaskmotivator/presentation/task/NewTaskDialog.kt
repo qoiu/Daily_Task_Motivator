@@ -14,7 +14,8 @@ import java.lang.IllegalStateException
 
 class NewTaskDialog(
     private val action: (task: TaskDb) -> Unit,
-    private val toast: (error: String) -> Unit
+    private val toast: (error: String) -> Unit,
+    private val task: TaskDb = TaskDb()
 ) : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,16 +38,10 @@ class NewTaskDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        titleView = view.findViewById(R.id.edit_title)
-        datesView = view.findViewById(R.id.edit_dates)
-        descriptionView = view.findViewById(R.id.edit_body)
-        rewardView = view.findViewById(R.id.edit_reward)
-        progressView = view.findViewById(R.id.edit_progress)
-        deadlineView = view.findViewById(R.id.edit_deadline)
-        expireView = view.findViewById(R.id.edit_expire)
-        dailyTaskView = view.findViewById(R.id.edit_daily)
-        calendarView = view.findViewById(R.id.calendarView)
+        init(view)
+    }
 
+    private fun setActions(view: View) {
         dailyTaskView.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 datesView.visibility = View.GONE
@@ -80,6 +75,34 @@ class NewTaskDialog(
         view.findViewById<Button>(R.id.edit_cancel).setOnClickListener {
             this.dismiss()
         }
+    }
+
+    private fun init(view: View) {
+        titleView = view.findViewById(R.id.edit_title)
+        datesView = view.findViewById(R.id.edit_dates)
+        descriptionView = view.findViewById(R.id.edit_body)
+        rewardView = view.findViewById(R.id.edit_reward)
+        progressView = view.findViewById(R.id.edit_progress)
+        deadlineView = view.findViewById(R.id.edit_deadline)
+        expireView = view.findViewById(R.id.edit_expire)
+        dailyTaskView = view.findViewById(R.id.edit_daily)
+        calendarView = view.findViewById(R.id.calendarView)
+        setActions(view)
+        fillView()
+    }
+
+    private fun fillView(){
+        titleView.setText(task.title)
+        descriptionView.setText(task.body)
+        if(task.reward>0)
+        rewardView.setText(task.reward.toString())
+        if(task.progressMax>0)
+        progressView.setText(task.progressMax.toString())
+        dailyTaskView.isChecked = task.dailyTask
+        if(task.deadline>0)
+        deadlineView.setText(TaskCalendar().formatDate(task.deadline))
+        if(task.expiredAt>0)
+        expireView.setText(TaskCalendar().formatDate(task.expiredAt))
     }
 
     private fun getTask(): TaskDb {
