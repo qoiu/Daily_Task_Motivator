@@ -91,7 +91,7 @@ class TaskAdapter(
                 }
             }
             if (task.progressMax > 0) {
-                val progressText = "Progress: ${task.currentProgress}/${task.progressMax}"
+                val progressText = "${stringProvider.string(R.string.progress)}: ${task.currentProgress}/${task.progressMax}"
                 itemView.findViewById<TextView>(R.id.task_progress).text =
                     progressText
                 itemView.findViewById<ProgressBar>(R.id.task_progress_bar).apply {
