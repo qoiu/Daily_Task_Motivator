@@ -13,7 +13,7 @@ class CoreModule {
     lateinit var taskInteractor: TaskInteractor
 
     fun init(context: Context) {
-        val resourceProvider = ResourceProvider.Base(context)
+        val resourceProvider = ResourceProvider.Shared(context)
         val realmProvider = RealmProvider.Base(context)
         val realmSource = RealmDataSource.Base(realmProvider)
         val sharedData = SharedData.Gold(resourceProvider.provideSharedPreference())
