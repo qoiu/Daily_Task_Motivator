@@ -12,7 +12,8 @@ open class TaskDb (
     var deadline: Long = 0L,
     var progressMax: Int = 0,
     var currentProgress: Int = 0,
-    var dailyTask: Boolean = false
+    var dailyTask: Boolean = false,
+    var reusable: Boolean = false
 ) : RealmObject(){
 
     fun update(new: TaskDb){

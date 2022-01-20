@@ -19,6 +19,7 @@ interface RealmProvider {
 
         private fun getConfig(name: String) = RealmConfiguration.Builder()
             .schemaVersion(SCHEMA_VERSION)
+            .migration(MyMigrations(name))
             .name(name)
             .build()
 
