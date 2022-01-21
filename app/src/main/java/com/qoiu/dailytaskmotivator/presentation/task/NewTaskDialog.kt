@@ -10,8 +10,6 @@ import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.data.TaskDb
 import com.qoiu.dailytaskmotivator.domain.TaskCalendar
-import java.lang.Exception
-import java.lang.IllegalStateException
 
 class NewTaskDialog(
     private val action: (task: TaskDb) -> Unit,
@@ -19,6 +17,7 @@ class NewTaskDialog(
     private val stringProvider: ResourceProvider.StringProvider,
     private val task: TaskDb = TaskDb()
 ) : DialogFragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,6 +37,7 @@ class NewTaskDialog(
     private lateinit var progressView: EditText
     private lateinit var deadlineView: EditText
     private lateinit var expireView: EditText
+    private lateinit var categoryView: EditText
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -91,6 +91,7 @@ class NewTaskDialog(
         dailyTaskView = view.findViewById(R.id.edit_daily)
         reusableTaskView = view.findViewById(R.id.edit_reusable)
         calendarView = view.findViewById(R.id.calendarView)
+        categoryView = view.findViewById(R.id.edit_category)
         setActions(view)
         fillView()
     }
@@ -158,7 +159,8 @@ class NewTaskDialog(
             progress,
             0,
             dailyTaskView.isChecked,
-            reusableTaskView.isChecked
+            reusableTaskView.isChecked,
+            categoryView.text.toString()
         )
     }
 
