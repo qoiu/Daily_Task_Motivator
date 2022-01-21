@@ -2,8 +2,8 @@ package com.qoiu.dailytaskmotivator.domain
 
 import com.qoiu.dailytaskmotivator.Read
 import com.qoiu.dailytaskmotivator.Save
-import com.qoiu.dailytaskmotivator.data.TaskDb
-import com.qoiu.dailytaskmotivator.data.TaskRepository
+import com.qoiu.dailytaskmotivator.data.task.TaskDb
+import com.qoiu.dailytaskmotivator.data.task.TaskRepository
 
 interface MainInteractor : Save<Int>, Read<Int> {
     suspend fun loadTask(): List<TaskDb>

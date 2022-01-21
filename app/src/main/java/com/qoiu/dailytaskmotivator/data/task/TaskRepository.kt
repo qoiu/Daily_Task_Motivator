@@ -1,8 +1,11 @@
-package com.qoiu.dailytaskmotivator.data
+package com.qoiu.dailytaskmotivator.data.task
 
 import android.util.Log
 import com.qoiu.dailytaskmotivator.Read
 import com.qoiu.dailytaskmotivator.Save
+import com.qoiu.dailytaskmotivator.data.RealmDataSource
+import com.qoiu.dailytaskmotivator.data.Repository
+import com.qoiu.dailytaskmotivator.data.SharedData
 
 class TaskRepository(private val taskDataSource: RealmDataSource<TaskDb>, private val sharedData: SharedData) : Repository<TaskDb>, Save<Int>,
     Read<Int> {

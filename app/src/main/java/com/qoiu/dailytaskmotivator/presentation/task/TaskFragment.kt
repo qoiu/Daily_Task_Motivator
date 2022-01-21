@@ -14,7 +14,7 @@ import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Save
 import com.qoiu.dailytaskmotivator.Update
-import com.qoiu.dailytaskmotivator.data.TaskDb
+import com.qoiu.dailytaskmotivator.data.task.TaskDb
 import com.qoiu.dailytaskmotivator.databinding.FragmentTaskBinding
 import com.qoiu.dailytaskmotivator.presentation.BaseFragment
 import com.qoiu.dailytaskmotivator.presentation.DialogShow

@@ -1,6 +1,7 @@
-package com.qoiu.dailytaskmotivator.data
+package com.qoiu.dailytaskmotivator.data.task
 
 import com.qoiu.dailytaskmotivator.RealmProvider
+import com.qoiu.dailytaskmotivator.data.RealmDataSource
 
 class TaskDataSource(
     private val realmProvider: RealmProvider

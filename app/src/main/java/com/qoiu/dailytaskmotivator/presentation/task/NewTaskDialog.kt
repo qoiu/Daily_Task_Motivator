@@ -8,7 +8,7 @@ import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
-import com.qoiu.dailytaskmotivator.data.TaskDb
+import com.qoiu.dailytaskmotivator.data.task.TaskDb
 import com.qoiu.dailytaskmotivator.domain.TaskCalendar
 
 class NewTaskDialog(

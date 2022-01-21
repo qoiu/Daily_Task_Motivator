@@ -1,6 +1,6 @@
 package com.qoiu.dailytaskmotivator.domain
 
-import com.qoiu.dailytaskmotivator.data.TaskDb
+import com.qoiu.dailytaskmotivator.data.task.TaskDb
 
 interface TaskGoldCoficient<T> {
     fun modify(): T

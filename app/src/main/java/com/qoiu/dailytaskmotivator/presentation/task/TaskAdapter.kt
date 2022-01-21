@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Update
-import com.qoiu.dailytaskmotivator.data.TaskDb
+import com.qoiu.dailytaskmotivator.data.task.TaskDb
 import com.qoiu.dailytaskmotivator.databinding.TaskItemBinding
 import com.qoiu.dailytaskmotivator.domain.TaskCalendar
 import com.qoiu.dailytaskmotivator.presentation.DialogShow

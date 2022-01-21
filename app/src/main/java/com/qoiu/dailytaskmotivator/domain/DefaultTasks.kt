@@ -2,7 +2,7 @@ package com.qoiu.dailytaskmotivator.domain
 
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
-import com.qoiu.dailytaskmotivator.data.TaskDb
+import com.qoiu.dailytaskmotivator.data.task.TaskDb
 
 class DefaultTasks(private val stringProvider: ResourceProvider.StringProvider) {
     fun getDefault() = listOf(

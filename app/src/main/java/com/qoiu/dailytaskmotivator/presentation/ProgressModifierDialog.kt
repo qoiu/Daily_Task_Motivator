@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import com.qoiu.dailytaskmotivator.R
-import com.qoiu.dailytaskmotivator.data.TaskDb
+import com.qoiu.dailytaskmotivator.data.task.TaskDb
 import kotlin.math.max
 import kotlin.math.min
 

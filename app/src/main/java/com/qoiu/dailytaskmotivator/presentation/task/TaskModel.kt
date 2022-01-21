@@ -1,7 +1,7 @@
 package com.qoiu.dailytaskmotivator.presentation.task
 
 import androidx.lifecycle.viewModelScope
-import com.qoiu.dailytaskmotivator.data.TaskDb
+import com.qoiu.dailytaskmotivator.data.task.TaskDb
 import com.qoiu.dailytaskmotivator.domain.TaskInteractor
 import com.qoiu.dailytaskmotivator.presentation.BaseViewModel
 import kotlinx.coroutines.Dispatchers

@@ -4,7 +4,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.qoiu.dailytaskmotivator.Communication
-import com.qoiu.dailytaskmotivator.data.TaskDb
+import com.qoiu.dailytaskmotivator.data.task.TaskDb
 
 class TaskCommunication: Communication<List<TaskDb>> {
     private val liveData = MutableLiveData<List<TaskDb>>()

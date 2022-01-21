@@ -1,4 +1,4 @@
-package com.qoiu.dailytaskmotivator.data
+package com.qoiu.dailytaskmotivator.data.task
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey

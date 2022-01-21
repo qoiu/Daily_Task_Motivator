@@ -2,8 +2,8 @@ package com.qoiu.dailytaskmotivator
 
 import android.content.Context
 import com.qoiu.dailytaskmotivator.data.SharedData
-import com.qoiu.dailytaskmotivator.data.TaskDataSource
-import com.qoiu.dailytaskmotivator.data.TaskRepository
+import com.qoiu.dailytaskmotivator.data.task.TaskDataSource
+import com.qoiu.dailytaskmotivator.data.task.TaskRepository
 import com.qoiu.dailytaskmotivator.domain.MainInteractor
 import com.qoiu.dailytaskmotivator.domain.TaskInteractor
 
