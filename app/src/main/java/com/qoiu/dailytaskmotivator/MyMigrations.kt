@@ -15,15 +15,20 @@ class MyMigrations(private val version: Long) : RealmMigration {
         if (oldVersion == 2L) {
             schema.get("TaskDb")?.let {
                 if (!it.hasField("category"))
-                    it.addField("category", String::class.java,FieldAttribute.REQUIRED)
+                    it.addField("category", String::class.java, FieldAttribute.REQUIRED)
             }
         }
 
-        if(oldVersion == 3L){
+        if (oldVersion == 3L) {
             schema.create("CategoryDb").apply {
-                addField("title", String::class.java,FieldAttribute.PRIMARY_KEY)
-                addField("expand", Boolean::class.java)
-                addField("color", Long::class.java)
+                addField(
+                    "title",
+                    String::class.java,
+                    FieldAttribute.PRIMARY_KEY,
+                    FieldAttribute.REQUIRED
+                )
+                addField("expand", Boolean::class.java, FieldAttribute.REQUIRED)
+                addField("color", Long::class.java, FieldAttribute.REQUIRED)
             }
         }
     }
