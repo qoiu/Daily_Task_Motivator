@@ -46,11 +46,12 @@ class NewTaskDialog(
 
     private fun setActions(view: View) {
         dailyTaskView.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                datesView.visibility = View.GONE
-            } else {
-                datesView.visibility = View.VISIBLE
-            }
+            task.dailyTask = isChecked
+            datesVisible()
+        }
+        reusableTaskView.setOnCheckedChangeListener { _, isChecked ->
+            task.reusable = isChecked
+            datesVisible()
         }
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             editableView.setText(
@@ -98,6 +99,7 @@ class NewTaskDialog(
 
     private fun fillView() {
         titleView.setText(task.title)
+        categoryView.setText(task.category)
         descriptionView.setText(task.body)
         if (task.reward > 0)
             rewardView.setText(task.reward.toString())
@@ -170,6 +172,14 @@ class NewTaskDialog(
             calendarView.visibility = View.VISIBLE
         } else {
             calendarView.visibility = View.GONE
+        }
+    }
+
+    private fun datesVisible() {
+        if (task.dailyTask || task.reusable) {
+            datesView.visibility = View.GONE
+        } else {
+            datesView.visibility = View.VISIBLE
         }
     }
 }
