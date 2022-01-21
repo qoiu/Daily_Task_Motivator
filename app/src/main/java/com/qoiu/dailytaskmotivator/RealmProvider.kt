@@ -14,19 +14,20 @@ interface RealmProvider {
 
         init {
             Realm.init(context)
-            Realm.setDefaultConfiguration(getConfig(name))
+            val config = getConfig()
+            Realm.setDefaultConfiguration(config)
         }
 
-        private fun getConfig(name: String) = RealmConfiguration.Builder()
-            .schemaVersion(SCHEMA_VERSION)
-            .migration(MyMigrations(name))
-            .name(name)
-            .build()
+        private fun getConfig() = RealmConfiguration.Builder()
+        .schemaVersion(SCHEMA_VERSION)
+        .migration(MyMigrations(SCHEMA_VERSION))
+        .name(name)
+        .build()
 
-        override fun provide(): Realm = Realm.getInstance(getConfig(name))
+        override fun provide(): Realm = Realm.getDefaultInstance()
 
         private companion object {
-            const val SCHEMA_VERSION = 2L
+            const val SCHEMA_VERSION = 3L
         }
     }
 

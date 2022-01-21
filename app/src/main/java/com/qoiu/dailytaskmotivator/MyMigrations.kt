@@ -1,7 +1,7 @@
 package com.qoiu.dailytaskmotivator
 
-import android.util.Log
 import io.realm.DynamicRealm
+import io.realm.FieldAttribute
 import io.realm.RealmMigration
 
 class MyMigrations(private val version: Long) : RealmMigration {
