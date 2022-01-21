@@ -18,6 +18,14 @@ class MyMigrations(private val version: Long) : RealmMigration {
                     it.addField("category", String::class.java,FieldAttribute.REQUIRED)
             }
         }
+
+        if(oldVersion == 3L){
+            schema.create("CategoryDb").apply {
+                addField("title", String::class.java,FieldAttribute.PRIMARY_KEY)
+                addField("expand", Boolean::class.java)
+                addField("color", Long::class.java)
+            }
+        }
     }
 
     override fun equals(other: Any?): Boolean {
