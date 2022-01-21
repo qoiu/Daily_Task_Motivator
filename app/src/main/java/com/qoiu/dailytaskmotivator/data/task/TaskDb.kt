@@ -1,6 +1,8 @@
 package com.qoiu.dailytaskmotivator.data.task
 
+import com.qoiu.dailytaskmotivator.Mapper
 import com.qoiu.dailytaskmotivator.UpdatableRealm
+import com.qoiu.dailytaskmotivator.domain.entities.Task
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
@@ -16,7 +18,7 @@ open class TaskDb (
     var dailyTask: Boolean = false,
     var reusable: Boolean = false,
     var category: String = ""
-) : RealmObject(), UpdatableRealm<TaskDb>{
+) : RealmObject(), UpdatableRealm<TaskDb>, Mapper.Object<TaskDb, Task>{
 
     override fun update(data: TaskDb){
         body = data.body
@@ -27,4 +29,6 @@ open class TaskDb (
         currentProgress = data.currentProgress
         dailyTask = data.dailyTask
     }
+
+    override fun map(mapper: Mapper.Data<TaskDb, Task>): Task = mapper.map(this)
 }
