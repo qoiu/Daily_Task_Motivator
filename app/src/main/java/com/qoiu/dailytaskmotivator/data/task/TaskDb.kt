@@ -1,5 +1,6 @@
 package com.qoiu.dailytaskmotivator.data.task
 
+import com.qoiu.dailytaskmotivator.UpdatableRealm
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
@@ -15,15 +16,15 @@ open class TaskDb (
     var dailyTask: Boolean = false,
     var reusable: Boolean = false,
     var category: String = ""
-) : RealmObject(){
+) : RealmObject(), UpdatableRealm<TaskDb>{
 
-    fun update(new: TaskDb){
-        body = new.body
-        reward = new.reward
-        expiredAt = new.expiredAt
-        deadline = new.deadline
-        progressMax = new.progressMax
-        currentProgress = new.currentProgress
-        dailyTask = new.dailyTask
+    override fun update(data: TaskDb){
+        body = data.body
+        reward = data.reward
+        expiredAt = data.expiredAt
+        deadline = data.deadline
+        progressMax = data.progressMax
+        currentProgress = data.currentProgress
+        dailyTask = data.dailyTask
     }
 }

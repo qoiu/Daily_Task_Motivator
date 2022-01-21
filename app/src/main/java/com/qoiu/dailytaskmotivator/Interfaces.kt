@@ -1,6 +1,9 @@
 package com.qoiu.dailytaskmotivator
 
 import androidx.lifecycle.*
+import io.realm.RealmModel
+
+interface UpdatableRealm<T>: RealmModel,Update<T>
 
 interface SharedData<T> : Save<Pair<String, T>> {
     fun read(key: String): T
