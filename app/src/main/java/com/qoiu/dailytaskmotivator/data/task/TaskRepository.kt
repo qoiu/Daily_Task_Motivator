@@ -1,33 +1,13 @@
 package com.qoiu.dailytaskmotivator.data.task
 
-import android.util.Log
 import com.qoiu.dailytaskmotivator.Read
 import com.qoiu.dailytaskmotivator.Save
+import com.qoiu.dailytaskmotivator.data.AbstractRepository
 import com.qoiu.dailytaskmotivator.data.RealmDataSource
-import com.qoiu.dailytaskmotivator.data.Repository
 import com.qoiu.dailytaskmotivator.data.SharedData
 
-class TaskRepository(private val taskDataSource: RealmDataSource<TaskDb>, private val sharedData: SharedData) : Repository<TaskDb>, Save<Int>,
+class TaskRepository(taskDataSource: RealmDataSource<TaskDb>, private val sharedData: SharedData) : AbstractRepository<TaskDb>(taskDataSource), Save<Int>,
     Read<Int> {
-
-    override suspend fun fetchData(): List<TaskDb> =
-        try {
-            taskDataSource.read()
-        } catch (e: Exception) {
-            emptyList()
-        }
-
-    override suspend fun save(data: TaskDb) {
-        try{
-            taskDataSource.save(data)
-        }catch (e: Exception) {
-            Log.e("TaskRepository",e.stackTraceToString())
-        }
-    }
-
-    override suspend fun remove(task: TaskDb) {
-        taskDataSource.remove(task)
-    }
 
     override fun save(data: Int) {
         sharedData.save(data)
