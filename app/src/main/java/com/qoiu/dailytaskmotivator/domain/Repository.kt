@@ -1,4 +1,4 @@
-package com.qoiu.dailytaskmotivator.data
+package com.qoiu.dailytaskmotivator.domain
 
 interface Repository<T>{
     suspend fun fetchData(): List<T>
