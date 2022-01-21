@@ -7,7 +7,6 @@ import com.qoiu.dailytaskmotivator.data.TaskRepository
 interface TaskInteractor {
     suspend fun loadTask(): List<TaskDb>
     suspend fun removeTask(task: TaskDb)
-    suspend fun update(task: TaskDb)
     suspend fun save(data: TaskDb)
 
     class Base(private val repository: TaskRepository, private val stringProvider: ResourceProvider.StringProvider) : TaskInteractor {
@@ -38,14 +37,9 @@ interface TaskInteractor {
             } else {
                 if(!task.reusable) {
                     task.expiredAt = TaskCalendar().today().time
-                    update(task)
+                    save(task)
                 }
             }
-        }
-
-
-        override suspend fun update(task: TaskDb) {
-            repository.update(task)
         }
     }
 }

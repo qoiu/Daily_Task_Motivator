@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 class TaskModel(private val interactor: TaskInteractor) :
     BaseViewModel<List<TaskDb>>(TaskCommunication()) {
 
-    fun addTask(taskDb: TaskDb){
+    fun saveTask(taskDb: TaskDb){
         viewModelScope.launch(Dispatchers.IO) {
             interactor.save(taskDb)
         }.invokeOnCompletion {
@@ -30,9 +30,4 @@ class TaskModel(private val interactor: TaskInteractor) :
         }.invokeOnCompletion { updateData() }
     }
 
-    fun update(task: TaskDb) {
-        viewModelScope.launch(Dispatchers.IO) {
-            interactor.update(task)
-        }.invokeOnCompletion { updateData() }
-    }
 }

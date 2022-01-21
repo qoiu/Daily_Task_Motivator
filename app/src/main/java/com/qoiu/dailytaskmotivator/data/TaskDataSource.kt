@@ -15,7 +15,9 @@ class TaskDataSource(
 
     override fun save(data: TaskDb) {
         realmProvider.provide().executeTransaction { realm ->
-            realm.insert(data)
+            val task = realm.where(TaskDb::class.java).equalTo("title", data.title)
+                .findFirst()
+            task?.update(data)?:realm.insert(data)
         }
     }
 
@@ -25,16 +27,6 @@ class TaskDataSource(
                 val task = realm.where(TaskDb::class.java).equalTo("title", data.title)
                     .findAll()
                 task.deleteAllFromRealm()
-            }
-        }
-    }
-
-    override fun update(data: TaskDb) {
-        realmProvider.provide().use { realm ->
-            realm.executeTransaction {
-                val task = realm.where(TaskDb::class.java).equalTo("title", data.title)
-                    .findFirst()
-                task?.update(data)?:it.insert(data)
             }
         }
     }

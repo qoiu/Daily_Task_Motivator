@@ -1,11 +1,11 @@
 package com.qoiu.dailytaskmotivator.data
 
 import android.util.Log
-import com.qoiu.dailytaskmotivator.*
-import com.qoiu.dailytaskmotivator.domain.Task
+import com.qoiu.dailytaskmotivator.Read
+import com.qoiu.dailytaskmotivator.Save
 
 class TaskRepository(private val taskDataSource: RealmDataSource<TaskDb>, private val sharedData: SharedData) : Repository<TaskDb>, Save<Int>,
-    Read<Int>, Update<TaskDb> {
+    Read<Int> {
 
     override suspend fun fetchData(): List<TaskDb> =
         try {
@@ -32,8 +32,4 @@ class TaskRepository(private val taskDataSource: RealmDataSource<TaskDb>, privat
 
     override fun read(): Int =
         sharedData.read()
-
-    override fun update(data: TaskDb) {
-        taskDataSource.update(data)
-    }
 }

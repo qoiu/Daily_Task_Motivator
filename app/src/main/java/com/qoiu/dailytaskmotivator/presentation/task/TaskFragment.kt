@@ -74,7 +74,7 @@ class TaskFragment(
     }
 
     override fun update(data: TaskDb) {
-        viewModel.update(data)
+        viewModel.saveTask(data)
     }
 
     override fun update() {
@@ -87,7 +87,7 @@ class TaskFragment(
 
     private fun fabAction() {
         val dialog = NewTaskDialog(
-            { viewModel.addTask(it) },
+            { viewModel.saveTask(it) },
             { Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show() },
             ResourceProvider.String(this.requireContext())
         )
