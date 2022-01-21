@@ -7,19 +7,22 @@ import io.realm.RealmMigration
 class MyMigrations(private val version: Long) : RealmMigration {
     override fun migrate(realm: DynamicRealm, oldVersion: Long, newVersion: Long) {
         val schema = realm.schema
-        if (oldVersion == 1L) {
+        var prevVersion = oldVersion
+        if (prevVersion == 1L) {
             val new = schema.get("TaskDb")
             new?.addField("reusable", Boolean::class.java)
+            prevVersion++
         }
 
-        if (oldVersion == 2L) {
+        if (prevVersion == 2L) {
             schema.get("TaskDb")?.let {
                 if (!it.hasField("category"))
                     it.addField("category", String::class.java, FieldAttribute.REQUIRED)
+                prevVersion++
             }
         }
 
-        if (oldVersion == 3L) {
+        if (prevVersion == 3L) {
             schema.create("CategoryDb").apply {
                 addField(
                     "title",
@@ -30,6 +33,7 @@ class MyMigrations(private val version: Long) : RealmMigration {
                 addField("expand", Boolean::class.java, FieldAttribute.REQUIRED)
                 addField("color", Long::class.java, FieldAttribute.REQUIRED)
             }
+            prevVersion++
         }
     }
 
