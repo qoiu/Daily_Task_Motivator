@@ -36,11 +36,18 @@ class MyMigrations(private val version: Long) : RealmMigration {
             prevVersion++
         }
 
-        if(prevVersion == 4L){
+        if (prevVersion == 4L) {
             schema.get("CategoryDb")?.let {
                 it.removeField("color")
                 it.addField("color", String::class.java, FieldAttribute.REQUIRED)
                 prevVersion++
+            }
+
+            if (prevVersion == 5L) {
+                schema.get("TaskDb")?.let {
+                    it.addField("color", String::class.java, FieldAttribute.REQUIRED)
+                    prevVersion++
+                }
             }
         }
     }

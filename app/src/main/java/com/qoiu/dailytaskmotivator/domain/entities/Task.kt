@@ -1,5 +1,7 @@
 package com.qoiu.dailytaskmotivator.domain.entities
 
+import android.graphics.Color
+
 data class Task(
     val title: String,
     val body: String = "",
@@ -10,5 +12,6 @@ data class Task(
     val currentProgress: Int = 0,
     val dailyTask: Boolean = false,
     val reusable: Boolean = false,
-    val category: String = ""
+    val category: String = "",
+    val color: String = ""
 )

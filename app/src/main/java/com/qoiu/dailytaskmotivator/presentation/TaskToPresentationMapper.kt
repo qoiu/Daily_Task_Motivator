@@ -15,7 +15,8 @@ class TaskToPresentationMapper: Mapper.Data<Task,TaskWithCategories.Task> {
             data.currentProgress,
             data.dailyTask,
             data.reusable,
-            data.category
+            data.category,
+            data.color
         )
     }
 }

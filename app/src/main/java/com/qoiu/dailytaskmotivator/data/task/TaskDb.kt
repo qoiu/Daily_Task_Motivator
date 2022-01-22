@@ -17,7 +17,8 @@ open class TaskDb (
     var currentProgress: Int = 0,
     var dailyTask: Boolean = false,
     var reusable: Boolean = false,
-    var category: String = ""
+    var category: String = "",
+    var color: String = ""
 ) : RealmObject(), UpdatableRealm<TaskDb>{
 
     override fun update(data: TaskDb){
@@ -29,5 +30,6 @@ open class TaskDb (
         currentProgress = data.currentProgress
         dailyTask = data.dailyTask
         category = data.category
+        color = data.color
     }
 }

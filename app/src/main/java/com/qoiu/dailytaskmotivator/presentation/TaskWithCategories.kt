@@ -1,7 +1,5 @@
 package com.qoiu.dailytaskmotivator.presentation
 
-import android.graphics.Color
-
 sealed class TaskWithCategories {
 
     class Task(
@@ -14,7 +12,8 @@ sealed class TaskWithCategories {
         var currentProgress: Int = 0,
         val dailyTask: Boolean = false,
         val reusable: Boolean = false,
-        var category: String
+        var category: String="",
+        val color: String=""
         // TODO: 22.01.2022   val visibility: HashMap<String,>
     ) : TaskWithCategories() {
 

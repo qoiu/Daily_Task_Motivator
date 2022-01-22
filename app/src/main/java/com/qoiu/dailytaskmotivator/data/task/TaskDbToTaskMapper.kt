@@ -15,6 +15,7 @@ class TaskDbToTaskMapper: Mapper.Data<TaskDb, Task> {
             data.currentProgress,
             data.dailyTask,
             data.reusable,
-            data.category
+            data.category,
+            data.color
         )
 }
