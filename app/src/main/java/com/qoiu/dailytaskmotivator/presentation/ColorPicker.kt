@@ -51,15 +51,16 @@ class ColorPicker @JvmOverloads constructor(
             colorGrid[rowId(x, 7)] = getColor(hard, modifier, modifier)
             colorGrid[rowId(x, 8)] = getColor(hard, 0, 0)
             colorGrid[rowId(x, 9)] = getColor(hard, modifier, hard)
+            colorGrid[rowId(x, 10)] = getColor(37*x, 37*x, 37*x)
         }
     }
 
-    private fun rowId(x: Int, y: Int): Int = x * 9 + y
+    private fun rowId(x: Int, y: Int): Int = x * 10 + y
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         for (x in 1..7) {
-            for (y in 1..9) {
+            for (y in 1..10) {
                 colorGrid[rowId(x, y)]?.let {
                     if (activeCell == rowId(x, y)) {
                         paint.color = Color.BLACK
@@ -85,9 +86,8 @@ class ColorPicker @JvmOverloads constructor(
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event != null) {
-            if (event.x < relative * 7 && event.y < relative * 9)
+            if (event.x < relative * 7 && event.y < relative * 10)
                 activeCell = getCell(event.x, event.y)
-            println("$activeCell  x: ${event.x} y: ${event.y} relative: $relative")
             this.invalidate()
         }
         return super.onTouchEvent(event)
