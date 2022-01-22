@@ -21,7 +21,6 @@ class TaskCalendar(){
         dateFormatDateOnly.parse(date)?.time?:throw IllegalStateException("Wrong date format")
 
     fun daysAfterDeadline(deadline: Long) : Int {
-        val time =today().time-deadline
         val result = ((now().time-deadline)/ DAY).toInt()
         if(result<0) return 0
         return result

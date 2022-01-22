@@ -10,6 +10,7 @@
     <string name="deadline">Deadline</string>
     <string name="expired">Expired</string>
     <string name="reward">Reward</string>
+    <string name="cost">Reward</string>
     <string name="progress">Progress</string>
     <string name="done">Done</string>
     <string name="error_reward">Reward can\'t be 0</string>
@@ -17,4 +18,16 @@
     <string name="error_progress">Incorrect progress value</string>
     <string name="error_expired">Incorrect expired date</string>
     <string name="error_deadline">Incorrect deadline date</string>
+    <string name="error_strange">strange error</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="max_value">Max value</string>
+    <string name="daily_task">Daily task</string>
+    <string name="reusable_task">Reusable task</string>
+    <string name="default_date">31/01/2022</string>
+    <string name="expire_date">Expire date</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="category">Category</string>
+    <string name="pallete">Palette</string>
 </resources>

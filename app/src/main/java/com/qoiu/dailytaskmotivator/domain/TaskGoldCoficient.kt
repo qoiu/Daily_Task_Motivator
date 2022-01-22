@@ -1,14 +1,14 @@
 package com.qoiu.dailytaskmotivator.domain
 
-import com.qoiu.dailytaskmotivator.data.TaskDb
+import com.qoiu.dailytaskmotivator.domain.entities.Task
 
 interface TaskGoldCoficient<T> {
-    fun modify(): T
+    fun modify()
 
-    class Base(private val data: TaskDb) : TaskGoldCoficient<TaskDb> {
-        override fun modify(): TaskDb {
+    class Base(private val data: Task) : TaskGoldCoficient<Task> {
+        override fun modify() {
             val difference = TaskCalendar().daysAfterDeadline(data.deadline)
-            return when (difference) {
+            when (difference) {
                 0 -> data
                 1 -> multiply(data, 0.5)
                 2 -> multiply(data, 0.4)
@@ -19,9 +19,8 @@ interface TaskGoldCoficient<T> {
             }
         }
 
-        private fun multiply(data: TaskDb, modifier: Double): TaskDb {
+        private fun multiply(data: Task, modifier: Double){
             data.reward = (data.reward * modifier).toInt()
-            return data
         }
     }
 }

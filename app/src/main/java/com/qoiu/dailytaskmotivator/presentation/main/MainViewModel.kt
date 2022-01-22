@@ -1,20 +1,23 @@
 package com.qoiu.dailytaskmotivator.presentation.main
 
 import com.qoiu.dailytaskmotivator.Communication
-import com.qoiu.dailytaskmotivator.Read
-import com.qoiu.dailytaskmotivator.Save
-import com.qoiu.dailytaskmotivator.data.TaskDb
-import com.qoiu.dailytaskmotivator.domain.MainInteractor
+import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.presentation.BaseViewModel
 
-class MainViewModel(private val interactor: MainInteractor, communication: Communication<List<TaskDb>>)
-    : BaseViewModel<List<TaskDb>>(
+class MainViewModel(
+    communication: Communication<Int>,
+    private val shared: ResourceProvider.Shared
+)
+    : BaseViewModel<Int>(
     communication
-), Save.Gold, Read.Gold {
+) {
+    fun read(): Int = shared.provideSharedPreference().getInt(GOLD,0)
 
-    override fun save(data: Int) {
-        interactor.save(data)
+    fun save(gold: Int) {
+        shared.provideSharedPreference().edit().putInt(GOLD,(read()+gold)).apply()
     }
 
-    override fun read(): Int = interactor.read()
+    private companion object{
+        const val GOLD="Gold"
+    }
 }

@@ -6,13 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
+import androidx.viewbinding.ViewBinding
 import com.qoiu.dailytaskmotivator.ViewModelRequest
 
-abstract class BaseFragment<T : ViewModel> : Fragment() {
+abstract class BaseFragment<T : ViewModel, B: ViewBinding> : Fragment() {
 
+
+    protected lateinit var binding: B
     protected lateinit var viewModel: T
     protected abstract fun viewModelClass(): Class<T>
     protected abstract fun layoutResId(): Int
+    protected abstract fun initBinding(inflater: LayoutInflater, container: ViewGroup?)
     open fun update() {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +29,8 @@ abstract class BaseFragment<T : ViewModel> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(layoutResId(), container, false)
+        initBinding(inflater,container)
+        return binding.root
+//        return inflater.inflate(layoutResId(), container, false)
     }
 }
