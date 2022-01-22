@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:id="@+id/nav_tasks"
+    android:icon="@drawable/ic_baseline_table_rows_24"
+    android:title="@string/tasks"/>
+    <item
+        android:id="@+id/nav_shop"
+        android:icon="@drawable/ic_baseline_shopping_basket_24"
+        android:title="@string/shop"/>
+</menu>

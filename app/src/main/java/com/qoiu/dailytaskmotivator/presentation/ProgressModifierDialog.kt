@@ -11,11 +11,10 @@ import android.widget.TextView
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import com.qoiu.dailytaskmotivator.R
-import com.qoiu.dailytaskmotivator.data.TaskDb
 import kotlin.math.max
 import kotlin.math.min
 
-class ProgressModifierDialog(private val task: TaskDb, private val update: () -> Unit) :
+class ProgressModifierDialog(private val task: TaskWithCategories.Task, private val update: () -> Unit) :
     DialogFragment() {
 
     override fun onCreateView(

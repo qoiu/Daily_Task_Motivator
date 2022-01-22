@@ -1,40 +1,38 @@
-package com.qoiu.dailytaskmotivator.presentation
+package com.qoiu.dailytaskmotivator.presentation.main
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStoreOwner
 import com.qoiu.dailytaskmotivator.*
-import com.qoiu.dailytaskmotivator.data.TaskDb
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.qoiu.dailytaskmotivator.databinding.ActivityMainBinding
+import com.qoiu.dailytaskmotivator.presentation.BaseFragment
+import com.qoiu.dailytaskmotivator.presentation.DialogShow
 
 class MainActivity : AppCompatActivity(), ViewModelRequest, Save.Gold, DialogShow {
     private lateinit var viewModel: MainViewModel
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         viewModel = getViewModel(MainViewModel::class.java, this)
-        val communication = object : Communication.Base<List<TaskDb>>() {}
-        val fragment = TaskFragment(communication, this, this)
-        findViewById<FloatingActionButton>(R.id.add_fab).setOnClickListener {
-            val dialog = NewTaskDialog({
-                viewModel.addTask(it)
-                viewModel.getData()
-            },
-                {
-                    Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
-                })
-            dialog.isCancelable = false
-            show(dialog)
+        val navigator = Navigator.Base(this, this)
+        val bottomNav = binding.mainBottomNav
+        bottomNav.setOnItemSelectedListener {
+            setFragment(navigator.navigate(it.itemId))
+            return@setOnItemSelectedListener true
         }
+        bottomNav.selectedItemId = R.id.nav_tasks
         viewModel.observe(this, {
-            Toast.makeText(this, "update", Toast.LENGTH_SHORT).show()
-            fragment.update()
-            communication.provide(it)
+            navigator.updateFragment()
         })
         updateGold()
+    }
+
+    private fun setFragment(fragment: BaseFragment<*,*>) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, fragment)
             .commit()
@@ -49,7 +47,6 @@ class MainActivity : AppCompatActivity(), ViewModelRequest, Save.Gold, DialogSho
     }
 
     private fun updateGold() {
-        Toast.makeText(this, "Gold: ${viewModel.read()}", Toast.LENGTH_SHORT).show()
         this.supportActionBar?.title = "Gold: ${viewModel.read()}"
     }
 

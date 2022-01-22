@@ -20,7 +20,14 @@
                 style="@style/CenteredView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Title" />
+                android:hint="@string/title" />
+
+            <EditText
+                android:id="@+id/edit_category"
+                style="@style/CenteredView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/category" />
 
 
             <EditText
@@ -28,14 +35,14 @@
                 style="@style/CenteredView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Description" />
+                android:hint="@string/description" />
 
             <EditText
                 android:id="@+id/edit_reward"
                 style="@style/CenteredView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Reward"
+                android:hint="@string/reward"
                 android:inputType="number" />
 
             <EditText
@@ -43,15 +50,22 @@
                 style="@style/CenteredView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Max value"
+                android:hint="@string/max_value"
                 android:inputType="number" />
 
             <CheckBox
                 android:id="@+id/edit_daily"
-                style="@style/CenteredView"
+                style="@style/RowLeft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Daily task" />
+                android:text="@string/daily_task" />
+
+            <CheckBox
+                android:id="@+id/edit_reusable"
+                style="@style/RowLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reusable_task" />
 
             <LinearLayout
                 android:id="@+id/edit_dates"
@@ -63,28 +77,28 @@
                     style="@style/CenteredView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Deadline" />
+                    android:text="@string/deadline" />
 
                 <EditText
                     android:id="@+id/edit_deadline"
                     style="@style/CenteredView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="31/01/2022"
+                    android:hint="@string/default_date"
                     android:inputType="date" />
 
                 <TextView
                     style="@style/CenteredView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Expire date" />
+                    android:text="@string/expire_date" />
 
                 <EditText
                     android:id="@+id/edit_expire"
                     style="@style/CenteredView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="31/01/2022"
+                    android:hint="@string/default_date"
                     android:inputType="date" />
             </LinearLayout>
 
@@ -108,7 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
             android:layout_marginHorizontal="8dp"
-            android:text="OK" />
+            android:text="@string/ok" />
 
         <Button
             android:id="@+id/edit_cancel"
@@ -116,7 +130,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
             android:layout_marginHorizontal="8dp"
-            android:text="Cancel" />
+            android:text="@string/cancel" />
 
     </LinearLayout>
 

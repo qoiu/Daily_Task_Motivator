@@ -1,9 +1,12 @@
 package com.qoiu.dailytaskmotivator
 
 import androidx.lifecycle.*
+import io.realm.RealmModel
 
-interface SharedData<T> : Save<Pair<String, T>> {
-    fun read(key: String): T
+interface UpdatableRealm<T>: RealmModel,Update<T>
+
+interface ViewHolder<T>{
+    fun bind(data: T)
 }
 
 interface Save<T> {
@@ -36,9 +39,20 @@ interface ViewModelRequest {
     fun <T : ViewModel> getViewModel(model: Class<T>, owner: ViewModelStoreOwner): T
 }
 
+interface Mapper{
+    interface Data<I,O> :  Mapper{
+        fun map(data: I): O
+    }
+
+    interface Object<I,O>: Mapper{
+        fun map(mapper: Mapper.Data<I,O>): O
+
+    }
+}
+
 interface Communication<T> : Provide<T>, Observe<T> {
 
-    abstract class Base<T : Any> : Communication<T> {
+    open class Base<T : Any> : Communication<T> {
         private val liveData = MutableLiveData<T>()
         override fun provide(data: T) {
             liveData.postValue(data)
