@@ -18,7 +18,7 @@ open class TaskDb (
     var dailyTask: Boolean = false,
     var reusable: Boolean = false,
     var category: String = ""
-) : RealmObject(), UpdatableRealm<TaskDb>, Mapper.Object<TaskDb, Task>{
+) : RealmObject(), UpdatableRealm<TaskDb>{
 
     override fun update(data: TaskDb){
         body = data.body
@@ -29,6 +29,4 @@ open class TaskDb (
         currentProgress = data.currentProgress
         dailyTask = data.dailyTask
     }
-
-    override fun map(mapper: Mapper.Data<TaskDb, Task>): Task = mapper.map(this)
 }
