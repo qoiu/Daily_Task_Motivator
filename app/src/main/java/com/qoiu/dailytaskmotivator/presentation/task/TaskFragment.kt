@@ -76,7 +76,8 @@ class TaskFragment(
     }
 
     override fun update(data: TaskWithCategories) {
-            viewModel.saveTask(data)
+        viewModel.saveTask(data)
+        progressBar.visibility = View.VISIBLE
     }
 
     override fun update() {

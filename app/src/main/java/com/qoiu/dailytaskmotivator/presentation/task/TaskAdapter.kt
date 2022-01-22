@@ -46,7 +46,8 @@ class TaskAdapter(
             else ->CategoryViewHolder(
                 CategoryItemBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false),
-                update
+                update,
+                show
             )
         }
 

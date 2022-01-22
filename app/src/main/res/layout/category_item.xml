@@ -13,4 +13,13 @@
         style="@style/Header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+     <ImageButton
+        android:id="@+id/category_pallete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|end"
+        android:layout_marginHorizontal="8dp"
+        android:src="@drawable/ic_baseline_palette_24"
+        android:background="#00000000"
+        android:contentDescription="@string/pallete" />
 </androidx.cardview.widget.CardView>
