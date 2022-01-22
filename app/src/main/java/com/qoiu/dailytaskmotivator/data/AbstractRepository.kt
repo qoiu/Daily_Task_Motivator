@@ -3,7 +3,7 @@ package com.qoiu.dailytaskmotivator.data
 import com.qoiu.dailytaskmotivator.Mapper
 import com.qoiu.dailytaskmotivator.domain.Repository
 
-abstract class AbstractRepository<Db : Mapper.Object<Db, Domain>, Domain>(
+abstract class AbstractRepository<Db, Domain>(
     private val dataSource: RealmDataSource<Db>,
     private val domainMapper: Mapper.Data<Db, Domain>,
     private val dbMapper: Mapper.Data<Domain, Db>
