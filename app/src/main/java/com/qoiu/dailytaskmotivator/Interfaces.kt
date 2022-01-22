@@ -5,8 +5,8 @@ import io.realm.RealmModel
 
 interface UpdatableRealm<T>: RealmModel,Update<T>
 
-interface SharedData<T> : Save<Pair<String, T>> {
-    fun read(key: String): T
+interface ViewHolder<T>{
+    fun bind(data: T)
 }
 
 interface Save<T> {
@@ -37,6 +37,17 @@ interface Observe<T> {
 
 interface ViewModelRequest {
     fun <T : ViewModel> getViewModel(model: Class<T>, owner: ViewModelStoreOwner): T
+}
+
+interface Mapper{
+    interface Data<I,O> :  Mapper{
+        fun map(data: I): O
+    }
+
+    interface Object<I,O>: Mapper{
+        fun map(mapper: Mapper.Data<I,O>): O
+
+    }
 }
 
 interface Communication<T> : Provide<T>, Observe<T> {
