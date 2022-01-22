@@ -14,15 +14,15 @@ import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Save
 import com.qoiu.dailytaskmotivator.Update
-import com.qoiu.dailytaskmotivator.data.task.TaskDb
 import com.qoiu.dailytaskmotivator.databinding.FragmentTaskBinding
 import com.qoiu.dailytaskmotivator.presentation.BaseFragment
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
+import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories
 
 class TaskFragment(
     private val saveGold: Save.Gold,
     private val show: DialogShow
-) : BaseFragment<TaskModel,FragmentTaskBinding>(), Update<TaskDb> {
+) : BaseFragment<TaskModel,FragmentTaskBinding>(), Update<TaskWithCategories> {
 
     override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
         binding = FragmentTaskBinding.inflate(inflater,container,false)
@@ -46,8 +46,10 @@ class TaskFragment(
         val adapter =
             TaskAdapter(emptyList(), show, this, ResourceProvider.String(requireContext()),
                 { editTask(it) }) {
-                saveGold.save(it.reward)
-                viewModel.deleteTask(it)
+                (it as TaskWithCategories.Task).let {
+                    saveGold.save((it).reward)
+                    viewModel.deleteTask(it)
+                }
             }
         recyclerView.adapter = adapter
         viewModel.observe(this, {
@@ -73,7 +75,8 @@ class TaskFragment(
         viewModel.updateData()
     }
 
-    override fun update(data: TaskDb) {
+    override fun update(data: TaskWithCategories) {
+        if(data is TaskWithCategories.Task)
         viewModel.saveTask(data)
     }
 
@@ -87,7 +90,7 @@ class TaskFragment(
 
     private fun fabAction() {
         val dialog = NewTaskDialog(
-            { viewModel.saveTask(it) },
+            { update(it) },
             { Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show() },
             ResourceProvider.String(this.requireContext())
         )
@@ -95,7 +98,7 @@ class TaskFragment(
         show.show(dialog)
     }
 
-    private fun editTask(taskDb: TaskDb) {
+    private fun editTask(taskDb: TaskWithCategories) {
         val dialog = NewTaskDialog(
             { update(it) },
             { Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show() },
