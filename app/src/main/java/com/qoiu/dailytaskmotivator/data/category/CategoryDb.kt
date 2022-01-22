@@ -8,9 +8,8 @@ open class CategoryDb(
     @PrimaryKey
     var title: String = "",
     var expand: Boolean=true,
-    var color: Long = 0L
-): RealmObject(),UpdatableRealm<CategoryDb> {
+    var color: String = ""
+): RealmObject(),UpdatableRealm<CategoryDb>{
     override fun update(data: CategoryDb) {
-
     }
 }
