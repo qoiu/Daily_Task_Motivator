@@ -35,6 +35,14 @@ class MyMigrations(private val version: Long) : RealmMigration {
             }
             prevVersion++
         }
+
+        if(prevVersion == 4L){
+            schema.get("CategoryDb")?.let {
+                it.removeField("color")
+                it.addField("color", String::class.java, FieldAttribute.REQUIRED)
+                prevVersion++
+            }
+        }
     }
 
     override fun equals(other: Any?): Boolean {
