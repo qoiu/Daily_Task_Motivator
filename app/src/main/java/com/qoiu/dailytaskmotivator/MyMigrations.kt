@@ -42,12 +42,12 @@ class MyMigrations(private val version: Long) : RealmMigration {
                 it.addField("color", String::class.java, FieldAttribute.REQUIRED)
                 prevVersion++
             }
+        }
 
-            if (prevVersion == 5L) {
-                schema.get("TaskDb")?.let {
-                    it.addField("color", String::class.java, FieldAttribute.REQUIRED)
-                    prevVersion++
-                }
+        if (prevVersion == 5L) {
+            schema.get("TaskDb")?.let {
+                it.addField("color", String::class.java, FieldAttribute.REQUIRED)
+                prevVersion++
             }
         }
     }
