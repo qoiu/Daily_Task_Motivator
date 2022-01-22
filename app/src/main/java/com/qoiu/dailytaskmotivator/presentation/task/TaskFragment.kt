@@ -22,10 +22,10 @@ import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories
 class TaskFragment(
     private val saveGold: Save.Gold,
     private val show: DialogShow
-) : BaseFragment<TaskModel,FragmentTaskBinding>(), Update<TaskWithCategories> {
+) : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<TaskWithCategories> {
 
     override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
-        binding = FragmentTaskBinding.inflate(inflater,container,false)
+        binding = FragmentTaskBinding.inflate(inflater, container, false)
     }
 
     override fun layoutResId(): Int = R.layout.fragment_task
@@ -76,8 +76,7 @@ class TaskFragment(
     }
 
     override fun update(data: TaskWithCategories) {
-        if(data is TaskWithCategories.Task)
-        viewModel.saveTask(data)
+            viewModel.saveTask(data)
     }
 
     override fun update() {

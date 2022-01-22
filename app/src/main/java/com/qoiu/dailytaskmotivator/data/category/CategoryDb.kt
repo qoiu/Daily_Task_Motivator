@@ -11,5 +11,7 @@ open class CategoryDb(
     var color: String = ""
 ): RealmObject(),UpdatableRealm<CategoryDb>{
     override fun update(data: CategoryDb) {
+        expand = data.expand
+        color = data.color
     }
 }

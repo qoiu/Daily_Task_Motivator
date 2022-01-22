@@ -6,6 +6,7 @@ import com.qoiu.dailytaskmotivator.domain.CategoriesInteractor
 import com.qoiu.dailytaskmotivator.domain.TaskInteractor
 import com.qoiu.dailytaskmotivator.presentation.CategoryToPresentationMapper
 import com.qoiu.dailytaskmotivator.presentation.TaskToPresentationMapper
+import com.qoiu.dailytaskmotivator.presentation.TaskWithCategoryToCategoryMapper
 import com.qoiu.dailytaskmotivator.presentation.TaskWithCategoryToTaskMapper
 
 @Suppress("UNCHECKED_CAST")
@@ -18,6 +19,7 @@ class TaskModelFactory(
             taskInteractor,categoryInteractor,
             CategoryToPresentationMapper(),
             TaskToPresentationMapper(),
-            TaskWithCategoryToTaskMapper()
+            TaskWithCategoryToTaskMapper(),
+            TaskWithCategoryToCategoryMapper()
         ) as T
 }

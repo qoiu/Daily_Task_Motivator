@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Update
+import com.qoiu.dailytaskmotivator.databinding.CategoryItemBinding
 import com.qoiu.dailytaskmotivator.databinding.TaskItemBinding
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
 import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories
@@ -43,8 +44,9 @@ class TaskAdapter(
                 update
             )
             else ->CategoryViewHolder(
-                TaskItemBinding.inflate(
-                    LayoutInflater.from(parent.context), parent, false)
+                CategoryItemBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false),
+                update
             )
         }
 

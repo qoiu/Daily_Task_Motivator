@@ -28,5 +28,6 @@ open class TaskDb (
         progressMax = data.progressMax
         currentProgress = data.currentProgress
         dailyTask = data.dailyTask
+        category = data.category
     }
 }

@@ -18,10 +18,6 @@ class TaskWithCategoryToTaskMapper: Mapper.Data<TaskWithCategories,Task> {
                 data.reusable,
                 data.category
             )
-            is TaskWithCategories.Category->Task(
-                title = data.title,
-                category = data.title
-            )
             else -> {throw IllegalStateException("Can't map class ${data.javaClass.name}")}
         }
 }

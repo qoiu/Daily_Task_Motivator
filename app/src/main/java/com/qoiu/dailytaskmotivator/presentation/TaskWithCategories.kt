@@ -15,14 +15,15 @@ sealed class TaskWithCategories {
         val dailyTask: Boolean = false,
         val reusable: Boolean = false,
         var category: String
-//        val visibility: HashMap<String,>
+        // TODO: 22.01.2022   val visibility: HashMap<String,>
     ) : TaskWithCategories() {
 
     }
 
     class Category(
         val title: String,
-        val color: String
+        val color: String,
+        val expand: Boolean
     ): TaskWithCategories()
 
     class Empty(): TaskWithCategories()
