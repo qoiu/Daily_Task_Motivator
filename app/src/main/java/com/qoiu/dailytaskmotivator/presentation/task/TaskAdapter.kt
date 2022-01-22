@@ -2,6 +2,7 @@ package com.qoiu.dailytaskmotivator.presentation.task
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Update
@@ -20,8 +21,27 @@ class TaskAdapter(
 ) : RecyclerView.Adapter<BaseViewHolder<TaskWithCategories>>() {
 
     fun update(data: List<TaskWithCategories>) {
+        val util = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize(): Int = list.size
+
+            override fun getNewListSize(): Int = data.size
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                val oldTask = list[oldItemPosition]
+                val newTask = data[newItemPosition]
+                return oldTask==newTask
+            }
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                val oldTask = list[oldItemPosition]
+                val newTask = data[newItemPosition]
+                return oldTask==newTask
+            }
+
+        })
+        this.
         list = data
-        notifyDataSetChanged()
+        util.dispatchUpdatesTo(this)
     }
 
     override fun getItemViewType(position: Int): Int = when (list[position]) {

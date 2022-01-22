@@ -16,7 +16,17 @@ sealed class TaskWithCategories {
         var color: String=""
         // TODO: 22.01.2022   val visibility: HashMap<String,>
     ) : TaskWithCategories() {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+            other as Task
+            if (title != other.title) return false
+            return true
+        }
 
+        override fun hashCode(): Int {
+            return title.hashCode()
+        }
     }
 
     class Category(
