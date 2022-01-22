@@ -1,7 +1,6 @@
 package com.qoiu.dailytaskmotivator.domain
 
 import com.qoiu.dailytaskmotivator.ResourceProvider
-import com.qoiu.dailytaskmotivator.data.task.TaskRepository
 import com.qoiu.dailytaskmotivator.domain.entities.DefaultTasks
 import com.qoiu.dailytaskmotivator.domain.entities.Task
 
@@ -10,7 +9,7 @@ interface TaskInteractor {
     suspend fun removeTask(task: Task)
     suspend fun save(data: Task)
 
-    class Base(private val repository: TaskRepository, private val stringProvider: ResourceProvider.StringProvider) : TaskInteractor {
+    class Base(private val repository: Repository<Task>, private val stringProvider: ResourceProvider.StringProvider) : TaskInteractor {
         override suspend fun loadTask(): List<Task> {
             val tasks = repository.fetchData()
             if(tasks.isEmpty()){
@@ -26,6 +25,9 @@ interface TaskInteractor {
                 } else if (!(it.dailyTask && it.expired <= TaskCalendar().today().time)) {
                     list.add(it)
                 }
+            }
+            list.sortBy {
+                it.category
             }
             return list
         }
