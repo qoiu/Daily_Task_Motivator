@@ -25,6 +25,10 @@ class TaskViewHolder(
         itemView.setOnClickListener {
             dialog(task)
         }
+        if (task.color.isNotEmpty())
+        view.taskBackground.setCardBackgroundColor(
+            Color.parseColor(task.color)
+        )
         view.taskTitle.text = task.title
         view.taskBody.apply {
             if (task.body != "") {
@@ -103,6 +107,12 @@ class TaskViewHolder(
             } else {
                 visibility = View.GONE
             }
+        }
+        view.taskPalette.setOnClickListener {
+            show.show(ColorPickerDialog {
+                task.color = it
+                update.update(task)
+            })
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.qoiu.dailytaskmotivator
 
+import android.graphics.Color
 import org.junit.Test
 
 import org.junit.Assert.*

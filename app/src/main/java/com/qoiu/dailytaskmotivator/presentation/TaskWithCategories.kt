@@ -13,7 +13,7 @@ sealed class TaskWithCategories {
         val dailyTask: Boolean = false,
         val reusable: Boolean = false,
         var category: String="",
-        val color: String=""
+        var color: String=""
         // TODO: 22.01.2022   val visibility: HashMap<String,>
     ) : TaskWithCategories() {
 
