@@ -8,14 +8,14 @@ import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
-import com.qoiu.dailytaskmotivator.data.task.TaskDb
 import com.qoiu.dailytaskmotivator.domain.TaskCalendar
+import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories
 
 class NewTaskDialog(
-    private val action: (task: TaskDb) -> Unit,
+    private val action: (task: TaskWithCategories.Task) -> Unit,
     private val toast: (error: String) -> Unit,
     private val stringProvider: ResourceProvider.StringProvider,
-    private val task: TaskDb = TaskDb()
+    private val taskType: TaskWithCategories = TaskWithCategories.Empty()
 ) : DialogFragment() {
 
     override fun onCreateView(
@@ -45,12 +45,10 @@ class NewTaskDialog(
     }
 
     private fun setActions(view: View) {
-        dailyTaskView.setOnCheckedChangeListener { _, isChecked ->
-            task.dailyTask = isChecked
+        dailyTaskView.setOnCheckedChangeListener { _, _ ->
             datesVisible()
         }
-        reusableTaskView.setOnCheckedChangeListener { _, isChecked ->
-            task.reusable = isChecked
+        reusableTaskView.setOnCheckedChangeListener { _, _ ->
             datesVisible()
         }
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
@@ -94,10 +92,11 @@ class NewTaskDialog(
         calendarView = view.findViewById(R.id.calendarView)
         categoryView = view.findViewById(R.id.edit_category)
         setActions(view)
-        fillView()
+        if(taskType is TaskWithCategories.Task)
+        fillView(taskType)
     }
 
-    private fun fillView() {
+    private fun fillView(task: TaskWithCategories.Task) {
         titleView.setText(task.title)
         categoryView.setText(task.category)
         descriptionView.setText(task.body)
@@ -109,11 +108,11 @@ class NewTaskDialog(
         reusableTaskView.isChecked = task.reusable
         if (task.deadline > 0)
             deadlineView.setText(TaskCalendar().formatDate(task.deadline))
-        if (task.expiredAt > 0)
-            expireView.setText(TaskCalendar().formatDate(task.expiredAt))
+        if (task.expired > 0)
+            expireView.setText(TaskCalendar().formatDate(task.expired))
     }
 
-    private fun getTask(): TaskDb {
+    private fun getTask(): TaskWithCategories.Task {
         val reward: Int
         var expired: Long
         if (rewardView.text.toString() == "")
@@ -152,7 +151,7 @@ class NewTaskDialog(
         }
         if (dailyTaskView.isChecked) expired = TaskCalendar().tillTomorrow()?.time ?: 0
 
-        return TaskDb(
+        return TaskWithCategories.Task(
             titleView.text.toString(),
             descriptionView.text.toString(),
             reward,
@@ -176,7 +175,7 @@ class NewTaskDialog(
     }
 
     private fun datesVisible() {
-        if (task.dailyTask || task.reusable) {
+        if (dailyTaskView.isChecked || reusableTaskView.isChecked) {
             datesView.visibility = View.GONE
         } else {
             datesView.visibility = View.VISIBLE

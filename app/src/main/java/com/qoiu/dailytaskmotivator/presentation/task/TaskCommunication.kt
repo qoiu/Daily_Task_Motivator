@@ -4,15 +4,15 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.qoiu.dailytaskmotivator.Communication
-import com.qoiu.dailytaskmotivator.data.task.TaskDb
+import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories
 
-class TaskCommunication: Communication<List<TaskDb>> {
-    private val liveData = MutableLiveData<List<TaskDb>>()
-    override fun provide(data: List<TaskDb>) {
+class TaskCommunication: Communication<List<TaskWithCategories>> {
+    private val liveData = MutableLiveData<List<TaskWithCategories>>()
+    override fun provide(data: List<TaskWithCategories>) {
         liveData.postValue(data)
     }
 
-    override fun observe(owner: LifecycleOwner, observer: Observer<List<TaskDb>>) {
+    override fun observe(owner: LifecycleOwner, observer: Observer<List<TaskWithCategories>>) {
         liveData.observe(owner, observer)
     }
 }
