@@ -22,7 +22,7 @@ interface TaskInteractor {
                     TaskGoldCoficient.Base(it).modify()
                 if (it.title == "" || it.reward == 0) {
                     removeTask(it)
-                } else if (!(it.dailyTask && it.expired <= TaskCalendar().today().time)) {
+                } else if (!(it.dailyTask && it.expired > TaskCalendar().today().time)) {
                     list.add(it)
                 }
             }
