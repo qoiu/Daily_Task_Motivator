@@ -42,7 +42,8 @@ interface TaskInteractor {
                 repository.remove(task)
             } else {
                 if(!task.reusable) {
-                    task.expired = TaskCalendar().today().time
+                    if(task.progressMax>0)task.currentProgress=0
+                    task.expired = TaskCalendar().tillTomorrow()?.time?:0
                     save(task)
                 }
             }
