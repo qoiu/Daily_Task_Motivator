@@ -1,4 +1,4 @@
-package com.qoiu.dailytaskmotivator.presentation.task
+package com.qoiu.dailytaskmotivator.presentation.utils
 
 import com.qoiu.dailytaskmotivator.Execute
 import com.qoiu.dailytaskmotivator.domain.entities.Category

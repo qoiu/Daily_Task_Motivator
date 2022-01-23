@@ -4,6 +4,7 @@ import com.qoiu.dailytaskmotivator.domain.entities.Category
 import com.qoiu.dailytaskmotivator.domain.entities.Task
 import com.qoiu.dailytaskmotivator.presentation.CategoryToPresentationMapper
 import com.qoiu.dailytaskmotivator.presentation.TaskToPresentationMapper
+import com.qoiu.dailytaskmotivator.presentation.utils.ListWithCategoriesGenerator
 import org.junit.Assert.*
 
 import org.junit.Test
