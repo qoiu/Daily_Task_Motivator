@@ -39,6 +39,10 @@ interface ViewModelRequest {
     fun <T : ViewModel> getViewModel(model: Class<T>, owner: ViewModelStoreOwner): T
 }
 
+interface Execute<T>{
+    fun execute(): T
+}
+
 interface Mapper{
     interface Data<I,O> :  Mapper{
         fun map(data: I): O

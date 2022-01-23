@@ -12,15 +12,15 @@ class CategoryViewHolder(
     private val show: DialogShow
 ) : BaseViewHolder<TaskWithCategories>(view.root) {
     override fun bind(data: TaskWithCategories) {
-        val task = data as TaskWithCategories.Category
-        view.taskTitle.text = task.title
-        view.categoryCard.setCardBackgroundColor(Color.parseColor(task.color))
+        val category = data as TaskWithCategories.Category
+        view.taskTitle.text = category.title
+        view.categoryCard.setCardBackgroundColor(Color.parseColor(category.color))
         view.categoryCard.setOnClickListener {
-            update.update(TaskWithCategories.Category(data.title, data.color, !data.expand))
+            update.update(TaskWithCategories.Category(data.title, !data.expand, data.color))
         }
         view.categoryPallete.setOnClickListener {
             show.show(ColorPickerDialog {
-                update.update(TaskWithCategories.Category(data.title, it, !data.expand))
+                update.update(TaskWithCategories.Category(data.title, data.expand, it))
             })
         }
     }

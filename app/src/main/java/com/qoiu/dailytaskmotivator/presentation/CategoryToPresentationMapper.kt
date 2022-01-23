@@ -7,8 +7,8 @@ class CategoryToPresentationMapper: Mapper.Data<Category,TaskWithCategories.Cate
     override fun map(data: Category): TaskWithCategories.Category {
         return TaskWithCategories.Category(
             data.title,
-            data.color,
-            data.expand
+             data.expand,
+            data.color
         )
     }
 }

@@ -5,6 +5,10 @@ import com.qoiu.dailytaskmotivator.domain.entities.Task
 
 class TaskToPresentationMapper: Mapper.Data<Task,TaskWithCategories.Task> {
     override fun map(data: Task): TaskWithCategories.Task {
+        val color = if(data.color=="")
+            "#ffffffff"
+        else
+            data.color
         return TaskWithCategories.Task(
             data.title,
             data.body,
@@ -16,7 +20,7 @@ class TaskToPresentationMapper: Mapper.Data<Task,TaskWithCategories.Task> {
             data.dailyTask,
             data.reusable,
             data.category,
-            data.color
+            color
         )
     }
 }

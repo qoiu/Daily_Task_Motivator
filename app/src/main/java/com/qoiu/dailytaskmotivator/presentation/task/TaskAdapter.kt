@@ -35,11 +35,10 @@ class TaskAdapter(
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                 val oldTask = list[oldItemPosition]
                 val newTask = data[newItemPosition]
-                return oldTask==newTask
+                return oldTask.compareAll(newTask)
             }
 
         })
-        this.
         list = data
         util.dispatchUpdatesTo(this)
     }
