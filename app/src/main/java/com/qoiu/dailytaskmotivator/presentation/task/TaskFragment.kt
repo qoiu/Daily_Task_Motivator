@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -32,6 +33,7 @@ class TaskFragment(
     override fun viewModelClass(): Class<TaskModel> = TaskModel::class.java
 
     private lateinit var progressBar: ProgressBar
+    private var categories : List<String> = listOf()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,10 +54,11 @@ class TaskFragment(
                 }
             }
         recyclerView.adapter = adapter
-        viewModel.observe(this, {
+        viewModel.observe(this, { list ->
             progressBar.visibility = View.GONE
             Log.w("Task", "Updated")
-            adapter.update(it)
+            categories = list.filterIsInstance<TaskWithCategories.Category>().map { it.title }
+            adapter.update(list)
         })
     }
 
@@ -92,7 +95,8 @@ class TaskFragment(
         val dialog = NewTaskDialog(
             { update(it) },
             { Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show() },
-            ResourceProvider.String(this.requireContext())
+            ResourceProvider.String(this.requireContext()),
+            ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1, categories)
         )
         dialog.isCancelable = false
         show.show(dialog)
@@ -103,6 +107,7 @@ class TaskFragment(
             { update(it) },
             { Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show() },
             ResourceProvider.String(this.requireContext()),
+            ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1, categories),
             taskDb
         )
         dialog.isCancelable = false

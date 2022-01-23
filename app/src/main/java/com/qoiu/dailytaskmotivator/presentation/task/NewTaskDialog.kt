@@ -15,6 +15,7 @@ class NewTaskDialog(
     private val action: (task: TaskWithCategories.Task) -> Unit,
     private val toast: (error: String) -> Unit,
     private val stringProvider: ResourceProvider.StringProvider,
+    private val categoriesAdapter: ArrayAdapter<String>,
     private val taskType: TaskWithCategories = TaskWithCategories.Empty()
 ) : DialogFragment() {
 
@@ -37,7 +38,7 @@ class NewTaskDialog(
     private lateinit var progressView: EditText
     private lateinit var deadlineView: EditText
     private lateinit var expireView: EditText
-    private lateinit var categoryView: EditText
+    private lateinit var categoryView: AutoCompleteTextView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -92,6 +93,10 @@ class NewTaskDialog(
         calendarView = view.findViewById(R.id.calendarView)
         categoryView = view.findViewById(R.id.edit_category)
         setActions(view)
+        categoryView.setOnClickListener {
+            categoryView.setText(categoryView.text.toString())
+        }
+        categoryView.setAdapter(categoriesAdapter)
         if(taskType is TaskWithCategories.Task)
         fillView(taskType)
     }

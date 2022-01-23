@@ -22,11 +22,12 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/title" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/edit_category"
-                style="@style/CenteredView"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:completionThreshold="0"
                 android:hint="@string/category" />
 
 
@@ -118,6 +119,7 @@
 
         <Button
             android:id="@+id/edit_btn"
+            style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
@@ -126,6 +128,7 @@
 
         <Button
             android:id="@+id/edit_cancel"
+            style="?attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
