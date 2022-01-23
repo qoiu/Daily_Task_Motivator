@@ -5,7 +5,7 @@ import com.qoiu.dailytaskmotivator.data.AbstractDataSource
 import io.realm.RealmAny
 
 class TaskDataSource(
-    private val realmProvider: RealmProvider, override val primaryKey: String="title"
+    realmProvider: RealmProvider, override val primaryKey: String="title"
 ) : AbstractDataSource<TaskDb>(realmProvider){
 
     override fun compareTo(data: TaskDb): RealmAny = RealmAny.valueOf(data.title)
