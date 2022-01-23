@@ -16,7 +16,7 @@ class NewTaskDialog(
     private val toast: (error: String) -> Unit,
     private val stringProvider: ResourceProvider.StringProvider,
     private val categoriesAdapter: ArrayAdapter<String>,
-    private val taskType: TaskWithCategories = TaskWithCategories.Empty()
+    private val taskType: TaskWithCategories.Task = TaskWithCategories.Task("")
 ) : DialogFragment() {
 
     override fun onCreateView(
@@ -97,7 +97,7 @@ class NewTaskDialog(
             categoryView.setText(categoryView.text.toString())
         }
         categoryView.setAdapter(categoriesAdapter)
-        if(taskType is TaskWithCategories.Task)
+        if(taskType.title.isNotEmpty())
         fillView(taskType)
     }
 
@@ -155,7 +155,6 @@ class NewTaskDialog(
             }
         }
         if (dailyTaskView.isChecked) expired = TaskCalendar().tillTomorrow()?.time ?: 0
-
         return TaskWithCategories.Task(
             titleView.text.toString(),
             descriptionView.text.toString(),
@@ -166,7 +165,8 @@ class NewTaskDialog(
             0,
             dailyTaskView.isChecked,
             reusableTaskView.isChecked,
-            categoryView.text.toString()
+            categoryView.text.toString(),
+            taskType.color
         )
     }
 

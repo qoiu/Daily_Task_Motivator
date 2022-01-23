@@ -11,7 +11,8 @@ import com.qoiu.dailytaskmotivator.databinding.ColorPickerBinding
 import com.qoiu.dailytaskmotivator.presentation.ColorPicker
 
 class ColorPickerDialog(
-    private val picked: (int: String) -> Unit
+    private val picked: (int: String) -> Unit,
+    private val defaultColor: String =  "#ffffffff"
 ) : DialogFragment() {
     private var _binding: ColorPickerBinding? = null
     private val binding get() = _binding!!
@@ -32,6 +33,7 @@ class ColorPickerDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         picker = binding.colorPicker
+        picker.defaultColor = defaultColor
         binding.colorDone.setOnClickListener {
             picked(picker.getActiveColor())
             dismiss()

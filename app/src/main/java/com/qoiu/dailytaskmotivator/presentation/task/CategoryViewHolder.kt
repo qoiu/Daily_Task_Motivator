@@ -5,6 +5,7 @@ import com.qoiu.dailytaskmotivator.Update
 import com.qoiu.dailytaskmotivator.databinding.CategoryItemBinding
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
 import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories
+import com.qoiu.dailytaskmotivator.presentation.utils.ColorParse
 
 class CategoryViewHolder(
     private val view: CategoryItemBinding,
@@ -13,15 +14,18 @@ class CategoryViewHolder(
 ) : BaseViewHolder<TaskWithCategories>(view.root) {
     override fun bind(data: TaskWithCategories) {
         val category = data as TaskWithCategories.Category
-        view.taskTitle.text = category.title
+        view.taskTitle.apply {
+            text = category.title
+            setTextColor(ColorParse(data.color).getFontColor())
+        }
         view.categoryCard.setCardBackgroundColor(Color.parseColor(category.color))
         view.categoryCard.setOnClickListener {
-            update.update(TaskWithCategories.Category(data.title, !data.expand, data.color))
+            update.update(data.update(expand = !data.expand))
         }
         view.categoryPallete.setOnClickListener {
-            show.show(ColorPickerDialog {
-                update.update(TaskWithCategories.Category(data.title, data.expand, it))
-            })
+            show.show(ColorPickerDialog({
+                update.update(data.update(color = it))
+            },data.color))
         }
     }
 }

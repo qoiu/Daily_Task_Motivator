@@ -33,23 +33,32 @@ class ColorPicker @JvmOverloads constructor(
         initColorGrid()
     }
 
-    fun getActiveColor(): String = colorGrid[activeCell] ?: "#ffffffff"
+    var defaultColor =  "#ffffffff"
+    set(color) {
+        for(i in colorGrid.keys){
+            if(colorGrid[i] == color)this.activeCell = i
+        }
+        field = color
+    }
+    fun getActiveColor(): String = colorGrid[activeCell] ?: defaultColor
 
 
     private lateinit var colorGrid: MutableMap<Int, String>
     private fun initColorGrid() {
         colorGrid = mutableMapOf()
-        val modifier = 170
+        val modifier = 200
         for (x in 1..7) {
-            val hard = modifier + x * 25
-            colorGrid[rowId(x, 1)] = getColor(0, 0, hard)
+            val step = (255-modifier) /7
+            val hard = modifier + step * x
+            val intense = 25*x + 80
+            colorGrid[rowId(x, 1)] = getColor(0, 0, intense)
             colorGrid[rowId(x, 2)] = getColor(modifier, modifier, hard)
             colorGrid[rowId(x, 3)] = getColor(modifier, hard, hard)
             colorGrid[rowId(x, 4)] = getColor(modifier, hard, modifier)
-            colorGrid[rowId(x, 5)] = getColor(0, hard, 0)
+            colorGrid[rowId(x, 5)] = getColor(0, intense, 0)
             colorGrid[rowId(x, 6)] = getColor(hard, hard, modifier)
             colorGrid[rowId(x, 7)] = getColor(hard, modifier, modifier)
-            colorGrid[rowId(x, 8)] = getColor(hard, 0, 0)
+            colorGrid[rowId(x, 8)] = getColor(intense, 0, 0)
             colorGrid[rowId(x, 9)] = getColor(hard, modifier, hard)
             colorGrid[rowId(x, 10)] = getColor(37*x, 37*x, 37*x)
         }

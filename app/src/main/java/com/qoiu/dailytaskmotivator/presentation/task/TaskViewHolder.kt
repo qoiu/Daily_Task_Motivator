@@ -1,7 +1,6 @@
 package com.qoiu.dailytaskmotivator.presentation.task
 
 import android.graphics.Color
-import android.view.View
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Update
@@ -10,6 +9,8 @@ import com.qoiu.dailytaskmotivator.domain.TaskCalendar
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
 import com.qoiu.dailytaskmotivator.presentation.ProgressModifierDialog
 import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories
+import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories.Task.Companion.Attr.*
+import com.qoiu.dailytaskmotivator.presentation.utils.ColorParse
 
 class TaskViewHolder(
     private val view: TaskItemBinding,
@@ -22,56 +23,47 @@ class TaskViewHolder(
 
     override fun bind(data: TaskWithCategories) {
         val task = data as TaskWithCategories.Task
+        val fontColor = ColorParse(data.color).getFontColor()
         itemView.setOnClickListener {
             dialog(task)
         }
         if (task.color.isNotEmpty())
-        view.taskBackground.setCardBackgroundColor(
-            Color.parseColor(task.color)
-        )
-        view.taskTitle.text = task.title
+            view.taskBackground.setCardBackgroundColor(
+                Color.parseColor(task.color)
+            )
+        view.taskTitle.apply {
+            text = task.title
+            setTextColor(fontColor)
+        }
         view.taskBody.apply {
-            if (task.body != "") {
-                text = task.body
-                visibility = View.VISIBLE
-            } else {
-                visibility = View.GONE
-            }
+            text = task.body
+            setTextColor(fontColor)
+            visibility = task.isVisible(BODY)
         }
         view.taskReward.apply {
-            if (task.reward == 0) {
-                visibility = View.GONE
+
+            val str = if (task.reward < 0) {
+                setTextColor(ColorParse(task.color).getFontColor("#FFFFAAAA","#FFBB5555"))
+                "${stringProvider.string(R.string.reward)}: ${task.reward * -1}"
             } else {
-                visibility = View.VISIBLE
-                val str = if (task.reward < 0) {
-                    setTextColor(Color.RED)
-                    "${stringProvider.string(R.string.reward)}: ${task.reward * -1}"
-                } else {
-                    setTextColor(Color.GREEN)
-                    "${stringProvider.string(R.string.cost)}: ${task.reward}"
-                }
-                text = str
+                setTextColor(ColorParse(task.color).getFontColor("#FFAAFFAA","#FF33AA33"))
+                "${stringProvider.string(R.string.cost)}: ${task.reward}"
             }
+            text = str
         }
         view.taskExpired.apply {
-            if (task.expired == 0L || task.dailyTask || task.reusable) {
-                visibility = View.GONE
-            } else {
-                visibility = View.VISIBLE
-                val str = "${stringProvider.string(R.string.expired)}: " +
-                        TaskCalendar().formatDate(task.expired)
-                text = str
-            }
+            visibility = task.isVisible(EXPIRED)
+            setTextColor(fontColor)
+            val str = "${stringProvider.string(R.string.expired)}: " +
+                    TaskCalendar().formatDate(task.expired)
+            text = str
         }
         view.taskDeadline.apply {
-            if (task.deadline == 0L || task.dailyTask || task.reusable) {
-                visibility = View.GONE
-            } else {
-                visibility = View.VISIBLE
-                val str = "${stringProvider.string(R.string.deadline)}: " +
-                        TaskCalendar().formatDate(task.deadline)
-                text = str
-            }
+            visibility = task.isVisible(DEADLINE)
+            setTextColor(fontColor)
+            val str = "${stringProvider.string(R.string.deadline)}: " +
+                    TaskCalendar().formatDate(task.deadline)
+            text = str
         }
         view.taskDone.setOnClickListener {
             if (task.progressMax == 0) {
@@ -81,7 +73,6 @@ class TaskViewHolder(
                     if (task.progressMax == task.currentProgress) {
                         doneAction(task)
                     } else {
-//                        notifyItemChanged(list.indexOf(task))
                         update.update(task)
                     }
                 }.apply {
@@ -90,29 +81,22 @@ class TaskViewHolder(
             }
         }
         view.taskProgressBar.apply {
-            if (task.progressMax > 0) {
-                max = task.progressMax
-                progress = task.currentProgress
-                visibility = View.VISIBLE
-            } else {
-                visibility = View.GONE
-            }
+            max = task.progressMax
+            progress = task.currentProgress
+            visibility = task.isVisible(PROGRESS)
         }
         view.taskProgress.apply {
-            if (task.progressMax > 0) {
-                val progressText =
-                    "${stringProvider.string(R.string.progress)}: ${task.currentProgress}/${task.progressMax}"
-                visibility = View.VISIBLE
-                text = progressText
-            } else {
-                visibility = View.GONE
-            }
+            val progressText =
+                "${stringProvider.string(R.string.progress)}: ${task.currentProgress}/${task.progressMax}"
+            setTextColor(fontColor)
+            text = progressText
+//            setTextColor()
+            visibility = task.isVisible(PROGRESS)
         }
         view.taskPalette.setOnClickListener {
-            show.show(ColorPickerDialog {
-                task.color = it
-                update.update(task)
-            })
+            show.show(ColorPickerDialog ({
+                update.update(task.update(color = it))
+            },data.color))
         }
     }
 }

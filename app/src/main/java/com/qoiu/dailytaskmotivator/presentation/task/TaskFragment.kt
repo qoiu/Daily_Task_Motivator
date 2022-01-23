@@ -48,9 +48,9 @@ class TaskFragment(
         val adapter =
             TaskAdapter(emptyList(), show, this, ResourceProvider.String(requireContext()),
                 { editTask(it) }) {
-                (it as TaskWithCategories.Task).let {
-                    saveGold.save((it).reward)
-                    viewModel.deleteTask(it)
+                (it as TaskWithCategories.Task).let {task ->
+                    saveGold.save((task).reward)
+                    viewModel.deleteTask(task)
                 }
             }
         recyclerView.adapter = adapter
@@ -83,6 +83,8 @@ class TaskFragment(
         progressBar.visibility = View.VISIBLE
     }
 
+
+
     override fun update() {
         if (progressBar.visibility == View.GONE) {
             progressBar.visibility = View.VISIBLE
@@ -108,7 +110,7 @@ class TaskFragment(
             { Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show() },
             ResourceProvider.String(this.requireContext()),
             ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1, categories),
-            taskDb
+            taskDb as TaskWithCategories.Task
         )
         dialog.isCancelable = false
         show.show(dialog)

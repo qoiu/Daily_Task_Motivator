@@ -57,7 +57,7 @@ class ProgressModifierDialog(private val task: TaskWithCategories.Task, private 
                 var int = editView.text.toString().toInt()
                 int = max(0, int)
                 int = min(task.progressMax, int)
-                task.currentProgress = int
+                task.update(currentProgress = int)
             } catch (e: Exception) {
                 editView.setText("${task.currentProgress}")
             }
