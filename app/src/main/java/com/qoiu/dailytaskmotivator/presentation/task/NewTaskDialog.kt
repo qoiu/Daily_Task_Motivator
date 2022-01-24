@@ -9,14 +9,14 @@ import androidx.fragment.app.DialogFragment
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.domain.TaskCalendar
-import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories
+import com.qoiu.dailytaskmotivator.presentation.Structure
 
 class NewTaskDialog(
-    private val action: (task: TaskWithCategories.Task) -> Unit,
+    private val action: (task: Structure.Task) -> Unit,
     private val toast: (error: String) -> Unit,
     private val stringProvider: ResourceProvider.StringProvider,
     private val categoriesAdapter: ArrayAdapter<String>,
-    private val taskType: TaskWithCategories.Task = TaskWithCategories.Task("")
+    private val taskType: Structure.Task = Structure.Task("")
 ) : DialogFragment() {
 
     override fun onCreateView(
@@ -101,7 +101,7 @@ class NewTaskDialog(
             fillView(taskType)
     }
 
-    private fun fillView(task: TaskWithCategories.Task) {
+    private fun fillView(task: Structure.Task) {
         titleView.setText(task.title)
         categoryView.setText(task.category)
         descriptionView.setText(task.body)
@@ -116,7 +116,7 @@ class NewTaskDialog(
             expireView.setText(TaskCalendar().formatDate(task.expired))
     }
 
-    private fun getTask(): TaskWithCategories.Task {
+    private fun getTask(): Structure.Task {
         val reward: Int
         if (rewardView.text.toString() == "")
             throw IllegalStateException(stringProvider.string(R.string.error_reward))
@@ -156,7 +156,7 @@ class NewTaskDialog(
                 throw IllegalStateException(stringProvider.string(R.string.error_deadline))
             }
         }
-        return TaskWithCategories.Task(
+        return Structure.Task(
             titleView.text.toString(),
             descriptionView.text.toString(),
             reward,

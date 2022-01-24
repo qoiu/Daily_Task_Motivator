@@ -3,10 +3,10 @@ package com.qoiu.dailytaskmotivator.presentation
 import com.qoiu.dailytaskmotivator.Mapper
 import com.qoiu.dailytaskmotivator.domain.entities.Task
 
-class TaskWithCategoryToTaskMapper: Mapper.Data<TaskWithCategories,Task> {
-    override fun map(data: TaskWithCategories): Task  =
+class StructureToTaskMapper: Mapper.Data<Structure,Task> {
+    override fun map(data: Structure): Task  =
         when(data){
-            is TaskWithCategories.Task -> Task(
+            is Structure.Task -> Task(
                 data.title,
                 data.body,
                 data.reward,

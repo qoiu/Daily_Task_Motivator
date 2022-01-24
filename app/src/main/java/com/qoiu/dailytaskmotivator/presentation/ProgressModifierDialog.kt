@@ -14,7 +14,7 @@ import com.qoiu.dailytaskmotivator.R
 import kotlin.math.max
 import kotlin.math.min
 
-class ProgressModifierDialog(private val task: TaskWithCategories.Task, private val update: (task: TaskWithCategories.Task) -> Unit) :
+class ProgressModifierDialog(private val task: Structure.Task, private val update: (task: Structure.Task) -> Unit) :
     DialogFragment() {
 
     override fun onCreateView(

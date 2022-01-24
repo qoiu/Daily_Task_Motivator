@@ -8,21 +8,21 @@ import com.qoiu.dailytaskmotivator.databinding.TaskItemBinding
 import com.qoiu.dailytaskmotivator.domain.TaskCalendar
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
 import com.qoiu.dailytaskmotivator.presentation.ProgressModifierDialog
-import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories
-import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories.Task.Companion.Attr.*
+import com.qoiu.dailytaskmotivator.presentation.Structure
+import com.qoiu.dailytaskmotivator.presentation.Structure.Task.Companion.Attr.*
 import com.qoiu.dailytaskmotivator.presentation.utils.ColorParse
 
 class TaskViewHolder(
     private val view: TaskItemBinding,
     private val stringProvider: ResourceProvider.StringProvider,
-    private val dialog: (TaskWithCategories) -> Unit,
-    private val doneAction: (TaskWithCategories) -> Unit,
+    private val dialog: (Structure) -> Unit,
+    private val doneAction: (Structure) -> Unit,
     private val show: DialogShow,
-    private val update: Update<TaskWithCategories>
-) : BaseViewHolder<TaskWithCategories>(view.root) {
+    private val update: Update<Structure>
+) : BaseViewHolder<Structure>(view.root) {
 
-    override fun bind(data: TaskWithCategories) {
-        val task = data as TaskWithCategories.Task
+    override fun bind(data: Structure) {
+        val task = data as Structure.Task
         val fontColor = ColorParse(data.color).getFontColor()
         itemView.setOnClickListener {
             dialog(task)

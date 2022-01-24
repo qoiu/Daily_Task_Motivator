@@ -10,19 +10,19 @@ import com.qoiu.dailytaskmotivator.databinding.CategoryItemBinding
 import com.qoiu.dailytaskmotivator.databinding.TaskItemBinding
 import com.qoiu.dailytaskmotivator.databinding.TaskNewItemBinding
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
-import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories
+import com.qoiu.dailytaskmotivator.presentation.Structure
 
 class TaskAdapter(
-    private var list: List<TaskWithCategories>,
+    private var list: List<Structure>,
     private val show: DialogShow,
-    private val update: Update<TaskWithCategories>,
+    private val update: Update<Structure>,
     private val stringProvider: ResourceProvider.StringProvider,
-    private val dialog: (TaskWithCategories) -> Unit,
+    private val dialog: (Structure) -> Unit,
     private val newTask: ()->Unit,
-    private val doneAction: (TaskWithCategories) -> Unit
-) : RecyclerView.Adapter<BaseViewHolder<TaskWithCategories>>() {
+    private val doneAction: (Structure) -> Unit
+) : RecyclerView.Adapter<BaseViewHolder<Structure>>() {
 
-    fun update(data: List<TaskWithCategories>) {
+    fun update(data: List<Structure>) {
         val util = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
             override fun getOldListSize(): Int = list.size
 
@@ -46,15 +46,15 @@ class TaskAdapter(
     }
 
     override fun getItemViewType(position: Int): Int = when (list[position]) {
-        is TaskWithCategories.Task -> 0
-        is TaskWithCategories.Category -> 1
+        is Structure.Task -> 0
+        is Structure.Category -> 1
         else -> 2
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): BaseViewHolder<TaskWithCategories> =
+    ): BaseViewHolder<Structure> =
         when (viewType) {
             0 -> TaskViewHolder(
                 TaskItemBinding.inflate(
@@ -78,7 +78,7 @@ class TaskAdapter(
             )
         }
 
-    override fun onBindViewHolder(holder: BaseViewHolder<TaskWithCategories>, position: Int) {
+    override fun onBindViewHolder(holder: BaseViewHolder<Structure>, position: Int) {
         holder.bind(list[position])
     }
 

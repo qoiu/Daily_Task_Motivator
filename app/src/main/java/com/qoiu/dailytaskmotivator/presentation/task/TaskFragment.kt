@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Save
@@ -15,12 +16,9 @@ import com.qoiu.dailytaskmotivator.Update
 import com.qoiu.dailytaskmotivator.databinding.FragmentTaskBinding
 import com.qoiu.dailytaskmotivator.presentation.BaseFragment
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
-import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories
+import com.qoiu.dailytaskmotivator.presentation.Structure
 
-class TaskFragment(
-    private val saveGold: Save.Gold,
-    private val show: DialogShow
-) : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<TaskWithCategories> {
+class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Structure>, DialogShow {
 
     override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
         binding = FragmentTaskBinding.inflate(inflater, container, false)
@@ -38,11 +36,11 @@ class TaskFragment(
         progressBar.visibility = View.GONE
         val recyclerView = binding.taskRecycler
         val adapter =
-            TaskAdapter(emptyList(), show, this, ResourceProvider.String(requireContext()),
+            TaskAdapter(emptyList(), this, this, ResourceProvider.String(requireContext()),
                 { editTask(it) },
                 { fabAction() }) {
-                (it as TaskWithCategories.Task).let { task ->
-                    saveGold.save((task).reward)
+                (it as Structure.Task).let { task ->
+                    (requireActivity() as Save.Gold).save(task.reward)
                     viewModel.deleteTask(task)
                 }
             }
@@ -50,17 +48,18 @@ class TaskFragment(
         viewModel.observe(this, { list ->
             progressBar.visibility = View.GONE
             Log.w("Task", "Updated")
-            categories = list.filterIsInstance<TaskWithCategories.Category>().map { it.title }
+            categories = list.filterIsInstance<Structure.Category>().map { it.title }
             adapter.update(list)
         })
     }
+
 
     override fun onStart() {
         super.onStart()
         update()
     }
 
-    override fun update(data: TaskWithCategories) {
+    override fun update(data: Structure) {
         viewModel.saveTask(data)
         progressBar.visibility = View.VISIBLE
     }
@@ -81,18 +80,22 @@ class TaskFragment(
             ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, categories)
         )
         dialog.isCancelable = false
-        show.show(dialog)
+        show(dialog)
     }
 
-    private fun editTask(taskDb: TaskWithCategories) {
+    private fun editTask(taskDb: Structure) {
         val dialog = NewTaskDialog(
             { update(it) },
             { Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show() },
             ResourceProvider.String(this.requireContext()),
             ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, categories),
-            taskDb as TaskWithCategories.Task
+            taskDb as Structure.Task
         )
         dialog.isCancelable = false
-        show.show(dialog)
+        show(dialog)
+    }
+
+    override fun show(dialog: DialogFragment) {
+        dialog.show(requireActivity().supportFragmentManager, "Dialog")
     }
 }

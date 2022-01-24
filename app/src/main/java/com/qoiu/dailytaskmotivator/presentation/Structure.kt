@@ -2,7 +2,7 @@ package com.qoiu.dailytaskmotivator.presentation
 
 import android.view.View
 
-sealed class TaskWithCategories {
+sealed class Structure {
     open fun same(other: Any?): Boolean = equals(other)
 
     class Task(
@@ -17,7 +17,7 @@ sealed class TaskWithCategories {
         val reusable: Boolean = false,
         val category: String = "",
         val color: String = "#FFFFFFFF"
-    ) : TaskWithCategories() {
+    ) : Structure() {
 
         private val map = HashMap<Attr, Boolean>()
 
@@ -111,7 +111,7 @@ sealed class TaskWithCategories {
         val title: String,
         val expand: Boolean = true,
         val color: String = "#FFFFFFFF"
-    ) : TaskWithCategories() {
+    ) : Structure() {
 
         override fun hashCode(): Int {
             var result = title.hashCode()
@@ -159,7 +159,12 @@ sealed class TaskWithCategories {
         )
     }
 
-    class NewTask(private val title: String) : TaskWithCategories(){
+    class CategoryWithTask(
+        private val category: Category,
+        private val tasks: List<Task>
+    )
+
+    class NewTask(private val title: String) : Structure(){
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false

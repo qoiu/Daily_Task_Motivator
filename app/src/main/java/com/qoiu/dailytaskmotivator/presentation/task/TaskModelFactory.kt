@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.domain.CategoriesInteractor
 import com.qoiu.dailytaskmotivator.domain.TaskInteractor
-import com.qoiu.dailytaskmotivator.presentation.CategoryToPresentationMapper
-import com.qoiu.dailytaskmotivator.presentation.TaskToPresentationMapper
-import com.qoiu.dailytaskmotivator.presentation.TaskWithCategoryToCategoryMapper
-import com.qoiu.dailytaskmotivator.presentation.TaskWithCategoryToTaskMapper
+import com.qoiu.dailytaskmotivator.presentation.CategoryToStructureMapper
+import com.qoiu.dailytaskmotivator.presentation.TaskToStructureMapper
+import com.qoiu.dailytaskmotivator.presentation.StructureToCategoryMapper
+import com.qoiu.dailytaskmotivator.presentation.StructureToTaskMapper
 
 @Suppress("UNCHECKED_CAST")
 class TaskModelFactory(
@@ -19,10 +19,10 @@ class TaskModelFactory(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
         TaskModel(
             taskInteractor,categoryInteractor,
-            CategoryToPresentationMapper(),
-            TaskToPresentationMapper(),
-            TaskWithCategoryToTaskMapper(),
-            TaskWithCategoryToCategoryMapper(),
+            CategoryToStructureMapper(),
+            TaskToStructureMapper(),
+            StructureToTaskMapper(),
+            StructureToCategoryMapper(),
             stringProvider
         ) as T
 }

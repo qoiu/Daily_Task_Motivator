@@ -5,23 +5,23 @@ import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.domain.entities.Category
 import com.qoiu.dailytaskmotivator.domain.entities.Task
-import com.qoiu.dailytaskmotivator.presentation.CategoryToPresentationMapper
-import com.qoiu.dailytaskmotivator.presentation.TaskToPresentationMapper
-import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories
+import com.qoiu.dailytaskmotivator.presentation.CategoryToStructureMapper
+import com.qoiu.dailytaskmotivator.presentation.TaskToStructureMapper
+import com.qoiu.dailytaskmotivator.presentation.Structure
 
 class ListWithCategoriesGenerator(
     private val unsortedTasks: List<Task>,
     private val unsortedCategories: List<Category>,
-    private val categoryMapper: CategoryToPresentationMapper,
-    private val taskMapper: TaskToPresentationMapper,
+    private val categoryMapper: CategoryToStructureMapper,
+    private val taskMapper: TaskToStructureMapper,
     private val stringProvider: ResourceProvider.StringProvider
-) : Execute<List<TaskWithCategories>> {
+) : Execute<List<Structure>> {
 
-    override fun execute(): List<TaskWithCategories> {
+    override fun execute(): List<Structure> {
         val tasks = unsortedTasks.sortedByDescending { it.category }
         val categories = mutableListOf<Category>()
         categories.addAll(unsortedCategories.sortedByDescending { it.title })
-        val list = mutableListOf<TaskWithCategories>()
+        val list = mutableListOf<Structure>()
         if (categories.size == 0) categories.add(Category("test"))
         var categoryId = 0
         tasks.forEach { task ->
@@ -44,13 +44,13 @@ class ListWithCategoriesGenerator(
                 }
             }
         }
-        list.add(TaskWithCategories.NewTask(stringProvider.string(R.string.new_task)))
+        list.add(Structure.NewTask(stringProvider.string(R.string.new_task)))
         return list
     }
 
-    private fun containsCategory(list: List<TaskWithCategories>, category: String): Boolean {
+    private fun containsCategory(list: List<Structure>, category: String): Boolean {
         list.forEach {
-            if (it is TaskWithCategories.Category && it.title == category) return true
+            if (it is Structure.Category && it.title == category) return true
         }
         return false
     }

@@ -19,9 +19,9 @@ interface Navigator {
         private lateinit var fragment: BaseFragment<*,*>
         override fun navigate(id: Int): BaseFragment<*,*> {
             fragment = when (id) {
-                R.id.nav_tasks -> TaskFragment(saveGold, dialogShow)
+                R.id.nav_tasks -> TaskFragment()
                 R.id.nav_shop -> ShopFragment()
-                else -> TaskFragment(saveGold, dialogShow)
+                else -> TaskFragment()
             }
             return fragment
         }

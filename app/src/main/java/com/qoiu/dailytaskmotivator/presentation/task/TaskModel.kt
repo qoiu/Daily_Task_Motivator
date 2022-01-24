@@ -14,16 +14,16 @@ import kotlinx.coroutines.launch
 class TaskModel(
     private val taskInteractor: TaskInteractor,
     private val categoryInteractor: CategoriesInteractor,
-    private val categoryMapper: CategoryToPresentationMapper,
-    private val taskMapper: TaskToPresentationMapper,
-    private val taskDomainMapper: TaskWithCategoryToTaskMapper,
-    private val categoryDomainMapper: TaskWithCategoryToCategoryMapper,
+    private val categoryMapper: CategoryToStructureMapper,
+    private val taskMapper: TaskToStructureMapper,
+    private val taskDomainMapper: StructureToTaskMapper,
+    private val categoryDomainMapper: StructureToCategoryMapper,
     private val stringProvider: ResourceProvider.StringProvider
-) : BaseViewModel<List<TaskWithCategories>>(TaskCommunication()) {
+) : BaseViewModel<List<Structure>>(TaskCommunication()) {
 
-    fun saveTask(data: TaskWithCategories) {
+    fun saveTask(data: Structure) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (data is TaskWithCategories.Task) {
+            if (data is Structure.Task) {
                 taskInteractor.save(
                     taskDomainMapper.map(data)
                 )
@@ -31,7 +31,7 @@ class TaskModel(
                     categoryInteractor.loadCategories().find { it.title == data.category }
                 categories ?: categoryInteractor.saveCategory(Category(data.category,color = data.color))
             }
-            if (data is TaskWithCategories.Category) {
+            if (data is Structure.Category) {
                 categoryInteractor.saveCategory(categoryDomainMapper.map(data))
             }
         }.invokeOnCompletion {
@@ -52,7 +52,7 @@ class TaskModel(
         }
     }
 
-    fun deleteTask(task: TaskWithCategories.Task) {
+    fun deleteTask(task: Structure.Task) {
         viewModelScope.launch(Dispatchers.IO) {
             taskInteractor.removeTask(taskDomainMapper.map(task))
         }.invokeOnCompletion { updateData() }

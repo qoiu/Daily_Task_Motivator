@@ -4,16 +4,16 @@ import android.graphics.Color
 import com.qoiu.dailytaskmotivator.Update
 import com.qoiu.dailytaskmotivator.databinding.CategoryItemBinding
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
-import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories
+import com.qoiu.dailytaskmotivator.presentation.Structure
 import com.qoiu.dailytaskmotivator.presentation.utils.ColorParse
 
 class CategoryViewHolder(
     private val view: CategoryItemBinding,
-    private val update: Update<TaskWithCategories>,
+    private val update: Update<Structure>,
     private val show: DialogShow
-) : BaseViewHolder<TaskWithCategories>(view.root) {
-    override fun bind(data: TaskWithCategories) {
-        val category = data as TaskWithCategories.Category
+) : BaseViewHolder<Structure>(view.root) {
+    override fun bind(data: Structure) {
+        val category = data as Structure.Category
         view.taskTitle.apply {
             text = category.title
             setTextColor(ColorParse(data.color).getFontColor())

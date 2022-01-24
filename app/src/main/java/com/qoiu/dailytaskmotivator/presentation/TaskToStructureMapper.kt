@@ -3,13 +3,13 @@ package com.qoiu.dailytaskmotivator.presentation
 import com.qoiu.dailytaskmotivator.Mapper
 import com.qoiu.dailytaskmotivator.domain.entities.Task
 
-class TaskToPresentationMapper: Mapper.Data<Task,TaskWithCategories.Task> {
-    override fun map(data: Task): TaskWithCategories.Task {
+class TaskToStructureMapper: Mapper.Data<Task,Structure.Task> {
+    override fun map(data: Task): Structure.Task {
         val color = if(data.color=="")
             "#ffffffff"
         else
             data.color
-        return TaskWithCategories.Task(
+        return Structure.Task(
             data.title,
             data.body,
             data.reward,

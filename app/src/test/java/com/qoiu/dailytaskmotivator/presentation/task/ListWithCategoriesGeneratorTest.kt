@@ -3,9 +3,9 @@ package com.qoiu.dailytaskmotivator.presentation.task
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.domain.entities.Category
 import com.qoiu.dailytaskmotivator.domain.entities.Task
-import com.qoiu.dailytaskmotivator.presentation.CategoryToPresentationMapper
-import com.qoiu.dailytaskmotivator.presentation.TaskToPresentationMapper
-import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories
+import com.qoiu.dailytaskmotivator.presentation.CategoryToStructureMapper
+import com.qoiu.dailytaskmotivator.presentation.TaskToStructureMapper
+import com.qoiu.dailytaskmotivator.presentation.Structure
 import com.qoiu.dailytaskmotivator.presentation.utils.ListWithCategoriesGenerator
 import org.junit.Assert.*
 
@@ -37,10 +37,10 @@ class ListWithCategoriesGeneratorTest {
         Task("e1", category = ""),//12
         Task("e2", category = "")//13
     )
-    private val finalItem = TaskWithCategories.NewTask("newTask")
+    private val finalItem = Structure.NewTask("newTask")
 
-    private val taskMapper = TaskToPresentationMapper()
-    private val catMapper = CategoryToPresentationMapper()
+    private val taskMapper = TaskToStructureMapper()
+    private val catMapper = CategoryToStructureMapper()
     private fun tasksWithCategory() = tasks.forEach { taskMapper.map(it) }
     private val stringProvider = object : ResourceProvider.StringProvider{
         override fun string(id: Int): String ="newTask"
@@ -55,7 +55,7 @@ class ListWithCategoriesGeneratorTest {
         val testCategory = listOf(categoryA, categoryB, categoryC, categoryD)
         val actual = ListWithCategoriesGenerator(
             testTasks, testCategory,
-            CategoryToPresentationMapper(), TaskToPresentationMapper(),stringProvider
+            CategoryToStructureMapper(), TaskToStructureMapper(),stringProvider
         ).execute()
         val expected = listOf(category(categoryD),category(categoryC),category(categoryB),category(categoryA),task(12),finalItem)
         assertEquals(expected,actual)
@@ -66,7 +66,7 @@ class ListWithCategoriesGeneratorTest {
         val testCategory = listOf(categoryA, categoryB, categoryCExp, categoryD)
         val actual = ListWithCategoriesGenerator(
             testTasks, testCategory,
-            CategoryToPresentationMapper(), TaskToPresentationMapper(),stringProvider
+            CategoryToStructureMapper(), TaskToStructureMapper(),stringProvider
         ).execute()
         val expected = listOf(category(categoryD),category(categoryCExp),task(7), task(6),category(categoryB),category(categoryA),task(12),finalItem)
         assertEquals(expected,actual)
@@ -77,7 +77,7 @@ class ListWithCategoriesGeneratorTest {
         val categories = listOf(categoryA, categoryB, categoryCExp, categoryDExp)
         val actual = ListWithCategoriesGenerator(
             testTasks, categories,
-            CategoryToPresentationMapper(), TaskToPresentationMapper(),stringProvider
+            CategoryToStructureMapper(), TaskToStructureMapper(),stringProvider
         ).execute()
         val expected = listOf(category(categories[3]),task(10),category(categories[2]),task(7), task(6),category(categories[1]),category(categories[0]),task(12),finalItem)
         assertEquals(expected,actual)
@@ -88,7 +88,7 @@ class ListWithCategoriesGeneratorTest {
         val categories = listOf(categoryAExp, categoryBExp, categoryCExp, categoryDExp)
         val actual = ListWithCategoriesGenerator(
             testTasks, emptyList(),
-            CategoryToPresentationMapper(), TaskToPresentationMapper(),stringProvider
+            CategoryToStructureMapper(), TaskToStructureMapper(),stringProvider
         ).execute()
         val expected = listOf(
             category(categories[3]),task(10),
