@@ -97,16 +97,15 @@ class NewTaskDialog(
             categoryView.setText(categoryView.text.toString())
         }
         categoryView.setAdapter(categoriesAdapter)
-        if(taskType.title.isNotEmpty())
-        fillView(taskType)
+        if (taskType.title.isNotEmpty())
+            fillView(taskType)
     }
 
     private fun fillView(task: TaskWithCategories.Task) {
         titleView.setText(task.title)
         categoryView.setText(task.category)
         descriptionView.setText(task.body)
-        if (task.reward > 0)
-            rewardView.setText(task.reward.toString())
+        rewardView.setText(task.reward.toString())
         if (task.progressMax > 0)
             progressView.setText(task.progressMax.toString())
         dailyTaskView.isChecked = task.dailyTask
@@ -119,7 +118,6 @@ class NewTaskDialog(
 
     private fun getTask(): TaskWithCategories.Task {
         val reward: Int
-        var expired: Long
         if (rewardView.text.toString() == "")
             throw IllegalStateException(stringProvider.string(R.string.error_reward))
         try {
@@ -136,8 +134,12 @@ class NewTaskDialog(
                 throw IllegalStateException(stringProvider.string(R.string.error_progress))
             }
         }
-        expired = if (expireView.text.toString() == "") {
-            0
+        val expired = if (
+            expireView.text.toString() == "" ||
+            dailyTaskView.isChecked ||
+            reusableTaskView.isChecked
+        ) {
+            0L
         } else {
             try {
                 TaskCalendar().formatFromString(expireView.text.toString())
@@ -154,7 +156,6 @@ class NewTaskDialog(
                 throw IllegalStateException(stringProvider.string(R.string.error_deadline))
             }
         }
-        if (dailyTaskView.isChecked) expired = TaskCalendar().tillTomorrow()?.time ?: 0
         return TaskWithCategories.Task(
             titleView.text.toString(),
             descriptionView.text.toString(),

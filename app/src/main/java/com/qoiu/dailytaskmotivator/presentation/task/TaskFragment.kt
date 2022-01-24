@@ -1,6 +1,5 @@
 package com.qoiu.dailytaskmotivator.presentation.task
 
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,8 +8,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.RecyclerView
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Save
@@ -41,9 +38,6 @@ class TaskFragment(
         progressBar.visibility = View.GONE
         val recyclerView = binding.taskRecycler
         val fab = binding.addFab
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            setUpdateListener(recyclerView)
-        }
         fab.setOnClickListener { fabAction() }
         val adapter =
             TaskAdapter(emptyList(), show, this, ResourceProvider.String(requireContext()),
@@ -62,20 +56,9 @@ class TaskFragment(
         })
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun setUpdateListener(recyclerView: RecyclerView) {
-        recyclerView.setOnScrollChangeListener { _, _, _, _, _ ->
-            val view: View = recyclerView.getChildAt(0)
-            val diff: Int = view.top - (recyclerView.scrollY)
-            if (diff > 0) {
-                update()
-            }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateData()
+    override fun onStart() {
+        super.onStart()
+        update()
     }
 
     override fun update(data: TaskWithCategories) {

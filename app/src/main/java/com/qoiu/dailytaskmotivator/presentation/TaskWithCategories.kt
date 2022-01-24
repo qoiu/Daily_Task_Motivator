@@ -3,6 +3,7 @@ package com.qoiu.dailytaskmotivator.presentation
 import android.view.View
 
 sealed class TaskWithCategories {
+    open fun same(other: Any?): Boolean = equals(other)
 
     class Task(
         val title: String,
@@ -132,6 +133,18 @@ sealed class TaskWithCategories {
             if (title != other.title) return false
             if (color != other.color) return false
             if (expand != other.expand) return false
+
+            return true
+        }
+
+        override fun same(other: Any?): Boolean{
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as Category
+
+            if (title != other.title) return false
+            if (color != other.color) return false
 
             return true
         }

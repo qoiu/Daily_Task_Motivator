@@ -9,25 +9,26 @@ interface TaskInteractor {
     suspend fun removeTask(task: Task)
     suspend fun save(data: Task)
 
-    class Base(private val repository: Repository<Task>, private val stringProvider: ResourceProvider.StringProvider) : TaskInteractor {
+    class Base(
+        private val repository: Repository<Task>,
+        private val stringProvider: ResourceProvider.StringProvider
+    ) : TaskInteractor {
         override suspend fun loadTask(): List<Task> {
             val tasks = repository.fetchData()
-            if(tasks.isEmpty()){
+            if (tasks.isEmpty()) {
                 DefaultTasks(stringProvider).getDefault().forEach { save(it) }
                 return DefaultTasks(stringProvider).getDefault()
             }
             val list = mutableListOf<Task>()
             tasks.forEach {
-                if (it.deadline > 0)
-                    TaskGoldCoficient.Base(it).modify()
-                if (it.title == "" || it.reward == 0) {
+                if (!it.dailyTask && !it.reusable && it.expired < TaskCalendar().today().time && it.expired!=0L)
                     removeTask(it)
-                } else if (!(it.dailyTask && it.expired > TaskCalendar().today().time)) {
+                else if (it.title == "" || it.reward == 0)
+                    removeTask(it)
+                else if (it.deadline > 0)
+                    TaskGoldCoficient.Base(it).modify()
+                else if (!(it.dailyTask && it.expired > TaskCalendar().today().time))
                     list.add(it)
-                }
-            }
-            list.sortBy {
-                it.category
             }
             return list
         }
@@ -41,9 +42,9 @@ interface TaskInteractor {
             if (!task.dailyTask && !task.reusable) {
                 repository.remove(task)
             } else {
-                if(!task.reusable) {
-                    if(task.progressMax>0)task.currentProgress=0
-                    task.expired = TaskCalendar().tillTomorrow()?.time?:0
+                if (!task.reusable) {
+                    if (task.progressMax > 0) task.currentProgress = 0
+                    task.expired = TaskCalendar().tillTomorrow()?.time ?: 0
                     save(task)
                 }
             }
