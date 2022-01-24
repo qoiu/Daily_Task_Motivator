@@ -1,6 +1,8 @@
 package com.qoiu.dailytaskmotivator.presentation.utils
 
 import com.qoiu.dailytaskmotivator.Execute
+import com.qoiu.dailytaskmotivator.R
+import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.domain.entities.Category
 import com.qoiu.dailytaskmotivator.domain.entities.Task
 import com.qoiu.dailytaskmotivator.presentation.CategoryToPresentationMapper
@@ -11,7 +13,8 @@ class ListWithCategoriesGenerator(
     private val unsortedTasks: List<Task>,
     private val unsortedCategories: List<Category>,
     private val categoryMapper: CategoryToPresentationMapper,
-    private val taskMapper: TaskToPresentationMapper
+    private val taskMapper: TaskToPresentationMapper,
+    private val stringProvider: ResourceProvider.StringProvider
 ) : Execute<List<TaskWithCategories>> {
 
     override fun execute(): List<TaskWithCategories> {
@@ -41,6 +44,7 @@ class ListWithCategoriesGenerator(
                 }
             }
         }
+        list.add(TaskWithCategories.NewTask(stringProvider.string(R.string.new_task)))
         return list
     }
 

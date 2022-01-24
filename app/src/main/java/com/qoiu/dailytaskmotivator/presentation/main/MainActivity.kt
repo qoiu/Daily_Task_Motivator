@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), ViewModelRequest, Save.Gold, DialogSho
     }
 
     private fun updateGold() {
-        this.supportActionBar?.title = "Gold: ${viewModel.read()}"
+        binding.goldState.text = viewModel.read().toString()
     }
 
     override fun show(dialog: DialogFragment) {

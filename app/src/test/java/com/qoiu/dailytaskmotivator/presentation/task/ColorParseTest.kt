@@ -8,8 +8,8 @@ class ColorParseTest{
 
     @Test
     fun simpleTest(){
-        assertEquals(ColorParse("#FF333333").execute(), ColorParse("#ffffffff").getFontColor())
-        assertEquals(-1, ColorParse("#ffff0000").getFontColor())
+        assertEquals(ColorParse("#FF777777").execute(), ColorParse("#ffffffff").getFontColor())
+        assertEquals(ColorParse("#FFDDDDDD").execute(), ColorParse("#ffff0000").getFontColor())
     }
 
     @Test(expected = IllegalArgumentException::class)

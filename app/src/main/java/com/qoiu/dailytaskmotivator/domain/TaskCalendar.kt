@@ -3,18 +3,19 @@ package com.qoiu.dailytaskmotivator.domain
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TaskCalendar(){
+class TaskCalendar(private val today: Date = Date()) {
     fun tillTomorrow(): Date? {
-        val now = dateFormatDateOnly.format(Date().time + DAY)
+        val now = dateFormatDateOnly.format(today.time + DAY)
         return dateFormatDateOnly.parse(now)
     }
 
-    fun now(): Date = dateFormatFull.parse(dateFormatFull.format(Date()))?:Date()
+    fun now(): Date = dateFormatFull.parse(dateFormatFull.format(today))?:Date()
 
-    fun today(): Date = dateFormatDateOnly.parse(dateFormatDateOnly.format(Date()))?:Date()
+    fun today(): Date = dateFormatDateOnly.parse(dateFormatDateOnly.format(today))?:Date()
     fun formatDate(date: Long): String = dateFormatDateOnly.format(Date(date))
     fun getDate(year: Int, month: Int, day: Int): Long{
-        calendar.set(year,month,day)
+        calendar.clear()
+        calendar.set(year,month,day,0,0)
         return calendar.time.time
     }
     fun formatFromString(date: String): Long =

@@ -15,12 +15,13 @@ import com.qoiu.dailytaskmotivator.domain.TaskInteractor
 class CoreModule {
 
     lateinit var sharedProvider: ResourceProvider.Shared
+    lateinit var stringProvider: ResourceProvider.StringProvider
     lateinit var taskInteractor: TaskInteractor
     lateinit var categoryInteractor: CategoriesInteractor
 
     fun init(context: Context) {
         sharedProvider = ResourceProvider.Shared(context)
-        val stringProvider = ResourceProvider.String(context)
+        stringProvider = ResourceProvider.String(context)
         val realmProvider = RealmProvider.Base(context)
         val taskRealmSource = TaskDataSource(realmProvider)
         val categoryRealmSource = CategoryDataSource(realmProvider)

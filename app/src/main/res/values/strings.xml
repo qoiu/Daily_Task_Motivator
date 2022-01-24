@@ -30,4 +30,6 @@
     <string name="cancel">Cancel</string>
     <string name="category">Category</string>
     <string name="palette">Palette</string>
+    <string name="price">Price</string>
+    <string name="new_task">New task</string>
 </resources>

@@ -35,7 +35,6 @@ interface TaskInteractor {
 
         override suspend fun save(data: Task) {
             repository.save(data)
-            loadTask()
         }
 
         override suspend fun removeTask(task: Task) {

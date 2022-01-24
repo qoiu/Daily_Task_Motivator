@@ -12,7 +12,7 @@ import com.qoiu.dailytaskmotivator.presentation.task.TaskModelFactory
 class ViewModelsFactory(coreModule: CoreModule) {
     private val map = HashMap<Class<out ViewModel>, ViewModelProvider.Factory>().apply {
         put(MainViewModel::class.java, MainViewModelFactory(coreModule.sharedProvider))
-        put(TaskModel::class.java, TaskModelFactory(coreModule.taskInteractor,coreModule.categoryInteractor))
+        put(TaskModel::class.java, TaskModelFactory(coreModule.taskInteractor,coreModule.categoryInteractor,coreModule.stringProvider))
         put(ShopModel::class.java, ShopModelFactory())
     }
 

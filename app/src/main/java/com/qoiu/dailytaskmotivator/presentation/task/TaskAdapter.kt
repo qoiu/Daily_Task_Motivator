@@ -8,6 +8,7 @@ import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Update
 import com.qoiu.dailytaskmotivator.databinding.CategoryItemBinding
 import com.qoiu.dailytaskmotivator.databinding.TaskItemBinding
+import com.qoiu.dailytaskmotivator.databinding.TaskNewItemBinding
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
 import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories
 
@@ -17,6 +18,7 @@ class TaskAdapter(
     private val update: Update<TaskWithCategories>,
     private val stringProvider: ResourceProvider.StringProvider,
     private val dialog: (TaskWithCategories) -> Unit,
+    private val newTask: ()->Unit,
     private val doneAction: (TaskWithCategories) -> Unit
 ) : RecyclerView.Adapter<BaseViewHolder<TaskWithCategories>>() {
 
@@ -45,7 +47,8 @@ class TaskAdapter(
 
     override fun getItemViewType(position: Int): Int = when (list[position]) {
         is TaskWithCategories.Task -> 0
-        else -> 1
+        is TaskWithCategories.Category -> 1
+        else -> 2
     }
 
     override fun onCreateViewHolder(
@@ -62,11 +65,16 @@ class TaskAdapter(
                 show,
                 update
             )
-            else ->CategoryViewHolder(
+            1 ->CategoryViewHolder(
                 CategoryItemBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false),
                 update,
                 show
+            )
+            else -> NewTaskViewHolder(
+                TaskNewItemBinding.inflate(
+                    LayoutInflater.from(parent.context),parent,false
+                ),newTask
             )
         }
 

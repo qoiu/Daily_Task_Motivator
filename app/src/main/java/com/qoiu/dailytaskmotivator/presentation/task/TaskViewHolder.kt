@@ -44,7 +44,7 @@ class TaskViewHolder(
 
             val str = if (task.reward < 0) {
                 setTextColor(ColorParse(task.color).getFontColor("#FFFFAAAA","#FFBB5555"))
-                "${stringProvider.string(R.string.reward)}: ${task.reward * -1}"
+                "${stringProvider.string(R.string.price)}: ${task.reward * -1}"
             } else {
                 setTextColor(ColorParse(task.color).getFontColor("#FFAAFFAA","#FF33AA33"))
                 "${stringProvider.string(R.string.cost)}: ${task.reward}"
@@ -70,10 +70,10 @@ class TaskViewHolder(
                 doneAction(task)
             } else {
                 show.show(ProgressModifierDialog(task) {
-                    if (task.progressMax == task.currentProgress) {
-                        doneAction(task)
+                    if (it.progressMax == it.currentProgress) {
+                        doneAction(it)
                     } else {
-                        update.update(task)
+                        update.update(it)
                     }
                 }.apply {
                     isCancelable = false
@@ -90,7 +90,6 @@ class TaskViewHolder(
                 "${stringProvider.string(R.string.progress)}: ${task.currentProgress}/${task.progressMax}"
             setTextColor(fontColor)
             text = progressText
-//            setTextColor()
             visibility = task.isVisible(PROGRESS)
         }
         view.taskPalette.setOnClickListener {

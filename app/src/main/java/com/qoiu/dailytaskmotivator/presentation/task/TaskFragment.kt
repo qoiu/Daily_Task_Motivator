@@ -30,19 +30,18 @@ class TaskFragment(
     override fun viewModelClass(): Class<TaskModel> = TaskModel::class.java
 
     private lateinit var progressBar: ProgressBar
-    private var categories : List<String> = listOf()
+    private var categories: List<String> = listOf()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         progressBar = binding.taskProgressBar
         progressBar.visibility = View.GONE
         val recyclerView = binding.taskRecycler
-        val fab = binding.addFab
-        fab.setOnClickListener { fabAction() }
         val adapter =
             TaskAdapter(emptyList(), show, this, ResourceProvider.String(requireContext()),
-                { editTask(it) }) {
-                (it as TaskWithCategories.Task).let {task ->
+                { editTask(it) },
+                { fabAction() }) {
+                (it as TaskWithCategories.Task).let { task ->
                     saveGold.save((task).reward)
                     viewModel.deleteTask(task)
                 }
@@ -66,8 +65,6 @@ class TaskFragment(
         progressBar.visibility = View.VISIBLE
     }
 
-
-
     override fun update() {
         if (progressBar.visibility == View.GONE) {
             progressBar.visibility = View.VISIBLE
@@ -81,7 +78,7 @@ class TaskFragment(
             { update(it) },
             { Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show() },
             ResourceProvider.String(this.requireContext()),
-            ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1, categories)
+            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, categories)
         )
         dialog.isCancelable = false
         show.show(dialog)
@@ -92,7 +89,7 @@ class TaskFragment(
             { update(it) },
             { Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show() },
             ResourceProvider.String(this.requireContext()),
-            ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1, categories),
+            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, categories),
             taskDb as TaskWithCategories.Task
         )
         dialog.isCancelable = false

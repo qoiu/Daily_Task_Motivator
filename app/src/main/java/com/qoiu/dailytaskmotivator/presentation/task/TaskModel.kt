@@ -1,6 +1,7 @@
 package com.qoiu.dailytaskmotivator.presentation.task
 
 import androidx.lifecycle.viewModelScope
+import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.domain.CategoriesInteractor
 import com.qoiu.dailytaskmotivator.domain.TaskInteractor
 import com.qoiu.dailytaskmotivator.domain.entities.Category
@@ -16,7 +17,8 @@ class TaskModel(
     private val categoryMapper: CategoryToPresentationMapper,
     private val taskMapper: TaskToPresentationMapper,
     private val taskDomainMapper: TaskWithCategoryToTaskMapper,
-    private val categoryDomainMapper: TaskWithCategoryToCategoryMapper
+    private val categoryDomainMapper: TaskWithCategoryToCategoryMapper,
+    private val stringProvider: ResourceProvider.StringProvider
 ) : BaseViewModel<List<TaskWithCategories>>(TaskCommunication()) {
 
     fun saveTask(data: TaskWithCategories) {
@@ -45,7 +47,7 @@ class TaskModel(
             categories = categoryInteractor.loadCategories()
         }.invokeOnCompletion {
             communication.provide(
-                ListWithCategoriesGenerator(tasks, categories, categoryMapper, taskMapper).execute()
+                ListWithCategoriesGenerator(tasks, categories, categoryMapper, taskMapper,stringProvider).execute()
             )
         }
     }

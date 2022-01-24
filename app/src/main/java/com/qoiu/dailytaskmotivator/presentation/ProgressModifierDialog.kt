@@ -14,7 +14,7 @@ import com.qoiu.dailytaskmotivator.R
 import kotlin.math.max
 import kotlin.math.min
 
-class ProgressModifierDialog(private val task: TaskWithCategories.Task, private val update: () -> Unit) :
+class ProgressModifierDialog(private val task: TaskWithCategories.Task, private val update: (task: TaskWithCategories.Task) -> Unit) :
     DialogFragment() {
 
     override fun onCreateView(
@@ -29,21 +29,23 @@ class ProgressModifierDialog(private val task: TaskWithCategories.Task, private 
     private lateinit var editView: EditText
     private lateinit var seekView: SeekBar
     private lateinit var doneView: Button
+    private var progress: Int = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        progress = task.currentProgress
         titleView = view.findViewById(R.id.progress_text)
         editView = view.findViewById(R.id.progress_edit)
         seekView = view.findViewById(R.id.progress_seekbar)
         doneView = view.findViewById(R.id.progress_done)
         doneView.setOnClickListener {
-            update()
+            update(task.update(currentProgress = progress))
             dismiss()
         }
         updateTitle()
-        editView.setText("${task.currentProgress}")
+        editView.setText("$progress")
         seekView.max = task.progressMax
-        seekView.progress = task.currentProgress
+        seekView.progress = progress
         seekView.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 editView.setText(progress.toString())
@@ -57,17 +59,17 @@ class ProgressModifierDialog(private val task: TaskWithCategories.Task, private 
                 var int = editView.text.toString().toInt()
                 int = max(0, int)
                 int = min(task.progressMax, int)
-                task.update(currentProgress = int)
+                progress = int
             } catch (e: Exception) {
-                editView.setText("${task.currentProgress}")
+                editView.setText("$progress")
             }
-            seekView.progress = task.currentProgress
+            seekView.progress = progress
             updateTitle()
         }
     }
 
     private fun updateTitle() {
-        val text = "${task.title} (${task.currentProgress}/${task.progressMax})"
+        val text = "${task.title} (${progress}/${task.progressMax})"
         titleView.text = text
     }
 }
