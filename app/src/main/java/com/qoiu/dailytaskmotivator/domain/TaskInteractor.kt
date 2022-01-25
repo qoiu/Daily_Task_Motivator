@@ -45,6 +45,11 @@ interface TaskInteractor {
                     if (task.progressMax > 0) task.currentProgress = 0
                     task.expired = TaskCalendar().tillTomorrow()?.time ?: 0
                     save(task)
+                }else{
+                    if (task.progressMax > 0) {
+                        task.currentProgress = 0
+                        save(task)
+                    }
                 }
             }
         }

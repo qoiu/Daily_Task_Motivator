@@ -1,5 +1,6 @@
 package com.qoiu.dailytaskmotivator.presentation.task
 
+import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,6 +28,7 @@ class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Stru
     override fun layoutResId(): Int = R.layout.fragment_task
     override fun viewModelClass(): Class<TaskModel> = TaskModel::class.java
 
+    private var currentDialogShow : DialogFragment? = null
     private lateinit var progressBar: ProgressBar
     private var categories: List<String> = listOf()
 
@@ -68,7 +70,7 @@ class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Stru
         if (progressBar.visibility == View.GONE) {
             progressBar.visibility = View.VISIBLE
             Log.w("Task", "Update")
-            viewModel.updateData()
+            viewModel.updateData(requireActivity().resources.configuration.orientation == ORIENTATION_PORTRAIT)
         }
     }
 
@@ -96,6 +98,14 @@ class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Stru
     }
 
     override fun show(dialog: DialogFragment) {
+        currentDialogShow = dialog
+        Log.w("Dialog",currentDialogShow?.javaClass?.name?:"empty")
         dialog.show(requireActivity().supportFragmentManager, "Dialog")
+    }
+
+    override fun onPause() {
+        Log.w("Dialog",currentDialogShow?.javaClass?.name?:"empty")
+        currentDialogShow?.dismiss()
+        super.onPause()
     }
 }

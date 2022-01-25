@@ -4,6 +4,7 @@ import android.view.View
 
 sealed class Structure {
     open fun same(other: Any?): Boolean = equals(other)
+    open fun sameTitle(other: Any?): Boolean = false
 
     class Task(
         val title: String,
@@ -149,6 +150,14 @@ sealed class Structure {
             return true
         }
 
+        override fun sameTitle(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+            other as Category
+            if (title != other.title) return false
+            return true
+        }
+
         fun update(
             expand: Boolean? = null,
             color: String? = null
@@ -160,9 +169,53 @@ sealed class Structure {
     }
 
     class CategoryWithTask(
-        private val category: Category,
-        private val tasks: List<Task>
-    )
+        val category: Category,
+        val tasks: List<Task>
+    ): Structure(){
+        fun addTask(task: Task) =
+            CategoryWithTask(this.category, buildList<Task> {
+                this.addAll(tasks)
+                this.add(task)
+            })
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as CategoryWithTask
+
+            if (category != other.category) return false
+            if (tasks != other.tasks) return false
+
+            return true
+        }
+
+        override fun same(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as CategoryWithTask
+
+            if (!category.same(other.category)) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = category.hashCode()
+            result = 31 * result + tasks.hashCode()
+            return result
+        }
+
+        override fun sameTitle(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+            other as CategoryWithTask
+
+            if (!category.sameTitle(other.category)) return false
+            return true
+        }
+    }
 
     class NewTask(private val title: String) : Structure(){
         override fun equals(other: Any?): Boolean {

@@ -20,8 +20,8 @@ class TaskModelFactory(
         TaskModel(
             taskInteractor,categoryInteractor,
             CategoryToStructureMapper(),
-            TaskToStructureMapper(),
-            StructureToTaskMapper(),
+            TaskToStructureMapper(stringProvider),
+            StructureToTaskMapper(stringProvider),
             StructureToCategoryMapper(),
             stringProvider
         ) as T

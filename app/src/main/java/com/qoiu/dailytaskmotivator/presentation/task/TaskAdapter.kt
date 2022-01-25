@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Update
 import com.qoiu.dailytaskmotivator.databinding.CategoryItemBinding
+import com.qoiu.dailytaskmotivator.databinding.CategoryWithTaskItemBinding
 import com.qoiu.dailytaskmotivator.databinding.TaskItemBinding
 import com.qoiu.dailytaskmotivator.databinding.TaskNewItemBinding
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
@@ -18,7 +19,7 @@ class TaskAdapter(
     private val update: Update<Structure>,
     private val stringProvider: ResourceProvider.StringProvider,
     private val dialog: (Structure) -> Unit,
-    private val newTask: ()->Unit,
+    private val newTask: () -> Unit,
     private val doneAction: (Structure) -> Unit
 ) : RecyclerView.Adapter<BaseViewHolder<Structure>>() {
 
@@ -48,7 +49,8 @@ class TaskAdapter(
     override fun getItemViewType(position: Int): Int = when (list[position]) {
         is Structure.Task -> 0
         is Structure.Category -> 1
-        else -> 2
+        is Structure.CategoryWithTask -> 2
+        else -> 3
     }
 
     override fun onCreateViewHolder(
@@ -58,23 +60,30 @@ class TaskAdapter(
         when (viewType) {
             0 -> TaskViewHolder(
                 TaskItemBinding.inflate(
-                    LayoutInflater.from(parent.context), parent, false),
+                    LayoutInflater.from(parent.context), parent, false
+                ),
                 stringProvider,
                 dialog,
                 doneAction,
                 show,
                 update
             )
-            1 ->CategoryViewHolder(
+            1 -> CategoryViewHolder(
                 CategoryItemBinding.inflate(
-                    LayoutInflater.from(parent.context), parent, false),
+                    LayoutInflater.from(parent.context), parent, false
+                ),
                 update,
                 show
             )
+            2 -> CategoryWithTaskViewHolder(
+                CategoryWithTaskItemBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                ), update, show, stringProvider, dialog, newTask, doneAction
+            )
             else -> NewTaskViewHolder(
                 TaskNewItemBinding.inflate(
-                    LayoutInflater.from(parent.context),parent,false
-                ),newTask
+                    LayoutInflater.from(parent.context), parent, false
+                ), newTask
             )
         }
 

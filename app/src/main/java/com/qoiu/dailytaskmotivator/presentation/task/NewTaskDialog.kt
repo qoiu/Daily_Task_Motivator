@@ -10,6 +10,7 @@ import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.domain.TaskCalendar
 import com.qoiu.dailytaskmotivator.presentation.Structure
+import kotlin.math.min
 
 class NewTaskDialog(
     private val action: (task: Structure.Task) -> Unit,
@@ -163,7 +164,7 @@ class NewTaskDialog(
             expired,
             deadline,
             progress,
-            0,
+            min(taskType.currentProgress, progress),
             dailyTaskView.isChecked,
             reusableTaskView.isChecked,
             categoryView.text.toString(),

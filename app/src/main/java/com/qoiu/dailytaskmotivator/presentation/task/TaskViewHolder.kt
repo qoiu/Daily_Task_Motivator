@@ -47,7 +47,7 @@ class TaskViewHolder(
                 "${stringProvider.string(R.string.price)}: ${task.reward * -1}"
             } else {
                 setTextColor(ColorParse(task.color).getFontColor("#FFAAFFAA","#FF33AA33"))
-                "${stringProvider.string(R.string.cost)}: ${task.reward}"
+                "${stringProvider.string(R.string.reward)}: ${task.reward}"
             }
             text = str
         }

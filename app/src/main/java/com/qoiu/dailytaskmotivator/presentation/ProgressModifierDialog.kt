@@ -42,6 +42,7 @@ class ProgressModifierDialog(private val task: Structure.Task, private val updat
             update(task.update(currentProgress = progress))
             dismiss()
         }
+        progress = min(progress,task.progressMax)
         updateTitle()
         editView.setText("$progress")
         seekView.max = task.progressMax
