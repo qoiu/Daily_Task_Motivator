@@ -30,4 +30,6 @@
     <string name="price">Price</string>
     <string name="new_task">New task</string>
     <string name="others">Other</string>
+    <string name="task_restore_success">has been restored</string>
+    <string name="task_restore_message">Are you sure, you want to restore this task?\nYou will restore your gold as well</string>
 </resources>

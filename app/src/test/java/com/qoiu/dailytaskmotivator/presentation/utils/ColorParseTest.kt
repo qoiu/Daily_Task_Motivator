@@ -1,7 +1,6 @@
-package com.qoiu.dailytaskmotivator.presentation.task
+package com.qoiu.dailytaskmotivator.presentation.utils
 
-import com.qoiu.dailytaskmotivator.presentation.utils.ColorParse
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class ColorParseTest{

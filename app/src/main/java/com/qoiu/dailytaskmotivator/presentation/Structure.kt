@@ -37,7 +37,7 @@ sealed class Structure {
             }
 
         override fun toString(): String {
-            return "Task(title='$title', category='$category')"
+            return "Task(title='$title',\n category='$category')"
         }
 
         override fun hashCode(): Int {
@@ -173,7 +173,7 @@ sealed class Structure {
         val tasks: List<Task>
     ): Structure(){
         fun addTask(task: Task) =
-            CategoryWithTask(this.category, buildList<Task> {
+            CategoryWithTask(this.category, buildList {
                 this.addAll(tasks)
                 this.add(task)
             })
@@ -215,6 +215,8 @@ sealed class Structure {
             if (!category.sameTitle(other.category)) return false
             return true
         }
+
+        override fun toString(): String = "CategoryWithTask(category=$category, tasks=$tasks)"
     }
 
     class NewTask(private val title: String) : Structure(){

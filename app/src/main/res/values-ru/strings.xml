@@ -10,7 +10,7 @@
     <string name="expired">Истечёт</string>
     <string name="reward">Награда</string>
     <string name="progress">Прогресс</string>
-    <string name="done">Выполненр</string>
+    <string name="done">Выполнено</string>
     <string name="error_reward">Укажите награду</string>
     <string name="error_reward_incorrect">Неправильный формат награды</string>
     <string name="error_progress">Неправильный формат пргресса</string>
@@ -31,4 +31,7 @@
     <string name="price">Стоимость</string>
     <string name="new_task">Новая задача</string>
     <string name="others">Прочее</string>
+    <string name="task_restore_success">восстановлена</string>
+    <string name="task_restore_message">Вы уверены, что Вы хотите восстановить задачу</string>
+
 </resources>

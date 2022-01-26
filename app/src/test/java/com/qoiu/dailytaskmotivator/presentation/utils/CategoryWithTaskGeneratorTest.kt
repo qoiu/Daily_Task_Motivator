@@ -1,17 +1,14 @@
-package com.qoiu.dailytaskmotivator.presentation.task
+package com.qoiu.dailytaskmotivator.presentation.utils
 
-import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.domain.entities.Category
 import com.qoiu.dailytaskmotivator.domain.entities.Task
 import com.qoiu.dailytaskmotivator.presentation.CategoryToStructureMapper
-import com.qoiu.dailytaskmotivator.presentation.TaskToStructureMapper
 import com.qoiu.dailytaskmotivator.presentation.Structure
-import com.qoiu.dailytaskmotivator.presentation.utils.ListWithCategoriesGenerator
+import com.qoiu.dailytaskmotivator.presentation.TaskToStructureMapper
 import org.junit.Assert.*
-
 import org.junit.Test
 
-class ListWithCategoriesGeneratorTest {
+class CategoryWithTaskGeneratorTest{
 
     private val categoryA = Category("a", false)
     private val categoryAExp = Category("a", true)
@@ -21,6 +18,7 @@ class ListWithCategoriesGeneratorTest {
     private val categoryCExp = Category("c", true)
     private val categoryD = Category("d", false)
     private val categoryDExp = Category("d", true)
+    private val categoryOther = Category("Other", true)
     private val tasks = listOf(
         Task("a1", category = "a"),//0
         Task("a2", category = "a"),//1
@@ -39,63 +37,74 @@ class ListWithCategoriesGeneratorTest {
     )
     private val finalItem = Structure.NewTask("newTask")
 
-    private val taskMapper = TaskToStructureMapper()
+    private val taskMapper = TaskToStructureMapper(TestStringProvider("Other"))
     private val catMapper = CategoryToStructureMapper()
-    private fun tasksWithCategory() = tasks.forEach { taskMapper.map(it) }
-    private val stringProvider = object : ResourceProvider.StringProvider{
-        override fun string(id: Int): String ="newTask"
-    }
+    private val stringProvider = TestStringProvider("newTask")
 
     private val testTasks = listOf(tasks[12],tasks[7], tasks[6], tasks[0], tasks[1], tasks[10], tasks[3])
 
     private fun category(category: Category) = catMapper.map(category)
     private fun task(id: Int) = taskMapper.map(tasks[id])
+    private fun withTask(category: Category, list: List<Structure.Task> = emptyList()) = Structure.CategoryWithTask(
+        category(category),list
+    )
+
     @Test
     fun simple_all_closed() {
         val testCategory = listOf(categoryA, categoryB, categoryC, categoryD)
-        val actual = ListWithCategoriesGenerator(
+        val actual = CategoryWithTaskGenerator(
             testTasks, testCategory,
-            CategoryToStructureMapper(), TaskToStructureMapper(),stringProvider
+            catMapper, taskMapper,stringProvider
         ).execute()
-        val expected = listOf(category(categoryD),category(categoryC),category(categoryB),category(categoryA),task(12),finalItem)
+        val expected = listOf(
+            withTask(categoryD),withTask(categoryC),
+            withTask(categoryB),withTask(categoryA),
+            withTask(categoryOther, listOf(task(12))),finalItem)
         assertEquals(expected,actual)
     }
 
     @Test
     fun simple_c_expand(){
         val testCategory = listOf(categoryA, categoryB, categoryCExp, categoryD)
-        val actual = ListWithCategoriesGenerator(
+        val actual = CategoryWithTaskGenerator(
             testTasks, testCategory,
-            CategoryToStructureMapper(), TaskToStructureMapper(),stringProvider
+            catMapper, taskMapper,stringProvider
         ).execute()
-        val expected = listOf(category(categoryD),category(categoryCExp),task(7), task(6),category(categoryB),category(categoryA),task(12),finalItem)
+        val expected = listOf(
+            withTask(categoryD),withTask(categoryCExp, listOf(task(7), task(6))),
+            withTask(categoryB),withTask(categoryA),
+            withTask(categoryOther, listOf(task(12))),finalItem)
         assertEquals(expected,actual)
     }
 
     @Test
     fun simple_c_d_expand(){
         val categories = listOf(categoryA, categoryB, categoryCExp, categoryDExp)
-        val actual = ListWithCategoriesGenerator(
+        val actual = CategoryWithTaskGenerator(
             testTasks, categories,
-            CategoryToStructureMapper(), TaskToStructureMapper(),stringProvider
+            catMapper, taskMapper,stringProvider
         ).execute()
-        val expected = listOf(category(categories[3]),task(10),category(categories[2]),task(7), task(6),category(categories[1]),category(categories[0]),task(12),finalItem)
+        val expected = listOf(
+            withTask(categories[3], listOf(task(10))),
+            withTask(categories[2], listOf(task(7), task(6))),
+            withTask(categories[1]),withTask(categories[0]),
+            withTask(categoryOther, listOf(task(12))),finalItem)
         assertEquals(expected,actual)
     }
 
     @Test
     fun test_without_categories(){
         val categories = listOf(categoryAExp, categoryBExp, categoryCExp, categoryDExp)
-        val actual = ListWithCategoriesGenerator(
+        val actual = CategoryWithTaskGenerator(
             testTasks, emptyList(),
-            CategoryToStructureMapper(), TaskToStructureMapper(),stringProvider
+            catMapper, taskMapper,stringProvider
         ).execute()
         val expected = listOf(
-            category(categories[3]),task(10),
-            category(categories[2]),task(7), task(6),
-            category(categories[1]),task(3),
-            category(categories[0]),task(0),task(1),
-            task(12),finalItem)
+            withTask(categories[3], listOf(task(10))),
+            withTask(categories[2], listOf(task(7), task(6))),
+            withTask(categories[1], listOf(task(3))),
+            withTask(categories[0], listOf(task(0),task(1))),
+            withTask(categoryOther, listOf(task(12))),finalItem)
         assertEquals(expected,actual)
 
     }

@@ -1,5 +1,6 @@
 package com.qoiu.dailytaskmotivator.presentation.task
 
+import android.content.DialogInterface
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
@@ -18,6 +20,7 @@ import com.qoiu.dailytaskmotivator.databinding.FragmentTaskBinding
 import com.qoiu.dailytaskmotivator.presentation.BaseFragment
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
 import com.qoiu.dailytaskmotivator.presentation.Structure
+import java.util.*
 
 class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Structure>, DialogShow {
 
@@ -28,7 +31,8 @@ class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Stru
     override fun layoutResId(): Int = R.layout.fragment_task
     override fun viewModelClass(): Class<TaskModel> = TaskModel::class.java
 
-    private var currentDialogShow : DialogFragment? = null
+    private var lastDoneTask = Stack<Structure.Task>()
+    private var currentDialogShow: DialogFragment? = null
     private lateinit var progressBar: ProgressBar
     private var categories: List<String> = listOf()
 
@@ -40,8 +44,9 @@ class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Stru
         val adapter =
             TaskAdapter(emptyList(), this, this, ResourceProvider.String(requireContext()),
                 { editTask(it) },
-                { fabAction() }) {
+                { newTaskDialog() }) {
                 (it as Structure.Task).let { task ->
+                    if (!task.reusable) lastDoneTask.push(task)
                     (requireActivity() as Save.Gold).save(task.reward)
                     viewModel.deleteTask(task)
                 }
@@ -55,6 +60,33 @@ class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Stru
         })
     }
 
+    override fun onBackPress(): Boolean {
+        if (currentDialogShow != null) {
+            currentDialogShow!!.dismiss()
+            currentDialogShow = null
+            if (lastDoneTask.empty()) return false
+        }
+        if (!lastDoneTask.empty()) {
+            AlertDialog.Builder(requireContext())
+                .setTitle(lastDoneTask.peek().title)
+                .setMessage(getString(R.string.task_restore_message))
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    Toast.makeText(
+                        requireContext(),
+                        "${lastDoneTask.peek().title}: ${getString(R.string.task_restore_success)}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    (requireActivity() as Save.Gold).save(lastDoneTask.peek().reward * -1)
+                    update(lastDoneTask.pop())
+                }
+                .setNegativeButton(R.string.cancel) { dialogInterface: DialogInterface, _: Int ->
+                    dialogInterface.dismiss()
+                }
+                .create().show()
+            return false
+        }
+        return true
+    }
 
     override fun onStart() {
         super.onStart()
@@ -74,9 +106,12 @@ class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Stru
         }
     }
 
-    private fun fabAction() {
+    private fun newTaskDialog() {
         val dialog = NewTaskDialog(
-            { update(it) },
+            {
+                update(it)
+                currentDialogShow = null
+            },
             { Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show() },
             ResourceProvider.String(this.requireContext()),
             ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, categories)
@@ -87,7 +122,10 @@ class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Stru
 
     private fun editTask(taskDb: Structure) {
         val dialog = NewTaskDialog(
-            { update(it) },
+            {
+                update(it)
+                currentDialogShow = null
+            },
             { Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show() },
             ResourceProvider.String(this.requireContext()),
             ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, categories),
@@ -99,12 +137,10 @@ class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Stru
 
     override fun show(dialog: DialogFragment) {
         currentDialogShow = dialog
-        Log.w("Dialog",currentDialogShow?.javaClass?.name?:"empty")
         dialog.show(requireActivity().supportFragmentManager, "Dialog")
     }
 
     override fun onPause() {
-        Log.w("Dialog",currentDialogShow?.javaClass?.name?:"empty")
         currentDialogShow?.dismiss()
         super.onPause()
     }

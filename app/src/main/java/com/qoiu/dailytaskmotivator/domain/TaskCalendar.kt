@@ -9,7 +9,11 @@ class TaskCalendar(private val today: Date = Date()) {
         return dateFormatDateOnly.parse(now)
     }
 
-    fun now(): Date = dateFormatFull.parse(dateFormatFull.format(today))?:Date()
+    fun now(): Date {
+        val b = dateFormatFull.format(today)
+        val a = dateFormatFull.parse(b)
+        return a?:Date()
+    }
 
     fun today(): Date = dateFormatDateOnly.parse(dateFormatDateOnly.format(today))?:Date()
     fun formatDate(date: Long): String = dateFormatDateOnly.format(Date(date))
@@ -32,6 +36,6 @@ class TaskCalendar(private val today: Date = Date()) {
         val dateFormatFull = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH)
         val dateFormatDateOnly = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
         const val DAY = 86_400_000
-        val calendar = Calendar.getInstance()
+        val calendar: Calendar = Calendar.getInstance()
     }
 }

@@ -18,6 +18,10 @@ abstract class BaseFragment<T : ViewModel, B: ViewBinding> : Fragment() {
     protected abstract fun layoutResId(): Int
     protected abstract fun initBinding(inflater: LayoutInflater, container: ViewGroup?)
     open fun update() {}
+    /**
+    *If true, then super onBackPress in Activity
+     */
+    open fun onBackPress() = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +35,5 @@ abstract class BaseFragment<T : ViewModel, B: ViewBinding> : Fragment() {
     ): View? {
         initBinding(inflater,container)
         return binding.root
-//        return inflater.inflate(layoutResId(), container, false)
     }
 }

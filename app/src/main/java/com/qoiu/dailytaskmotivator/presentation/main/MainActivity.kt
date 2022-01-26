@@ -13,13 +13,13 @@ import com.qoiu.dailytaskmotivator.presentation.DialogShow
 class MainActivity : AppCompatActivity(), ViewModelRequest, Save.Gold, DialogShow {
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
+    private val navigator = Navigator.Base()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = getViewModel(MainViewModel::class.java, this)
-        val navigator = Navigator.Base(this, this)
         val bottomNav = binding.mainBottomNav
         bottomNav.setOnItemSelectedListener {
             setFragment(navigator.navigate(it.itemId))
@@ -32,10 +32,15 @@ class MainActivity : AppCompatActivity(), ViewModelRequest, Save.Gold, DialogSho
         updateGold()
     }
 
-    private fun setFragment(fragment: BaseFragment<*,*>) {
+    private fun setFragment(fragment: BaseFragment<*, *>) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, fragment)
             .commit()
+    }
+
+    override fun onBackPressed() {
+        if (navigator.onBackPress())
+            super.onBackPressed()
     }
 
     override fun <T : ViewModel> getViewModel(model: Class<T>, owner: ViewModelStoreOwner): T =
