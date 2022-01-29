@@ -62,7 +62,7 @@ class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Stru
 
     override fun onBackPress(): Boolean {
         if (currentDialogShow != null) {
-            currentDialogShow!!.dismiss()
+            currentDialogShow?.dismiss()
             currentDialogShow = null
             if (lastDoneTask.empty()) return false
         }
@@ -116,7 +116,6 @@ class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Stru
             ResourceProvider.String(this.requireContext()),
             ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, categories)
         )
-        dialog.isCancelable = false
         show(dialog)
     }
 
@@ -131,7 +130,6 @@ class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Stru
             ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, categories),
             taskDb as Structure.Task
         )
-        dialog.isCancelable = false
         show(dialog)
     }
 

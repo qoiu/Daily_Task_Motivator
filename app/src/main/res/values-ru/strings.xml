@@ -6,7 +6,7 @@
     <string name="shop">Магазин</string>
     <string name="add">Добавить</string>
     <string name="new_task_title">Новая задача</string>
-    <string name="deadline">Выполнить до</string>
+    <string name="deadline">Крайний срок</string>
     <string name="expired">Истечёт</string>
     <string name="reward">Награда</string>
     <string name="progress">Прогресс</string>

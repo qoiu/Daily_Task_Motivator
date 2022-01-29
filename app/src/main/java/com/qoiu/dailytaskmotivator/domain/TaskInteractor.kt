@@ -6,7 +6,7 @@ import com.qoiu.dailytaskmotivator.domain.entities.Task
 
 interface TaskInteractor {
     suspend fun loadTask(): List<Task>
-    suspend fun removeTask(task: Task)
+    suspend fun removeTask(data: Task)
     suspend fun save(data: Task)
 
     class Base(
@@ -21,12 +21,14 @@ interface TaskInteractor {
             }
             val list = mutableListOf<Task>()
             tasks.forEach {
-                if (!it.dailyTask && !it.reusable && it.expired < TaskCalendar().today().time && it.expired!=0L)
+                if (!it.dailyTask && !it.reusable && it.expired < TaskCalendar().today().time && it.expired != 0L)
                     removeTask(it)
                 else if (it.title == "" || it.reward == 0)
                     removeTask(it)
-                else if (it.deadline > 0)
-                    TaskGoldCoficient.Base(it).modify()
+                else if (it.deadline > 0) {
+                    TaskGoldCoefficient.Base(it).modify()
+                    list.add(it)
+                }
                 else if (!(it.dailyTask && it.expired > TaskCalendar().today().time))
                     list.add(it)
             }
@@ -37,19 +39,21 @@ interface TaskInteractor {
             repository.save(data)
         }
 
-        override suspend fun removeTask(task: Task) {
-            if (!task.dailyTask && !task.reusable) {
-                repository.remove(task)
+        override suspend fun removeTask(data: Task) {
+            if (!data.dailyTask && !data.reusable) {
+                repository.remove(data)
             } else {
-                if (!task.reusable) {
-                    if (task.progressMax > 0) task.currentProgress = 0
-                    task.expired = TaskCalendar().tillTomorrow()?.time ?: 0
-                    save(task)
-                }else{
-                    if (task.progressMax > 0) {
-                        task.currentProgress = 0
-                        save(task)
-                    }
+                if (!data.reusable) {
+                    if (data.progressMax > 0)
+                        save(
+                            data.update(
+                                currentProgress = 0,
+                                expired = TaskCalendar().tillTomorrow().time
+                            )
+                        )
+                } else {
+                    if (data.progressMax > 0)
+                        save(data.update(currentProgress = 0))
                 }
             }
         }

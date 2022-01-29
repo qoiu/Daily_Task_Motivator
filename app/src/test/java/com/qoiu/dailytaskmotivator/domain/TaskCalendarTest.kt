@@ -1,13 +1,12 @@
 package com.qoiu.dailytaskmotivator.domain
 
-import org.junit.Assert.*
-
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.util.*
 
 class TaskCalendarTest {
 
-    //day = 86_400_000
+    private val day = 86_400_000
     private val today = 1642971600000L
     private val tomorrow = 1643058000000L
     private val todayPlusTime = today + 25_000_000
@@ -18,19 +17,24 @@ class TaskCalendarTest {
         assertEquals(today, actual)
     }
 
+    @Test
+    fun dayAfterToday(){
+        val actual = TaskCalendar(Date(todayPlusTime)).dayFromToday(5)
+        val expected = today+day*5
+        assertEquals(expected, actual.time)
+    }
 
     @Test
     fun tillTomorrow() {
-        val actual = TaskCalendar(Date(todayPlusTime)).tillTomorrow()?.time
+        val actual = TaskCalendar(Date(todayPlusTime)).tillTomorrow().time
         assertEquals(tomorrow, actual)
     }
 
-    @Test
-    fun now() {
-        val actual = TaskCalendar(Date(todayPlusTime)).now().time
-        assertEquals(todayPlusTime, actual)
-    }
 
+    @Test(expected = IllegalStateException::class)
+    fun wrongFormat(){
+        TaskCalendar(format = "poiur").dayFromToday(1)
+    }
     @Test
     fun formatDate() {
         val actual = TaskCalendar().formatDate(todayPlusTime)

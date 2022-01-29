@@ -75,8 +75,6 @@ class TaskViewHolder(
                     } else {
                         update.update(it)
                     }
-                }.apply {
-                    isCancelable = false
                 })
             }
         }
