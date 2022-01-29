@@ -33,5 +33,6 @@
     <string name="others">Прочее</string>
     <string name="task_restore_success">восстановлена</string>
     <string name="task_restore_message">Вы уверены, что Вы хотите восстановить задачу</string>
+    <string name="clear">Clear</string>
 
 </resources>

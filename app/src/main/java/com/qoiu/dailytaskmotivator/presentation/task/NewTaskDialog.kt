@@ -1,9 +1,13 @@
 package com.qoiu.dailytaskmotivator.presentation.task
 
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.qoiu.dailytaskmotivator.R
@@ -29,8 +33,9 @@ class NewTaskDialog(
     }
 
     private lateinit var editableView: EditText
-    private lateinit var calendarView: CalendarView
+    private lateinit var calendar: CalendarView
     private lateinit var datesView: LinearLayout
+    private lateinit var calendarView: LinearLayout
     private lateinit var dailyTaskView: CheckBox
     private lateinit var reusableTaskView: CheckBox
     private lateinit var titleView: EditText
@@ -46,6 +51,35 @@ class NewTaskDialog(
         init(view)
     }
 
+    private fun init(view: View) {
+        titleView = view.findViewById(R.id.edit_title)
+        datesView = view.findViewById(R.id.edit_dates)
+        descriptionView = view.findViewById(R.id.edit_body)
+        rewardView = view.findViewById(R.id.edit_reward)
+        progressView = view.findViewById(R.id.edit_progress)
+        deadlineView = view.findViewById(R.id.edit_deadline)
+        expireView = view.findViewById(R.id.edit_expire)
+        dailyTaskView = view.findViewById(R.id.edit_daily)
+        reusableTaskView = view.findViewById(R.id.edit_reusable)
+        calendar = view.findViewById(R.id.calendarView)
+        calendarView = view.findViewById(R.id.calendarLayout)
+        categoryView = view.findViewById(R.id.edit_category)
+        deadlineView.inputType = 0
+        expireView.inputType = 0
+        setActions(view)
+        categoryView.setOnClickListener {
+            categoryView.setText(categoryView.text.toString())
+        }
+        categoryView.setAdapter(categoriesAdapter)
+        if (taskType.title.isNotEmpty())
+            fillView(taskType)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            dialog?.window?.setDecorFitsSystemWindows(true)
+        } else {
+            dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        }
+    }
+
     private fun setActions(view: View) {
         dailyTaskView.setOnCheckedChangeListener { _, _ ->
             datesVisible()
@@ -53,7 +87,7 @@ class NewTaskDialog(
         reusableTaskView.setOnCheckedChangeListener { _, _ ->
             datesVisible()
         }
-        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+        calendar.setOnDateChangeListener { _, year, month, dayOfMonth ->
             editableView.setText(
                 TaskCalendar().formatDate(
                     TaskCalendar().getDate(year, month, dayOfMonth)
@@ -79,27 +113,9 @@ class NewTaskDialog(
         view.findViewById<Button>(R.id.edit_cancel).setOnClickListener {
             this.dismiss()
         }
-    }
-
-    private fun init(view: View) {
-        titleView = view.findViewById(R.id.edit_title)
-        datesView = view.findViewById(R.id.edit_dates)
-        descriptionView = view.findViewById(R.id.edit_body)
-        rewardView = view.findViewById(R.id.edit_reward)
-        progressView = view.findViewById(R.id.edit_progress)
-        deadlineView = view.findViewById(R.id.edit_deadline)
-        expireView = view.findViewById(R.id.edit_expire)
-        dailyTaskView = view.findViewById(R.id.edit_daily)
-        reusableTaskView = view.findViewById(R.id.edit_reusable)
-        calendarView = view.findViewById(R.id.calendarView)
-        categoryView = view.findViewById(R.id.edit_category)
-        setActions(view)
-        categoryView.setOnClickListener {
-            categoryView.setText(categoryView.text.toString())
+        view.findViewById<Button>(R.id.edit_calendar_clear_btn).setOnClickListener {
+            editableView.setText("")
         }
-        categoryView.setAdapter(categoriesAdapter)
-        if (taskType.title.isNotEmpty())
-            fillView(taskType)
     }
 
     private fun fillView(task: Structure.Task) {
@@ -173,7 +189,9 @@ class NewTaskDialog(
     }
 
     private fun update(view: EditText, focused: Boolean) {
-        if (view.inputType == 20 && focused) {
+        if (view.inputType == EditText.AUTOFILL_TYPE_NONE && focused) {
+            (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow(view.windowToken, 0)
             editableView = view
             calendarView.visibility = View.VISIBLE
         } else {

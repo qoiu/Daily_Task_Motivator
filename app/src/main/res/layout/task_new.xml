@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -7,134 +7,154 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|top"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/edit_title"
-                style="@style/CenteredView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/title" />
-
-            <AutoCompleteTextView
-                android:id="@+id/edit_category"
-                android:layout_gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:completionThreshold="0"
-                android:hint="@string/category" />
-
-
-            <EditText
-                android:id="@+id/edit_body"
-                style="@style/CenteredView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/description" />
-
-            <EditText
-                android:id="@+id/edit_reward"
-                style="@style/CenteredView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/reward"
-                android:inputType="number" />
-
-            <EditText
-                android:id="@+id/edit_progress"
-                style="@style/CenteredView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/max_value"
-                android:inputType="number" />
-
-            <CheckBox
-                android:id="@+id/edit_daily"
-                style="@style/RowLeft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/daily_task" />
-
-            <CheckBox
-                android:id="@+id/edit_reusable"
-                style="@style/RowLeft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/reusable_task" />
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/edit_dates"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
+                <EditText
+                    android:id="@+id/edit_title"
                     style="@style/CenteredView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/deadline" />
+                    android:hint="@string/title" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/edit_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:completionThreshold="0"
+                    android:hint="@string/category" />
+
 
                 <EditText
-                    android:id="@+id/edit_deadline"
+                    android:id="@+id/edit_body"
                     style="@style/CenteredView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/default_date"
-                    android:inputType="date" />
-
-                <TextView
-                    style="@style/CenteredView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/expire_date" />
+                    android:hint="@string/description" />
 
                 <EditText
-                    android:id="@+id/edit_expire"
+                    android:id="@+id/edit_reward"
                     style="@style/CenteredView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="@string/default_date"
-                    android:inputType="date" />
+                    android:hint="@string/reward"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/edit_progress"
+                    style="@style/CenteredView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/max_value"
+                    android:inputType="number" />
+
+                <CheckBox
+                    android:id="@+id/edit_daily"
+                    style="@style/RowLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/daily_task" />
+
+                <CheckBox
+                    android:id="@+id/edit_reusable"
+                    style="@style/RowLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reusable_task" />
+
+                <LinearLayout
+                    android:id="@+id/edit_dates"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/CenteredView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/deadline" />
+
+                    <EditText
+                        android:id="@+id/edit_deadline"
+                        style="@style/CenteredView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/default_date"
+                        android:inputType="" />
+
+                    <TextView
+                        style="@style/CenteredView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/expire_date" />
+
+                    <EditText
+                        android:id="@+id/edit_expire"
+                        style="@style/CenteredView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/default_date"
+                        android:inputType="" />
+                </LinearLayout>
+
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/calendarLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <CalendarView
+                    android:id="@+id/calendarView"
+                    style="@style/CenteredView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="300dp" />
+
+                <Button
+                    android:id="@+id/edit_calendar_clear_btn"
+                    style="?attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clear" />
+
+            </LinearLayout>
         </LinearLayout>
 
-        <CalendarView
-            android:id="@+id/calendarView"
-            style="@style/CenteredView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/edit_btn"
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:layout_marginHorizontal="8dp"
-            android:text="@string/ok" />
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/edit_cancel"
-            style="?attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:layout_marginHorizontal="8dp"
-            android:text="@string/cancel" />
+            <Button
+                android:id="@+id/edit_btn"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ok" />
 
+            <Button
+                android:id="@+id/edit_cancel"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel" />
+
+        </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>
