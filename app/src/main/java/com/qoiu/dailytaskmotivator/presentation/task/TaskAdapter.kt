@@ -25,24 +25,7 @@ class TaskAdapter(
 ) : RecyclerView.Adapter<BaseViewHolder<Structure>>() {
 
     fun update(data: List<Structure>) {
-        val util = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-            override fun getOldListSize(): Int = list.size
-
-            override fun getNewListSize(): Int = data.size
-
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                val oldTask = list[oldItemPosition]
-                val newTask = data[newItemPosition]
-                return oldTask.same(newTask)
-            }
-
-            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                val oldTask = list[oldItemPosition]
-                val newTask = data[newItemPosition]
-                return oldTask == newTask
-            }
-
-        })
+        val util = DiffUtil.calculateDiff(DiffCallback(data))
         list = data
         util.dispatchUpdatesTo(this)
     }
@@ -51,7 +34,7 @@ class TaskAdapter(
         is Structure.Task -> 0
         is Structure.Category -> 1
         is Structure.CategoryWithTask -> 2
-        else -> 3
+        is Structure.NewTask -> 3
     }
 
     override fun onCreateViewHolder(
@@ -93,4 +76,22 @@ class TaskAdapter(
     }
 
     override fun getItemCount(): Int = list.size
+
+    private inner class DiffCallback(private val data: List<Structure>) : DiffUtil.Callback() {
+        override fun getOldListSize(): Int = list.size
+
+        override fun getNewListSize(): Int = data.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldTask = list[oldItemPosition]
+            val newTask = data[newItemPosition]
+            return oldTask.same(newTask)
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldTask = list[oldItemPosition]
+            val newTask = data[newItemPosition]
+            return oldTask == newTask
+        }
+    }
 }

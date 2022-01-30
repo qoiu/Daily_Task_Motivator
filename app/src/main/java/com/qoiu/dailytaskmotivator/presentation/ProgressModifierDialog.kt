@@ -36,14 +36,7 @@ class ProgressModifierDialog(private val task: Structure.Task, private val updat
         editView.setText("$progress")
         seekView.max = task.progressMax
         seekView.progress = progress
-        seekView.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                editView.setText(progress.toString())
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
+        seekView.setOnSeekBarChangeListener(SeekListener())
         editView.doOnTextChanged { _, _, _, _ ->
             try {
                 var int = editView.text.toString().toInt()
@@ -60,5 +53,14 @@ class ProgressModifierDialog(private val task: Structure.Task, private val updat
     private fun updateTitle() {
         val text = "${task.title} (${progress}/${task.progressMax})"
         titleView.text = text
+    }
+
+    private inner class SeekListener: SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                editView.setText(progress.toString())
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
     }
 }

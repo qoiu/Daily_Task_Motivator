@@ -1,18 +1,14 @@
 package com.qoiu.dailytaskmotivator.domain
 
-import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.domain.entities.DefaultTasks
 import com.qoiu.dailytaskmotivator.domain.entities.Task
+import com.qoiu.dailytaskmotivator.presentation.utils.TestStringProvider
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
-
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.lang.IllegalStateException
 
 class TaskInteractorTest {
-    private val strProvider = object : ResourceProvider.StringProvider{
-        override fun string(id: Int): String ="defaultTask"
-    }
+    private val strProvider = TestStringProvider("defaultTask")
 
     private val simpleTask = Task("simpleTask", reward = 10)
     private val emptyTitle = Task("", reward = 10)
