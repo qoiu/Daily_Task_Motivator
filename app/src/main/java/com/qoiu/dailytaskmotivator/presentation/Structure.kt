@@ -1,6 +1,7 @@
 package com.qoiu.dailytaskmotivator.presentation
 
 import android.view.View
+import kotlin.math.min
 
 sealed class Structure {
     open fun same(other: Any?): Boolean = equals(other)
@@ -13,7 +14,7 @@ sealed class Structure {
         val expired: Long = 0L,
         val deadline: Long = 0L,
         val progressMax: Int = 0,
-        val currentProgress: Int = 0,
+        currentProgress: Int = 0,
         val dailyTask: Boolean = false,
         val reusable: Boolean = false,
         val category: String = "",
@@ -21,6 +22,8 @@ sealed class Structure {
     ) : Structure() {
 
         private val map = HashMap<Attr, Boolean>()
+        val currentProgress = currentProgress
+            get() = min(field, progressMax)
 
         init {
             map[Attr.BODY] = body != ""
@@ -35,6 +38,7 @@ sealed class Structure {
             } else {
                 View.GONE
             }
+
 
         override fun toString(): String {
             return "Task(title='$title',\n category='$category')"
@@ -101,6 +105,7 @@ sealed class Structure {
             color ?: this.color
         )
 
+
         companion object {
             enum class Attr {
                 BODY, EXPIRED, DEADLINE, PROGRESS
@@ -138,7 +143,7 @@ sealed class Structure {
             return true
         }
 
-        override fun same(other: Any?): Boolean{
+        override fun same(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
 
@@ -163,15 +168,15 @@ sealed class Structure {
             color: String? = null
         ) = Category(
             title,
-            expand?:this.expand,
-            color?:this.color
+            expand ?: this.expand,
+            color ?: this.color
         )
     }
 
     class CategoryWithTask(
         val category: Category,
         val tasks: List<Task>
-    ): Structure(){
+    ) : Structure() {
         fun addTask(task: Task) =
             CategoryWithTask(this.category, buildList {
                 this.addAll(tasks)
@@ -219,7 +224,7 @@ sealed class Structure {
         override fun toString(): String = "CategoryWithTask(category=$category, tasks=$tasks)"
     }
 
-    class NewTask(private val title: String) : Structure(){
+    class NewTask(private val title: String) : Structure() {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false

@@ -4,6 +4,7 @@ import com.qoiu.dailytaskmotivator.Builder
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.domain.TaskCalendar
+import kotlin.math.max
 import kotlin.math.min
 
 class StructureTaskBuilder(private val stringProvider: ResourceProvider.StringProvider) : Builder<Structure.Task> {
@@ -77,7 +78,7 @@ class StructureTaskBuilder(private val stringProvider: ResourceProvider.StringPr
         }
 
     fun progress(value: Int): StructureTaskBuilder{
-        progressMax = value
+        progressMax = max(0,value)
         return this
     }
 
