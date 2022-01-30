@@ -39,10 +39,6 @@ interface Observe<T> {
     fun observe(owner: LifecycleOwner, observer: Observer<T>)
 }
 
-interface ViewModelRequest {
-    fun <T : ViewModel> getViewModel(model: Class<T>, owner: ViewModelStoreOwner): T
-}
-
 interface Execute<T>{
     fun execute(): T
 }

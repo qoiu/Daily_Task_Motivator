@@ -6,7 +6,7 @@ import com.qoiu.dailytaskmotivator.presentation.BaseViewModel
 
 class MainViewModel(
     communication: Communication<Int>,
-    private val shared: ResourceProvider.Shared
+    private val shared: ResourceProvider.SharedProvider
 )
     : BaseViewModel<Int>(
     communication

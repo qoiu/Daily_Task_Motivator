@@ -6,14 +6,14 @@ import com.qoiu.dailytaskmotivator.presentation.shop.ShopFragment
 import com.qoiu.dailytaskmotivator.presentation.task.TaskFragment
 
 interface Navigator {
-    fun navigate(id: Int): BaseFragment<*,*>
+    fun navigate(id: Int): BaseFragment<*>
     fun updateFragment()
     fun onBackPress() : Boolean
 
     class Base: Navigator {
 
-        private lateinit var fragment: BaseFragment<*,*>
-        override fun navigate(id: Int): BaseFragment<*,*> {
+        private lateinit var fragment: BaseFragment<*>
+        override fun navigate(id: Int): BaseFragment<*> {
             fragment = when (id) {
                 R.id.nav_tasks -> TaskFragment()
                 R.id.nav_shop -> ShopFragment()

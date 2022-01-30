@@ -2,7 +2,6 @@ package com.qoiu.dailytaskmotivator.presentation.task
 
 import android.content.DialogInterface
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,24 +19,21 @@ import com.qoiu.dailytaskmotivator.databinding.FragmentTaskBinding
 import com.qoiu.dailytaskmotivator.presentation.BaseFragment
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
 import com.qoiu.dailytaskmotivator.presentation.Structure
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
-class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Structure>, DialogShow {
+class TaskFragment : BaseFragment<FragmentTaskBinding>(), Update<Structure>, DialogShow {
 
+    private val model: TaskModel by viewModel()
     override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) =
         FragmentTaskBinding.inflate(inflater, container, false)
-
-
-    override fun layoutResId(): Int = R.layout.fragment_task
-    override fun viewModelClass(): Class<TaskModel> = TaskModel::class.java
 
     private var lastDoneTask = Stack<Structure.Task>()
     private var currentDialogShow: DialogFragment? = null
     private lateinit var progressBar: ProgressBar
     private var categories: List<String> = listOf()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun init(binding: FragmentTaskBinding) {
         progressBar = binding.taskProgressBar
         progressBar.visibility = View.GONE
         val recyclerView = binding.taskRecycler
@@ -48,11 +44,11 @@ class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Stru
                 (it as Structure.Task).let { task ->
                     if (!task.reusable) lastDoneTask.push(task)
                     (requireActivity() as Save.Gold).save(task.reward)
-                    viewModel.deleteTask(task)
+                    model.deleteTask(task)
                 }
             }
         recyclerView.adapter = adapter
-        viewModel.observe(this, { list ->
+        model.observe(this, { list ->
             progressBar.visibility = View.GONE
             Log.w("Task", "Updated")
             categories = list.filterIsInstance<Structure.Category>().map { it.title }
@@ -94,7 +90,7 @@ class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Stru
     }
 
     override fun update(data: Structure) {
-        viewModel.saveTask(data)
+        model.saveTask(data)
         progressBar.visibility = View.VISIBLE
     }
 
@@ -102,7 +98,7 @@ class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Stru
         if (progressBar.visibility == View.GONE) {
             progressBar.visibility = View.VISIBLE
             Log.w("Task", "Update")
-            viewModel.updateData(requireActivity().resources.configuration.orientation == ORIENTATION_PORTRAIT)
+            model.updateData(requireActivity().resources.configuration.orientation == ORIENTATION_PORTRAIT)
         }
     }
 
