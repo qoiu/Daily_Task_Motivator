@@ -10,6 +10,7 @@ import com.qoiu.dailytaskmotivator.databinding.CategoryItemBinding
 import com.qoiu.dailytaskmotivator.databinding.CategoryWithTaskItemBinding
 import com.qoiu.dailytaskmotivator.databinding.TaskItemBinding
 import com.qoiu.dailytaskmotivator.databinding.TaskNewItemBinding
+import com.qoiu.dailytaskmotivator.presentation.BaseViewHolder
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
 import com.qoiu.dailytaskmotivator.presentation.Structure
 

@@ -4,6 +4,7 @@ import android.graphics.Color
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Update
 import com.qoiu.dailytaskmotivator.databinding.CategoryWithTaskItemBinding
+import com.qoiu.dailytaskmotivator.presentation.BaseViewHolder
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
 import com.qoiu.dailytaskmotivator.presentation.Structure
 import com.qoiu.dailytaskmotivator.presentation.utils.ColorParse
@@ -16,7 +17,7 @@ class CategoryWithTaskViewHolder(
     private val dialog: (Structure) -> Unit,
     private val newTask: ()->Unit,
     private val doneAction: (Structure) -> Unit
-): BaseViewHolder<Structure>(view.root) {
+): BaseViewHolder<Structure>(view) {
     override fun bind(data: Structure) {
         data as Structure.CategoryWithTask
         val category = data.category

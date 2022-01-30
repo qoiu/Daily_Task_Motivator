@@ -24,9 +24,9 @@ import java.util.*
 
 class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Structure>, DialogShow {
 
-    override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
-        binding = FragmentTaskBinding.inflate(inflater, container, false)
-    }
+    override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentTaskBinding.inflate(inflater, container, false)
+
 
     override fun layoutResId(): Int = R.layout.fragment_task
     override fun viewModelClass(): Class<TaskModel> = TaskModel::class.java
@@ -141,5 +141,10 @@ class TaskFragment : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<Stru
     override fun onPause() {
         currentDialogShow?.dismiss()
         super.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        currentDialogShow = null
     }
 }

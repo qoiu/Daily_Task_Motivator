@@ -10,7 +10,6 @@ class ShopFragment : BaseFragment<ShopModel,FragmentShopBinding>() {
 
     override fun viewModelClass(): Class<ShopModel> = ShopModel::class.java
     override fun layoutResId(): Int = R.layout.fragment_shop
-    override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
-        binding = FragmentShopBinding.inflate(inflater,container,false)
-    }
+    override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentShopBinding.inflate(inflater,container,false)
 }

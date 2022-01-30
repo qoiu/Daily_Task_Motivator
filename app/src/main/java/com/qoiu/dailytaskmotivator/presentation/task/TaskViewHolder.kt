@@ -6,6 +6,7 @@ import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Update
 import com.qoiu.dailytaskmotivator.databinding.TaskItemBinding
 import com.qoiu.dailytaskmotivator.domain.TaskCalendar
+import com.qoiu.dailytaskmotivator.presentation.BaseViewHolder
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
 import com.qoiu.dailytaskmotivator.presentation.ProgressModifierDialog
 import com.qoiu.dailytaskmotivator.presentation.Structure
@@ -19,7 +20,7 @@ class TaskViewHolder(
     private val doneAction: (Structure) -> Unit,
     private val show: DialogShow,
     private val update: Update<Structure>
-) : BaseViewHolder<Structure>(view.root) {
+) : BaseViewHolder<Structure>(view) {
 
     override fun bind(data: Structure) {
         val task = data as Structure.Task

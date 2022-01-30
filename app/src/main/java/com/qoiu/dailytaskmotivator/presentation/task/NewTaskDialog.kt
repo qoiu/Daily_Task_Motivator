@@ -2,17 +2,16 @@ package com.qoiu.dailytaskmotivator.presentation.task
 
 import android.content.Context
 import android.os.Build
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.fragment.app.DialogFragment
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
+import com.qoiu.dailytaskmotivator.databinding.TaskNewBinding
 import com.qoiu.dailytaskmotivator.domain.TaskCalendar
+import com.qoiu.dailytaskmotivator.presentation.BaseDialogFragment
 import com.qoiu.dailytaskmotivator.presentation.Structure
 import kotlin.math.min
 
@@ -22,15 +21,9 @@ class NewTaskDialog(
     private val stringProvider: ResourceProvider.StringProvider,
     private val categoriesAdapter: ArrayAdapter<String>,
     private val taskType: Structure.Task = Structure.Task("")
-) : DialogFragment() {
+) : BaseDialogFragment<TaskNewBinding>() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.task_new, container, false)
-    }
+    override fun initBinding(): TaskNewBinding = TaskNewBinding.inflate(LayoutInflater.from(context))
 
     private lateinit var editableView: EditText
     private lateinit var calendar: CalendarView
@@ -46,27 +39,22 @@ class NewTaskDialog(
     private lateinit var expireView: EditText
     private lateinit var categoryView: AutoCompleteTextView
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        init(view)
-    }
-
-    private fun init(view: View) {
-        titleView = view.findViewById(R.id.edit_title)
-        datesView = view.findViewById(R.id.edit_dates)
-        descriptionView = view.findViewById(R.id.edit_body)
-        rewardView = view.findViewById(R.id.edit_reward)
-        progressView = view.findViewById(R.id.edit_progress)
-        deadlineView = view.findViewById(R.id.edit_deadline)
-        expireView = view.findViewById(R.id.edit_expire)
-        dailyTaskView = view.findViewById(R.id.edit_daily)
-        reusableTaskView = view.findViewById(R.id.edit_reusable)
-        calendar = view.findViewById(R.id.calendarView)
-        calendarView = view.findViewById(R.id.calendarLayout)
-        categoryView = view.findViewById(R.id.edit_category)
+    override fun init(binding: TaskNewBinding){
+        titleView = binding.editTitle
+        datesView = binding.editDates
+        descriptionView = binding.editBody
+        rewardView = binding.editReward
+        progressView = binding.editProgress
+        deadlineView = binding.editDeadline
+        expireView = binding.editExpire
+        dailyTaskView = binding.editDaily
+        reusableTaskView = binding.editReusable
+        calendar = binding.calendarView
+        calendarView = binding.calendarLayout
+        categoryView = binding.editCategory
         deadlineView.inputType = 0
         expireView.inputType = 0
-        setActions(view)
+        setActions(binding)
         categoryView.setOnClickListener {
             categoryView.setText(categoryView.text.toString())
         }
@@ -80,7 +68,7 @@ class NewTaskDialog(
         }
     }
 
-    private fun setActions(view: View) {
+    private fun setActions(binding: TaskNewBinding) {
         dailyTaskView.setOnCheckedChangeListener { _, _ ->
             datesVisible()
         }
@@ -101,7 +89,7 @@ class NewTaskDialog(
         expireView.setOnFocusChangeListener { _, hasFocus ->
             update(expireView, hasFocus)
         }
-        view.findViewById<Button>(R.id.edit_btn).setOnClickListener {
+        binding.editBtn.setOnClickListener {
             try {
                 val task = getTask()
                 action(task)
@@ -110,10 +98,10 @@ class NewTaskDialog(
                 toast(e.localizedMessage ?: stringProvider.string(R.string.error_strange))
             }
         }
-        view.findViewById<Button>(R.id.edit_cancel).setOnClickListener {
+        binding.editCancel.setOnClickListener {
             this.dismiss()
         }
-        view.findViewById<Button>(R.id.edit_calendar_clear_btn).setOnClickListener {
+        binding.editCalendarClearBtn.setOnClickListener {
             editableView.setText("")
         }
     }

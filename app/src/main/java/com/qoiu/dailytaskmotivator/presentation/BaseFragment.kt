@@ -9,17 +9,18 @@ import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.qoiu.dailytaskmotivator.ViewModelRequest
 
-abstract class BaseFragment<T : ViewModel, B: ViewBinding> : Fragment() {
+abstract class BaseFragment<Model : ViewModel, Binding : ViewBinding> : Fragment() {
 
-
-    protected lateinit var binding: B
-    protected lateinit var viewModel: T
-    protected abstract fun viewModelClass(): Class<T>
+    private var _binding: Binding? = null
+    protected val binding get() = _binding!!
+    protected lateinit var viewModel: Model
+    protected abstract fun viewModelClass(): Class<Model>
     protected abstract fun layoutResId(): Int
-    protected abstract fun initBinding(inflater: LayoutInflater, container: ViewGroup?)
+    protected abstract fun initBinding(inflater: LayoutInflater, container: ViewGroup?): Binding
     open fun update() {}
+
     /**
-    *If true, then super onBackPress in Activity
+     *If true, then super onBackPress in Activity
      */
     open fun onBackPress() = true
 
@@ -33,7 +34,12 @@ abstract class BaseFragment<T : ViewModel, B: ViewBinding> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initBinding(inflater,container)
+        _binding = initBinding(inflater, container)
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

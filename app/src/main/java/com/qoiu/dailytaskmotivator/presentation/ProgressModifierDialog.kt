@@ -1,29 +1,20 @@
 package com.qoiu.dailytaskmotivator.presentation
 
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.DialogFragment
-import com.qoiu.dailytaskmotivator.R
+import com.qoiu.dailytaskmotivator.databinding.ProgressModifierBinding
 import kotlin.math.max
 import kotlin.math.min
 
 class ProgressModifierDialog(private val task: Structure.Task, private val update: (task: Structure.Task) -> Unit) :
-    DialogFragment() {
+    BaseDialogFragment<ProgressModifierBinding>() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.progress_modifier, container, false)
-    }
+    override fun initBinding(): ProgressModifierBinding = ProgressModifierBinding.inflate(
+        LayoutInflater.from(context))
 
     private lateinit var titleView: TextView
     private lateinit var editView: EditText
@@ -31,13 +22,12 @@ class ProgressModifierDialog(private val task: Structure.Task, private val updat
     private lateinit var doneView: Button
     private var progress: Int = 0
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun init(binding: ProgressModifierBinding) {
         progress = task.currentProgress
-        titleView = view.findViewById(R.id.progress_text)
-        editView = view.findViewById(R.id.progress_edit)
-        seekView = view.findViewById(R.id.progress_seekbar)
-        doneView = view.findViewById(R.id.progress_done)
+        titleView = binding.progressText
+        editView = binding.progressEdit
+        seekView = binding.progressSeekbar
+        doneView = binding.progressDone
         doneView.setOnClickListener {
             update(task.update(currentProgress = progress))
             dismiss()
