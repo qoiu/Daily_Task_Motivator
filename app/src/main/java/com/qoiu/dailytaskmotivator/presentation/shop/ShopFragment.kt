@@ -5,12 +5,15 @@ import android.view.ViewGroup
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.databinding.FragmentShopBinding
 import com.qoiu.dailytaskmotivator.presentation.BaseFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class ShopFragment : BaseFragment<ShopModel,FragmentShopBinding>() {
+class ShopFragment : BaseFragment<FragmentShopBinding>() {
 
-    override fun viewModelClass(): Class<ShopModel> = ShopModel::class.java
-    override fun layoutResId(): Int = R.layout.fragment_shop
-    override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
-        binding = FragmentShopBinding.inflate(inflater,container,false)
+    private val model: ShopModel by viewModel()
+    override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentShopBinding.inflate(inflater,container,false)
+
+    override fun init(binding: FragmentShopBinding) {
+        TODO("Not yet implemented")
     }
 }

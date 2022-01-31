@@ -5,32 +5,38 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
-import com.qoiu.dailytaskmotivator.ViewModelRequest
 
-abstract class BaseFragment<T : ViewModel, B: ViewBinding> : Fragment() {
+abstract class BaseFragment<Binding : ViewBinding> : Fragment() {
 
-
-    protected lateinit var binding: B
-    protected lateinit var viewModel: T
-    protected abstract fun viewModelClass(): Class<T>
-    protected abstract fun layoutResId(): Int
-    protected abstract fun initBinding(inflater: LayoutInflater, container: ViewGroup?)
+    private var _binding: Binding? = null
+    private val binding get() = _binding!!
+    protected abstract fun initBinding(inflater: LayoutInflater, container: ViewGroup?): Binding
     open fun update() {}
+    abstract fun init(binding: Binding)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = (requireActivity() as ViewModelRequest).getViewModel(viewModelClass(), this)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init(binding)
     }
+
+    /**
+     *If true, then super onBackPress in Activity
+     */
+    open fun onBackPress() = true
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initBinding(inflater,container)
+        _binding = initBinding(inflater, container)
         return binding.root
-//        return inflater.inflate(layoutResId(), container, false)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

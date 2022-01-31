@@ -1,15 +1,16 @@
 package com.qoiu.dailytaskmotivator.presentation.task
 
-import android.os.Build
-import android.os.Bundle
+import android.content.DialogInterface
+import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.RecyclerView
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import com.qoiu.dailytaskmotivator.R
 import com.qoiu.dailytaskmotivator.ResourceProvider
 import com.qoiu.dailytaskmotivator.Save
@@ -17,66 +18,79 @@ import com.qoiu.dailytaskmotivator.Update
 import com.qoiu.dailytaskmotivator.databinding.FragmentTaskBinding
 import com.qoiu.dailytaskmotivator.presentation.BaseFragment
 import com.qoiu.dailytaskmotivator.presentation.DialogShow
-import com.qoiu.dailytaskmotivator.presentation.TaskWithCategories
+import com.qoiu.dailytaskmotivator.presentation.Structure
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
 
-class TaskFragment(
-    private val saveGold: Save.Gold,
-    private val show: DialogShow
-) : BaseFragment<TaskModel, FragmentTaskBinding>(), Update<TaskWithCategories> {
+class TaskFragment : BaseFragment<FragmentTaskBinding>(), Update<Structure>, DialogShow {
 
-    override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
-        binding = FragmentTaskBinding.inflate(inflater, container, false)
-    }
+    private val model: TaskModel by viewModel()
+    override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentTaskBinding.inflate(inflater, container, false)
 
-    override fun layoutResId(): Int = R.layout.fragment_task
-    override fun viewModelClass(): Class<TaskModel> = TaskModel::class.java
-
+    private var lastDoneTask = Stack<Structure.Task>()
+    private var currentDialogShow: DialogFragment? = null
     private lateinit var progressBar: ProgressBar
+    private var categories: List<String> = listOf()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun init(binding: FragmentTaskBinding) {
         progressBar = binding.taskProgressBar
         progressBar.visibility = View.GONE
         val recyclerView = binding.taskRecycler
-        val fab = binding.addFab
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            setUpdateListener(recyclerView)
-        }
-        fab.setOnClickListener { fabAction() }
         val adapter =
-            TaskAdapter(emptyList(), show, this, ResourceProvider.String(requireContext()),
-                { editTask(it) }) {
-                (it as TaskWithCategories.Task).let {
-                    saveGold.save((it).reward)
-                    viewModel.deleteTask(it)
+            TaskAdapter(emptyList(), this, this, ResourceProvider.String(requireContext()),
+                { editTask(it) },
+                { newTaskDialog() }) {
+                (it as Structure.Task).let { task ->
+                    if (!task.reusable) lastDoneTask.push(task)
+                    (requireActivity() as Save.Gold).save(task.reward)
+                    model.deleteTask(task)
                 }
             }
         recyclerView.adapter = adapter
-        viewModel.observe(this, {
+        model.observe(this, { list ->
             progressBar.visibility = View.GONE
             Log.w("Task", "Updated")
-            adapter.update(it)
+            categories = list.filterIsInstance<Structure.Category>().map { it.title }
+            adapter.update(list)
         })
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun setUpdateListener(recyclerView: RecyclerView) {
-        recyclerView.setOnScrollChangeListener { _, _, _, _, _ ->
-            val view: View = recyclerView.getChildAt(0)
-            val diff: Int = view.top - (recyclerView.scrollY)
-            if (diff > 0) {
-                update()
-            }
+    override fun onBackPress(): Boolean {
+        if (currentDialogShow != null) {
+            currentDialogShow?.dismiss()
+            currentDialogShow = null
+            if (lastDoneTask.empty()) return false
         }
+        if (!lastDoneTask.empty()) {
+            AlertDialog.Builder(requireContext())
+                .setTitle(lastDoneTask.peek().title)
+                .setMessage(getString(R.string.task_restore_message))
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    Toast.makeText(
+                        requireContext(),
+                        "${lastDoneTask.peek().title}: ${getString(R.string.task_restore_success)}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    (requireActivity() as Save.Gold).save(lastDoneTask.peek().reward * -1)
+                    update(lastDoneTask.pop())
+                }
+                .setNegativeButton(R.string.cancel) { dialogInterface: DialogInterface, _: Int ->
+                    dialogInterface.dismiss()
+                }
+                .create().show()
+            return false
+        }
+        return true
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.updateData()
+    override fun onStart() {
+        super.onStart()
+        update()
     }
 
-    override fun update(data: TaskWithCategories) {
-        viewModel.saveTask(data)
+    override fun update(data: Structure) {
+        model.saveTask(data)
         progressBar.visibility = View.VISIBLE
     }
 
@@ -84,28 +98,49 @@ class TaskFragment(
         if (progressBar.visibility == View.GONE) {
             progressBar.visibility = View.VISIBLE
             Log.w("Task", "Update")
-            viewModel.updateData()
+            model.updateData(requireActivity().resources.configuration.orientation == ORIENTATION_PORTRAIT)
         }
     }
 
-    private fun fabAction() {
+    private fun newTaskDialog() {
         val dialog = NewTaskDialog(
-            { update(it) },
-            { Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show() },
-            ResourceProvider.String(this.requireContext())
-        )
-        dialog.isCancelable = false
-        show.show(dialog)
-    }
-
-    private fun editTask(taskDb: TaskWithCategories) {
-        val dialog = NewTaskDialog(
-            { update(it) },
+            {
+                update(it)
+                currentDialogShow = null
+            },
             { Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show() },
             ResourceProvider.String(this.requireContext()),
-            taskDb
+            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, categories)
         )
-        dialog.isCancelable = false
-        show.show(dialog)
+        show(dialog)
+    }
+
+    private fun editTask(taskDb: Structure) {
+        val dialog = NewTaskDialog(
+            {
+                update(it)
+                currentDialogShow = null
+            },
+            { Toast.makeText(this.context, it, Toast.LENGTH_SHORT).show() },
+            ResourceProvider.String(this.requireContext()),
+            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, categories),
+            taskDb as Structure.Task
+        )
+        show(dialog)
+    }
+
+    override fun show(dialog: DialogFragment) {
+        currentDialogShow = dialog
+        dialog.show(requireActivity().supportFragmentManager, "Dialog")
+    }
+
+    override fun onPause() {
+        currentDialogShow?.dismiss()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        currentDialogShow = null
     }
 }

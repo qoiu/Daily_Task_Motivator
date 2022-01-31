@@ -5,6 +5,10 @@ import io.realm.RealmModel
 
 interface UpdatableRealm<T>: RealmModel,Update<T>
 
+interface Builder<T>{
+    fun built():T
+}
+
 interface ViewHolder<T>{
     fun bind(data: T)
 }
@@ -35,8 +39,8 @@ interface Observe<T> {
     fun observe(owner: LifecycleOwner, observer: Observer<T>)
 }
 
-interface ViewModelRequest {
-    fun <T : ViewModel> getViewModel(model: Class<T>, owner: ViewModelStoreOwner): T
+interface Execute<T>{
+    fun execute(): T
 }
 
 interface Mapper{
@@ -45,7 +49,7 @@ interface Mapper{
     }
 
     interface Object<I,O>: Mapper{
-        fun map(mapper: Mapper.Data<I,O>): O
+        fun map(mapper: Data<I,O>): O
 
     }
 }

@@ -13,6 +13,7 @@ abstract class AbstractRepository<Db, Domain>(
             dataSource.read().forEach {
                 list.add(domainMapper.map(it))
             }
+
             return list
         }
 
