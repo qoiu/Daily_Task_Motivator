@@ -131,7 +131,7 @@ class TaskFragment : BaseFragment<FragmentTaskBinding>(), Update<Structure>, Dia
 
     override fun show(dialog: DialogFragment) {
         currentDialogShow = dialog
-        dialog.show(requireActivity().supportFragmentManager, "Dialog")
+        dialog.show(requireActivity().supportFragmentManager,"")
     }
 
     override fun onPause() {

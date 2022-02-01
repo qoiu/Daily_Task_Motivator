@@ -1,6 +1,7 @@
 package com.qoiu.dailytaskmotivator.presentation.main
 
 import android.os.Bundle
+import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import com.qoiu.dailytaskmotivator.*
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity(), Save.Gold, DialogShow {
     private val navigator = Navigator.Base()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
