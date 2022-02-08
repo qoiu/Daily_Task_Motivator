@@ -1,4 +1,7 @@
 # Daily Task Motivator App
+
+[Google Play](https://play.google.com/store/apps/details?id=com.qoiu.dailytaskmotivator)
+
 ## Описание
 Данное приложение позволяет создавать различные задачи для ежедневного использования.
 Приложение позволяет ставить себе задачи и получать баллы за выполнение.
